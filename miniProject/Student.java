@@ -5,8 +5,8 @@ public class Student {
     private String name ; 
     private int numberOfcourse ; 
     private int numberOfCredit ;    //؟
-    private HashMap<Course , Double> pastCourses ;
-    private HashMap<Course , Double> currentCourses ;
+    private HashMap<Course , Double> pastCourses;
+    private HashMap<Course , Double> currentCourses;
     private double totalAverage ;
     private double averageOfCurrentTerm ;
     private String student_code ; //Id
