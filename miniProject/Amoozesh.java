@@ -9,15 +9,15 @@ public class Amoozesh {
 
     private Amoozesh(){
     }
-    public static getAmoozesh(){
-        if (amoozesh==null){
-            amoozesh = new Amoozesh(); 
-            return amoozesh ;
-        }
-        else{
-            return amoozesh ; 
-        }
-    }
+    // public static getAmoozesh(){
+    //     if (amoozesh==null){
+    //         amoozesh = new Amoozesh(); 
+    //         return amoozesh ;
+    //     }
+    //     else{
+    //         return amoozesh ; 
+    //     }
+    // }
 
 
 

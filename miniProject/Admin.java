@@ -3,9 +3,9 @@ public class Admin {
     private String password = "admin" ; 
     public Admin(){
     }
-    public boolean removeCourse(Course removedCourse){
+    // public boolean removeCourse(Course removedCourse){
         
-    }
+    // }
 
 
 }
