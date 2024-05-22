@@ -1,12 +1,13 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.HashMap;
 
 public class Student {
 //fields :
     private String name;
     private int numberOfCourses;
-    private int numberOfCourseUnit;    //؟
+    private int numberOfCourseUnit;
     private HashMap<Course , Double> pastCourses;
     private HashMap<Course , Double> currentCourses;
     private double totalAverage;
@@ -30,14 +31,30 @@ public class Student {
             code++;
             student_code = String.valueOf(code);
             bufferedReader.close();
+            try {//writing new code
+                FileWriter writer = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\student_num.txt");
+                writer.write(student_code);
+                writer.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
 
     }
-    public Student(String name){
+    public Student(String name, String Username, String Password){
         this();
-        this.name = name ;
+        this.Username = Username;
+        this.Password = Password;
+        this.name = name;
+        try {
+            FileWriter writer = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt",true);
+            writer.write(name + "//" + student_code + "//" + Username + "//" + Model.getModel().hashPassword(Password) + "\n");
+            writer.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 //finish
 
