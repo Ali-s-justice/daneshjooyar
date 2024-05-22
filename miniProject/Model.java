@@ -15,6 +15,7 @@ public class Model {
     ArrayList<Course> courses = new ArrayList<>();
     ArrayList<Teacher> teachers = new ArrayList<>();
     ArrayList<Admin> admins = new ArrayList<>();
+    ArrayList<Student> students = new ArrayList<>();
     private Model(){
 
     }
@@ -51,7 +52,7 @@ public class Model {
                 AllAdminsName.add(Info[0]);
             }
             bufferedReader.close();
-            return !AllAdminsName.contains(NewAdminName);
+            return AllAdminsName.contains(NewAdminName);
 
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -59,17 +60,17 @@ public class Model {
         }
     }
 
-    public boolean AdminPasswordValidation(String NewPassword, String username){
+    public boolean PasswordNotValidation(String NewPassword, String username){
         String pattern = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$";
         Pattern p = Pattern.compile(pattern);
 
         Matcher m = p.matcher(NewPassword);
 
         if (NewPassword.contains(username)) {
-            return false;
+            return true;
         }
 
-        return m.matches();
+        return !m.matches();
     }
 
     //Making Admin
@@ -132,7 +133,7 @@ public class Model {
                 AllAdminsPassword.add(Info[1]);
             }
             bufferedReader.close();
-            return AllAdminsName.contains(AdminLoginName) && checkPassword(Password, AllAdminsPassword.get(AllAdminsName.indexOf(AdminLoginName)));
+            return !(AllAdminsName.contains(AdminLoginName) && checkPassword(Password, AllAdminsPassword.get(AllAdminsName.indexOf(AdminLoginName))));
 
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -141,8 +142,96 @@ public class Model {
     }
 
     //Sign up a student
-    public void SignUpStudent(String StudentName){
-        Student NewStudent = new Student(StudentName);
+    public void SignUpStudent(String StudentName, String Username, String Password){
+        Student NewStudent = new Student(StudentName,Username,Password);
+        students.add(NewStudent);
+    }
+
+    //Signup Student Name validation --> return true if name is valid
+    public boolean StudentNameValidation(String NewStudentName){
+        ArrayList<String> AllStudentsName = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                AllStudentsName.add(Info[0]);
+            }
+            bufferedReader.close();
+            return !AllStudentsName.contains(NewStudentName);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    //Signup Student Username Validation --> return true if username is unavailable
+    public boolean StudentUsernameValidation(String Username){
+        ArrayList<String> AllStudentsUsername = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                AllStudentsUsername.add(Info[2]);
+            }
+            bufferedReader.close();
+            return AllStudentsUsername.contains(Username);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    //Remove account of a student
+    public void studentAccountRemover(String studentName){
+        try {
+            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            ArrayList<String> allOfFile = new ArrayList<>();
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (!(Info[0].equals(studentName))){
+                    allOfFile.add(line);
+                }
+            }
+            bufferedReader.close();
+            try {
+                FileWriter writer = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+                for (String s : allOfFile) {
+                    writer.write(s + "\n");
+                }
+                writer.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public boolean noStudentFound(String studentName){
+        ArrayList<String> AllStudentsName = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                AllStudentsName.add(Info[0]);
+            }
+            bufferedReader.close();
+            return !AllStudentsName.contains(studentName);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 
 }
