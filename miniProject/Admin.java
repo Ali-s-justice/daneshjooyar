@@ -10,7 +10,8 @@ public class Admin {
         //returning Name And Password to File
         try {
             FileWriter AdminFileWriter = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\admins.txt", true);
-            AdminFileWriter.write(name + ":" + password);
+            String HashPassword = Model.getModel().hashPassword(password);
+            AdminFileWriter.write(name + "//" + HashPassword + "\n");
             AdminFileWriter.close();
         }catch (Exception e){
             System.out.println(e.getMessage());

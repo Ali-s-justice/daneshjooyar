@@ -1,15 +1,17 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.HashMap;
 
 public class Student {
 //fields :
-    private String name ; 
-    private int numberOfcourse ; 
-    private int numberOfCredit ;    //؟
+    private String name;
+    private int numberOfCourses;
+    private int numberOfCourseUnit;    //؟
     private HashMap<Course , Double> pastCourses;
     private HashMap<Course , Double> currentCourses;
-    private double totalAverage ;
-    private double averageOfCurrentTerm ;
-    private String student_code ; //Id
+    private double totalAverage;
+    private double averageOfCurrentTerm;
+    private String student_code; //Id
     private String Username;
     private String Password;
 //finish
@@ -18,13 +20,24 @@ public class Student {
     public Student (){
         pastCourses = new HashMap<>();
         currentCourses = new HashMap<>();
-        numberOfcourse = 0 ;
-        numberOfCredit = 0 ;
+        numberOfCourses = 0 ;
+        numberOfCourseUnit = 0 ;
+        try {
+            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\student_num.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = bufferedReader.readLine();
+            int code = Integer.parseInt(line);
+            code++;
+            student_code = String.valueOf(code);
+            bufferedReader.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
     }
-    public Student(String name , String student_code){
+    public Student(String name){
         this();
-        this.name = name ; 
-        this.student_code = student_code ;    
+        this.name = name ;
     }
 //finish
 
@@ -67,7 +80,7 @@ public class Student {
     
     }
     public void printNumberOfCredit(){
-        System.out.println("number of credit = "+numberOfCredit);
+        System.out.println("number of credit = "+ numberOfCourseUnit);
     }
 //finish
 
@@ -76,15 +89,15 @@ public class Student {
 public void addCourse(Course newCourse) {
     if (newCourse!=null){
         currentCourses.put(newCourse, -1.0);
-        numberOfcourse++ ; 
-        numberOfCredit += newCourse.getCreditOfCourse();    //The initial grade for a new course is set to 0.0
+        numberOfCourses++ ;
+        numberOfCourseUnit += newCourse.getCreditOfCourse();    //The initial grade for a new course is set to 0.0
     }
 }
 public void removeCourse(Course removedCourse){
     if (removedCourse!=null){
         currentCourses.remove(removedCourse);
-        numberOfcourse-- ;
-        numberOfCredit -= removedCourse.getCreditOfCourse();
+        numberOfCourses-- ;
+        numberOfCourseUnit -= removedCourse.getCreditOfCourse();
     }
 }
 //finish
@@ -93,11 +106,11 @@ public void removeCourse(Course removedCourse){
     public void setName(String name) {
         this.name = name;
     }
-    public void setNumberOfcourse(int numberOfcourse) {
-        this.numberOfcourse = numberOfcourse;
+    public void setNumberOfCourses(int numberOfCourses) {
+        this.numberOfCourses = numberOfCourses;
     }
-    public void setNumberOfCredit(int numberOfCredit) {
-        this.numberOfCredit = numberOfCredit;
+    public void setNumberOfCourseUnit(int numberOfCourseUnit) {
+        this.numberOfCourseUnit = numberOfCourseUnit;
     }
     
     public void setTotalAverage(double totalAverage) {
@@ -123,11 +136,11 @@ public void removeCourse(Course removedCourse){
     public HashMap<Course, Double> getPastCourses() {
         return pastCourses;
     }
-    public int getNumberOfcourse() {
-        return numberOfcourse;
+    public int getNumberOfCourses() {
+        return numberOfCourses;
     }
-    public int getNumberOfCredit() {
-        return numberOfCredit;
+    public int getNumberOfCourseUnit() {
+        return numberOfCourseUnit;
     }
     public double getTotalAverage() {       //edited
         for(Double x : pastCourses.values()){

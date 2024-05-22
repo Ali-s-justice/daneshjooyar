@@ -29,23 +29,24 @@ Course
     ~Printing Best Score
 
 Admin
-    ~Adding Student to Course
-    ~Removing Student from Course
-    ~Adding Assignment
-    ~Deactivating Assignment
-    ~Adding project
-    ~Deactivating Project
-    ~Setting Score
-    ~Setting ExamDay
-    ~Changing Deadline
-    ~Adding course
-    ~Removing course
-    ~Printing Courses of Student
-    ~Printing Total Average of Student
-    ~Printing Current Average of Student
-    ~Printing Number of Credit of Student
-    ~Adding Course to Student
-    ~Removing Course for Student
-    ~Signing Up in Program for Student
-    ~Deleting Account of An Student
-    ~Logging out a Student
+    ~Adding teacher~
+    ~Adding Student to Course~
+    ~Removing Student from Course~
+    ~Adding Assignment~
+    ~Deactivating Assignment~
+    ~Adding project~
+    ~Deactivating Project~
+    ~Setting Score~
+    ~Setting ExamDay~
+    ~Changing Deadline~
+    ~Adding course~
+    ~Removing course~
+    ~Printing Courses of Student~
+    ~Printing Total Average of Student~
+    ~Printing Current Average of Student~
+    ~Printing Number of Credit of Student~
+    ~Adding Course to Student~
+    ~Removing Course for Student~
+    ~Signing Up in Program for Student~
+    ~Deleting Account of An Student~
+    ~Logging out a Student~

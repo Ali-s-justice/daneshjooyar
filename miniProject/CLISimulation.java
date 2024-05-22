@@ -12,12 +12,23 @@ public class CLISimulation {
                 case 1://Admin
                     while (true){
                         boolean Exit2 = false;
-                        System.out.println("Are you NEW?\n[1]:Yes(Signup)\n[2]:No(Login)\n[3]:Go Back");
+                        System.out.println("Are you NEW Admin?\n[1]:Yes(Signup)\n[2]:No(Login)\n[3]:Go Back");
                         int AdminLoginOrSignup = input.nextInt();
                         switch (AdminLoginOrSignup){
                             case 1://Signing up Admin
                                 String AdminName;
                                 String AdminPassword;
+                                String ValidationCode = "SBU_ADMIN";
+                                String ValidationCodeChecker;
+                                while (true){
+                                    System.out.println("Enter Your SBU validation code:");
+                                    ValidationCodeChecker = input.next();
+                                    if (!ValidationCode.equals(ValidationCodeChecker)){
+                                        System.out.println("Unable to validate your information!");
+                                        continue;
+                                    }
+                                    break;
+                                }
                                 while (true){
                                     System.out.println("Enter Your Name:");
                                     AdminName = input.next();
@@ -39,11 +50,80 @@ public class CLISimulation {
                                 Model.getModel().AdminMaker(AdminName,AdminPassword);
                                 break;
                             case 2://logging Admin
+                                String AdminLoginName;
+                                String AdminLoginPassword;
+                                while (true){
+                                    System.out.println("Enter Your Name:");
+                                    AdminLoginName = input.next();
+                                    System.out.println("Enter Your Password:");
+                                    AdminLoginPassword = input.next();
+                                    if (!Model.getModel().AdminLoginValidation(AdminLoginName,AdminLoginPassword)){
+                                        System.out.println("You are not signup OR your password is incorrect");
+                                        continue;
+                                    }
+                                    break;
+                                }
+                                System.out.println("You successfully Logged in!");
+                                boolean Exit3 = false;
+                                while (true){
+                                    System.out.println("""
+                                            What do you want to to?
+                                            
+                                            STUDENT:
+                                            [1]:Signing up student
+                                            [2]:Deleting account of a student
+                                            [3]:Logging out a Student
+                                            [4]:Removing course of a student
+                                            [5]:Adding Course to a student
+                                            [6]:Printing number of course units of a student
+                                            [7]:Printing current average of a student
+                                            [8]:Printing total average of a student
+                                            [9]:Printing courses of a student
+                                            [10]:Setting Score for a student
+                                            [11]:Removing student from a course
+                                            [12]:Adding student to a course
+                                            
+                                            TEACHER:
+                                            Adding teacher
+                                            
+                                            COURSE:
+                                            Removing a course
+                                            Adding a course
+                                            []:Setting exam day for a course
+                                            
+                                            ASSIGNMENT:
+                                            Adding assignment
+                                            Changing deadline of an assignment
+                                            Deactivating assignment
+                                            
+                                            PROJECT:
+                                            Deactivating project
+                                            Adding project
+                                            
+                                            [100]EXIT
+                                            """);
+                                    int Operation = input.nextInt();
+                                    switch (Operation){
+                                        case 1://Signing up a student
+                                            break;
+                                        case 100:
+                                            Exit3 = true;
+                                            break;
+                                        default:
+                                            System.out.println("Invalid input!");
+                                            break;
+                                    }
+                                    if (Exit3){
+                                        break;
+                                    }
+                                }
+
                                 break;
                             case 3://Go Back
                                 Exit2 = true;
                                 break;
                             default:
+                                System.out.println("You entered wrong value!");
                         }
                         if (Exit2){
                             break;
