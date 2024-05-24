@@ -16,7 +16,6 @@ public class Admin {
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-
     }
 
 
