@@ -8,7 +8,7 @@ public class MainMVC {
             boolean Exit1 = false;
             System.out.println("Who are you?\n[1]:Admin\n[2]:Teacher\n[3]:Exit");
             Scanner input = new Scanner(System.in);
-            int role = 0;
+            int role;
             try {
                 role = input.nextInt();
             }catch (Exception e){
