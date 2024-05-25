@@ -83,21 +83,16 @@ flutter:
     - family: dastnevis
       fonts:
         - asset: assets/fonts/danstevis.otf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
     - family: vazir
       fonts:
         - asset: assets/fonts/Vazir.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-    - family: fondy-script
+    - family: pinar
       fonts:
-        - asset: assets/fonts/fondy-script.ttf
+        - asset: assets/fonts/pinar.ttf
+
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
-  
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

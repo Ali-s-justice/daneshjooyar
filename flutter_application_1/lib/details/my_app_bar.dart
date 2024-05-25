@@ -8,27 +8,52 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: const Color.fromARGB(255, 93, 0, 255),
-      title: Center(
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color.fromARGB(255, 93, 0, 255),
+            Color.fromARGB(255, 131, 58, 180),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(50.0),
+          bottomRight: Radius.circular(50.0),
+        ),
+      ),
+      child: AppBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(50.0),
+            bottomRight: Radius.circular(50.0),
+          ),
+        ),
+        backgroundColor: Colors.transparent, // Transparent to show gradient
+        title: Center(
           child: RichText(
-        text: const TextSpan(children: [
-          TextSpan(
-              text: 'D',
-              style: TextStyle(
-                fontFamily: 'fondy-script',
-                fontSize: 50,
-                fontWeight: FontWeight.w900,
-              )),
-          TextSpan(
-              text: 'arsa',
-              style: TextStyle(
-                fontFamily: 'fondy-script',
-                fontSize: 35,
-                fontWeight: FontWeight.w900,
-              ))
-        ]),
-      )),
+            text: const TextSpan(children: [
+              TextSpan(
+                text: 'D',
+                style: TextStyle(
+                  fontFamily: 'fondy-script',
+                  fontSize: 50,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              TextSpan(
+                text: 'arsa',
+                style: TextStyle(
+                  fontFamily: 'fondy-script',
+                  fontSize: 35,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ]),
+          ),
+        ),
+      ),
     );
   }
 

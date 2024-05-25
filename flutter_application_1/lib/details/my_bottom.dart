@@ -1,17 +1,24 @@
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
-// class MyBottom extends StatefulWidget {
-//   const MyBottom({super.key});
+class MyBottom extends StatelessWidget {
+  const MyBottom({super.key});
 
-//   @override
-//   State<MyBottom> createState() => _MyBottomState();
-// }
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      
+      backgroundColor: const Color.fromARGB(255, 93, 0, 255),
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
 
-// class _MyBottomState extends State<MyBottom> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return BottomNavigationBar(
-//      [],
-//     );
-//   }
-// }
+          label: 'a',
+          icon: Icon(Icons.account_box),
+        ),
+        BottomNavigationBarItem(
+          label: 'b',
+          icon: Icon(Icons.access_alarm_outlined),
+        )
+      ],
+    );
+  }
+}
