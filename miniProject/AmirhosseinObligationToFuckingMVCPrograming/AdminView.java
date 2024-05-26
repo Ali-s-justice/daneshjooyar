@@ -8,6 +8,7 @@ public class AdminView {
     public void run(AdminController adminController){
         this.adminController = adminController;
         this.adminController.getStudentIDSetter(this);
+        boolean TaskFinished = false;
         while (true){
             boolean Exit = false;
             System.out.println("Are you new admin?\n[1]:Yes-->(Signup)\n[2]:No-->(Login)\n[3]:Go Back");
@@ -21,9 +22,11 @@ public class AdminView {
             switch (AdminLoginOrSignup){
                 case 1:
                     adminSignUpValidation();
+                    Exit = true;
                     break;
                 case 2:
                     adminLogin();
+                    Exit  =true;
                     break;
                 case 3:
                     Exit = true;
@@ -48,8 +51,6 @@ public class AdminView {
             adminLoginUserName = input.next();
             if (adminLoginUserName.equals("1")){
                 Exit = true;
-            }
-            if (Exit){
                 break;
             }
             System.out.println("Enter your password:\n[1]:Go back");
@@ -63,8 +64,10 @@ public class AdminView {
             }
             break;
         }
-        System.out.println("You successfully logged in!\n");
-        adminPowers();
+        if (!Exit){
+            System.out.println("You successfully logged in!\n");
+            adminPowers();
+        }
     }
 
     private void adminPowers(){
@@ -107,9 +110,9 @@ public class AdminView {
                                             [21]:Deactivating project
                                             [22]:Adding project
                                             
-                                            [23]:Go back
+                                            [23]:Log out!
                                             """;
-            System.out.println(ALL_OBLIGATIONS.substring(1,ALL_OBLIGATIONS.length()-1));
+            System.out.println(ALL_OBLIGATIONS.substring(0,ALL_OBLIGATIONS.length()-1));
             int Operation;
             try {
                 Operation = input.nextInt();
@@ -147,6 +150,7 @@ public class AdminView {
             }
             if (adminController.getNoStudentFound(this, removingStudentName)){
                 System.out.println("There is no student named: " + removingStudentName);
+                continue;
             }else {
                 int lastRemoveChoice;
                 while (true){
@@ -163,7 +167,7 @@ public class AdminView {
                     case 1:
                         System.out.println("Removing Student...\n");
                         adminController.getStudentAccountRemover(this, removingStudentName);
-                        System.out.println("Student named: " + removingStudentName + " has successfully removed !\n");
+                        System.out.println("Student named: " + removingStudentName + " has successfully removed!\n");
                         break;
                     case 2:
                         break;
@@ -171,6 +175,7 @@ public class AdminView {
                         System.out.println("Invalid input\n");
                 }
             }
+            break;
         }
     }
 
@@ -244,6 +249,7 @@ public class AdminView {
 
     private void signUpStudent(String StudentName, String Username, String Password){
         this.adminController.getStudentSignUp(this, StudentName, Username, Password);
+        System.out.println("Student named: " + StudentName + " successfully signed up!");
     }
 
     private void adminSignUpValidation(){
@@ -259,7 +265,7 @@ public class AdminView {
                 adminSignUp();
                 break;
             }else {
-                System.out.println("Unable to validate your information !\n");
+                System.out.println("Unable to validate your information!\n");
             }
         }
     }
@@ -290,7 +296,7 @@ public class AdminView {
             while (true){//Password
                 System.out.println("Enter your password:\n[1]:Go back");
                 adminPassword = input.next();
-                if (adminUserName.length() < 2 && Integer.parseInt(adminPassword) == 1){
+                if (adminPassword.equals("1")){
                     Exit2 = true;
                     break;
                 }
