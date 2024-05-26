@@ -3,7 +3,9 @@ import java.util.ArrayList;
 
 public class Teacher {
 //fields
-    private String name ; 
+    private String name;
+    private String username;
+    private String password;
     private int numberOfCourse ; 
     private ArrayList<Course> courses ;
 //finish

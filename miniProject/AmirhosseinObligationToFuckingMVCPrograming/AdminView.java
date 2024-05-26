@@ -8,7 +8,6 @@ public class AdminView {
     public void run(AdminController adminController){
         this.adminController = adminController;
         this.adminController.getStudentIDSetter(this);
-        boolean TaskFinished = false;
         while (true){
             boolean Exit = false;
             System.out.println("Are you new admin?\n[1]:Yes-->(Signup)\n[2]:No-->(Login)\n[3]:Go Back");
@@ -283,7 +282,7 @@ public class AdminView {
                     break;
                 }
                 if (adminController.getAdminNameValidation(this,adminUserName)){
-                    System.out.println("Your name is unavailable!\n");
+                    System.out.println("Your username is unavailable!\n");
                     continue;
                 }
                 break;

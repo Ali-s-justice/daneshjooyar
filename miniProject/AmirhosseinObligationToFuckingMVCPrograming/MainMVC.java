@@ -23,6 +23,10 @@ public class MainMVC {
                     adminView.run(adminController);
                     break;
                 case 2:
+                    TeacherView teacherView = new TeacherView();
+                    TeacherModel teacherModel = new TeacherModel();
+                    TeacherController teacherController = new TeacherController(teacherModel, teacherView);
+                    teacherView.run(teacherController);
                     break;
                 case 3:
                     Exit1 = true;
