@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'my_app_bar.dart';
 import 'my_bottom.dart';
 
@@ -47,6 +48,10 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     TextFormField(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.deny(' '),
+                        
+                      ],
                       validator: (String? value) {
                         username = value;
                         if (value!.isEmpty) {
@@ -95,7 +100,7 @@ class _LoginState extends State<Login> {
                               .hasMatch(value!)) {
                             return "!رمز عبور نامعتبر است";
                           } else if (value.contains(username!)) {
-                            return ".رمز عبور نباید شامل نام کاربری باشد";
+                            return ".رمز عبور نمیتواند شامل نام کاربری باشد";
                           } else {
                             return null;
                           }

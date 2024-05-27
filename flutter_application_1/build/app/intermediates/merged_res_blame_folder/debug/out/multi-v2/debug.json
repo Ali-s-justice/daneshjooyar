@@ -619,7 +619,7 @@
             "outputFile": "com.example.flutter_application_1.app-merged_res-11:/values-night-v8_values-night-v8.arsc.flat",
             "map": [
                 {
-                    "source": "D:\\flutter_projejct\\flutter_application_1\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "D:\\daneshjooyar\\daneshjooyar\\flutter_application_1\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
@@ -933,6 +933,25 @@
                     }
                 },
                 {
+                    "source": "D:\\daneshjooyar\\daneshjooyar\\flutter_application_1\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "from": {
+                        "startLines": "3,14",
+                        "startColumns": "4,4",
+                        "startOffsets": "176,832",
+                        "endLines": "7,16",
+                        "endColumns": "12,12",
+                        "endOffsets": "483,998"
+                    },
+                    "to": {
+                        "startLines": "93,97",
+                        "startColumns": "4,4",
+                        "startOffsets": "5462,5643",
+                        "endLines": "96,99",
+                        "endColumns": "12,12",
+                        "endOffsets": "5638,5807"
+                    }
+                },
+                {
                     "source": "C:\\Users\\amirhossein\\.gradle\\caches\\transforms-3\\cbb49f9ca74a2f3fd16bcd77660912cf\\transformed\\jetified-window-1.0.0-beta04\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,7,8,9,10,11,19,23,34,51",
@@ -949,25 +968,6 @@
                         "endLines": "7,8,9,10,72,118,122,236,248,256",
                         "endColumns": "11,59,51,44,59,24,24,24,24,24",
                         "endOffsets": "289,349,401,446,4387,6899,7030,10987,11427,11736"
-                    }
-                },
-                {
-                    "source": "D:\\flutter_projejct\\flutter_application_1\\android\\app\\src\\main\\res\\values\\styles.xml",
-                    "from": {
-                        "startLines": "3,14",
-                        "startColumns": "4,4",
-                        "startOffsets": "176,832",
-                        "endLines": "7,16",
-                        "endColumns": "12,12",
-                        "endOffsets": "483,998"
-                    },
-                    "to": {
-                        "startLines": "93,97",
-                        "startColumns": "4,4",
-                        "startOffsets": "5462,5643",
-                        "endLines": "96,99",
-                        "endColumns": "12,12",
-                        "endOffsets": "5638,5807"
                     }
                 }
             ]

@@ -38,31 +38,35 @@ class _MyBottomState extends State<MyBottom> {
           topRight: Radius.circular(50),
         ),
         child: BottomNavigationBar(
-          selectedFontSize: 20.0,
-          unselectedFontSize: 15.0,
-          unselectedIconTheme: const IconThemeData(
-            size: 35.0,
-          ),
           currentIndex: _selected,
           iconSize: 50,
-          selectedItemColor: Colors.black,
           type: BottomNavigationBarType.fixed,
           backgroundColor: Colors.transparent,
           elevation: 0,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               label: 'signin',
-              icon: Icon(Icons.person),
+              
+              icon: Icon(
+                Icons.person,
+                color: Colors.black,
+              ),
             ),
             BottomNavigationBarItem(
               label: 'signup',
-              icon: Icon(Icons.person_add),
+              icon: Icon(
+                Icons.person_add,
+                color: Colors.black,
+              ),
             ),
           ],
           onTap: (int value) {
             setState(
               () {
                 _selected = value;
+                value == 1
+                    ? Navigator.pushNamed(context, Signup.routeName)
+                    : Navigator.pushNamed(context, Login.routeName);
               },
             );
           },
