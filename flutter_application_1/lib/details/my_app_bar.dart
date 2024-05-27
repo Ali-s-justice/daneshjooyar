@@ -24,6 +24,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       child: AppBar(
+        automaticallyImplyLeading: false,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(50.0),
