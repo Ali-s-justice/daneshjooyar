@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/details/information.dart';
 import 'my_app_bar.dart';
 import 'my_bottom.dart';
 
@@ -52,7 +53,6 @@ class _SignupState extends State<Signup> {
                     TextFormField(
                       inputFormatters: [
                         FilteringTextInputFormatter.deny(' '),
-                        
                       ],
                       validator: (String? value) {
                         username = value;
@@ -267,7 +267,9 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                         onPressed: () {
-                          if (_keyform.currentState!.validate()) {}
+                          if (_keyform.currentState!.validate()) {
+                            Navigator.pushNamed(context, Information.routeName);
+                          }
                         },
                         child: const Padding(
                           padding: EdgeInsets.symmetric(vertical: 10.0),
