@@ -17,7 +17,7 @@ public class TeacherModel {
     public boolean teacherNameValidation(String teacherName){
         ArrayList<String> allTeachersName = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\teachers.txt");
+            FileReader fileReader = new FileReader("informations/teachers.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -37,7 +37,7 @@ public class TeacherModel {
     public boolean teacherUsernameValidation(String teacherUsername){
         ArrayList<String> allTeachersUsername = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\teachers.txt");
+            FileReader fileReader = new FileReader("informations/teachers.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -67,7 +67,7 @@ public class TeacherModel {
 
     public boolean teacherSignup(String teacherName, String teacherUsername, String teacherPassword){
         try {
-            FileWriter AdminFileWriter = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\teachers.txt", true);
+            FileWriter AdminFileWriter = new FileWriter("informations/teachers.txt", true);
             AdminFileWriter.write(teacherName + "//" + teacherUsername + "//" + hashPassword(teacherPassword) + "\n");
             AdminFileWriter.close();
             return true;
@@ -96,6 +96,48 @@ public class TeacherModel {
         byte[] salt = new byte[16];
         sr.nextBytes(salt);
         return salt;
+    }
+
+
+
+
+
+    public boolean teacherLoginValidation(String TeacherLoginName, String Password){//Admin Login Validation
+        ArrayList<String> AllTeachersName = new ArrayList<>();
+        ArrayList<String> AllTeachersPassword = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("informations/teachers.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                AllTeachersName.add(Info[1]);
+                AllTeachersPassword.add(Info[2]);
+            }
+            bufferedReader.close();
+            return !(AllTeachersName.contains(TeacherLoginName) && checkPassword(Password, AllTeachersPassword.get(AllTeachersName.indexOf(TeacherLoginName))));
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    public boolean checkPassword(String password, String storedPassword) {
+        try {
+            String[] parts = storedPassword.split(":");
+            byte[] salt = Base64.getDecoder().decode(parts[0]);
+            byte[] storedHash = Base64.getDecoder().decode(parts[1]);
+
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(salt);
+
+            byte[] hashedPassword = md.digest(password.getBytes());
+
+            return MessageDigest.isEqual(storedHash, hashedPassword);
+
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -117,7 +117,7 @@ public class AdminView {
             String Operation;
             try {
                 Operation = input.next();
-                inOperation = Integer.parseInt(ALL_OBLIGATIONS);
+                inOperation = Integer.parseInt(Operation);
             }catch (Exception e){
                 System.out.println("Something went wrong!\n");
                 continue;

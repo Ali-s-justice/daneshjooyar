@@ -41,4 +41,14 @@ public class TeacherController {
             return false;
         }
     }
+
+
+
+    public boolean getTeacherLoginValidation(TeacherView teacherView, String teacherLoginUsername, String teacherLoginPassword){
+        if (teacherView.equals(this.teacherView)){
+            return this.teacherModel.teacherLoginValidation(teacherLoginUsername, teacherLoginPassword);
+        }else {
+            return false;
+        }
+    }
 }
