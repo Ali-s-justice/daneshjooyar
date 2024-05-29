@@ -14,12 +14,12 @@ import java.util.regex.Pattern;
 public class AdminModel {
 
     public void studentIDSetter(){
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\student_num.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("informations/student_num.txt"))) {
             String code;
             code = reader.readLine();
             if (code==null){
                 try {
-                    FileWriter writer = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\student_num.txt");
+                    FileWriter writer = new FileWriter("informations/student_num.txt");
                     writer.write("402243000");
                     writer.close();
                 } catch (Exception e) {
@@ -34,7 +34,7 @@ public class AdminModel {
     public boolean adminNameValidation(String NewAdminName){//Admin Name Validation
         ArrayList<String> AllAdminsName = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\admins.txt");
+            FileReader fileReader = new FileReader("informations/admins.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -64,7 +64,7 @@ public class AdminModel {
 
     public boolean saveAdmin(String userName, String password){
         try {
-            FileWriter AdminFileWriter = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\admins.txt", true);
+            FileWriter AdminFileWriter = new FileWriter("informations/admins.txt", true);
             String HashPassword = hashPassword(password);
             AdminFileWriter.write(userName + "//" + HashPassword + "\n");
             AdminFileWriter.close();
@@ -101,7 +101,7 @@ public class AdminModel {
         ArrayList<String> AllAdminsName = new ArrayList<>();
         ArrayList<String> AllAdminsPassword = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\admins.txt");
+            FileReader fileReader = new FileReader("informations/admins.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -140,7 +140,7 @@ public class AdminModel {
     public boolean StudentNameValidation(String studentName){
         ArrayList<String> AllStudentsName = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+            FileReader fileReader = new FileReader("informations/students.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -160,7 +160,7 @@ public class AdminModel {
     public boolean StudentUsernameValidation(String Username){
         ArrayList<String> AllStudentsUsername = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+            FileReader fileReader = new FileReader("informations/students.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -179,7 +179,7 @@ public class AdminModel {
     public void SignUpStudent(String StudentName, String Username, String Password){
         String student_code = "";
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\student_num.txt");
+            FileReader fileReader = new FileReader("informations/student_num.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line = bufferedReader.readLine();
             int code = Integer.parseInt(line);
@@ -187,7 +187,7 @@ public class AdminModel {
             student_code = String.valueOf(code);
             bufferedReader.close();
             try {//writing new code
-                FileWriter writer = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\student_num.txt");
+                FileWriter writer = new FileWriter("informations/student_num.txt");
                 writer.write(student_code);
                 writer.close();
             } catch (Exception e) {
@@ -197,7 +197,7 @@ public class AdminModel {
             System.out.println(e.getMessage());
         }
         try {
-            FileWriter writer = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt",true);
+            FileWriter writer = new FileWriter("informations/students.txt",true);
             writer.write(StudentName + "//" + student_code + "//" + Username + "//" + hashPassword(Password) + "\n");
             writer.close();
         } catch (Exception e) {
@@ -208,7 +208,7 @@ public class AdminModel {
     public boolean noStudentFound(String studentName){
         ArrayList<String> AllStudentsName = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+            FileReader fileReader = new FileReader("informations/students.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -227,7 +227,7 @@ public class AdminModel {
     //Remove account of a student
     public void studentAccountRemover(String studentName){
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+            FileReader fileReader = new FileReader("informations/students.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             ArrayList<String> allOfFile = new ArrayList<>();
@@ -239,7 +239,7 @@ public class AdminModel {
             }
             bufferedReader.close();
             try {
-                FileWriter writer = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+                FileWriter writer = new FileWriter("informations/students.txt");
                 for (String s : allOfFile) {
                     writer.write(s + "\n");
                 }

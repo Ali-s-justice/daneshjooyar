@@ -36,6 +36,7 @@ public class AdminView {
             if (Exit){
                 break;
             }
+            input.close();
         }
     }
 
@@ -112,14 +113,16 @@ public class AdminView {
                                             [23]:Log out!
                                             """;
             System.out.println(ALL_OBLIGATIONS.substring(0,ALL_OBLIGATIONS.length()-1));
-            int Operation;
+            int inOperation; 
+            String Operation;
             try {
-                Operation = input.nextInt();
+                Operation = input.next();
+                inOperation = Integer.parseInt(ALL_OBLIGATIONS);
             }catch (Exception e){
                 System.out.println("Something went wrong!\n");
                 continue;
             }
-            switch (Operation){
+            switch (inOperation){
                 case 1://Signing up a student
                     getStudentName();
                     break;
@@ -253,51 +256,63 @@ public class AdminView {
 
     private void adminSignUpValidation(){
         while (true){
-            String ValidationCode = "SBU_ADMIN";
-            System.out.println("Enter your SBU validation code:\n[1]:Go back");
+            String ValidationCode = "S";
+            System.out.println("Enter your SBU validation code:\n[1]:Exit");
             Scanner input = new Scanner(System.in);
             String choice = input.next();
-            if (choice.length() < 2 && Integer.parseInt(choice) == 1){
+            
+            if (choice.length() < 2 && choice.charAt(0)=='1'){ //if input is "a" -> Exception! -> handled*
                 break;
             }
-            if (choice.equals(ValidationCode)){
+            
+            else if (choice.equals(ValidationCode)){ 
                 adminSignUp();
                 break;
             }else {
                 System.out.println("Unable to validate your information!\n");
             }
+            
         }
     }
 
     private void adminSignUp(){
+        number1:
         while (true){
             boolean Exit1 = false;
             String adminUserName;
             Scanner input = new Scanner(System.in);
+            number2:
             while (true){
-                System.out.println("Enter your username:\n[1]:Go back");
-                adminUserName = input.next();
-                if (adminUserName.length() < 2 && Integer.parseInt(adminUserName) == 1){
-                    Exit1 = true;
-                    break;
+                System.out.println("Enter your username:\n[1]:Exit");
+                adminUserName = input.next(); 
+                if (adminUserName.length() < 2 && adminUserName.charAt(0)=='1'){ // change condition of if -> exception handeling
+                    break number1;
+                    // Exit1 = true;
+                    // break;
                 }
-                if (adminController.getAdminNameValidation(this,adminUserName)){
+                
+                else if (adminController.getAdminNameValidation(this,adminUserName)){ //unreachable methode ? (AdminValidation)?
                     System.out.println("Your username is unavailable!\n");
                     continue;
                 }
                 break;
             }
-            if (Exit1){
-                break;
-            }
+            // if (Exit1){
+            //     break;
+            // }
+            
             boolean Exit2 = false;
             String adminPassword;
+      
+            number3:
             while (true){//Password
+                input.nextLine();
                 System.out.println("Enter your password:\n[1]:Go back");
-                adminPassword = input.next();
-                if (adminPassword.equals("1")){
-                    Exit2 = true;
-                    break;
+                adminPassword = input.nextLine();
+                if (adminPassword.length() < 2 && adminPassword.equals("1")){
+                    continue number1;
+                    // Exit2 = true;
+                    // continue;
                 }
                 if (adminController.getAdminPasswordNotValidation(this,adminPassword, adminUserName)){
                     System.out.println("The password does not follow the correct pattern\n");
@@ -305,15 +320,16 @@ public class AdminView {
                 }
                 break;
             }
-            if (Exit2){
-                continue;
-            }
+            // if (Exit2){
+            //     continue;
+            // }
             if (adminController.getSaveAdmin(this, adminUserName, adminPassword)){
                 System.out.println("Signup successfully!\n");
                 adminPowers();
             }else {
                 System.out.println("Something went wrong!\n");
             }
+            input.close();
             break;
         }
     }

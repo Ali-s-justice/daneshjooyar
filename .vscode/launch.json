@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "MainMVC",
+            "request": "launch",
+            "mainClass": "AmirhosseinObligationToFuckingMVCPrograming.MainMVC",
+            "projectName": "daneshjooyar_4c9f17f6"
+        },
+        {
             "name": "flutter_application_1",
             "cwd": "flutter_application_1",
             "request": "launch",
