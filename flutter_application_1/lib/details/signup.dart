@@ -68,36 +68,27 @@ class _SignupState extends State<Signup> {
                         }
                       },
                       decoration: InputDecoration(
-                          helperText:
-                              'نام کاربری شامل حروف کوچک و بزرگ و اعداد',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          filled: true,
-                          fillColor: const Color.fromARGB(255, 239, 227, 233),
-                          // hintText : 'سید امیرحسین اشرفیان',
-
-                          label: Container(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
-                            alignment: Alignment.centerRight,
-                            child: const Text(
-                              'نام کاربری / یوزنیم',
-                              textDirection: TextDirection.rtl,
-                              style: TextStyle(
-                                fontFamily: 'vazir',
-                                fontWeight: FontWeight.w900,
-                                fontSize: 22.0,
-                              ),
+                        helperText: 'نام کاربری شامل حروف کوچک و بزرگ و اعداد',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 239, 227, 233),
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          alignment: Alignment.centerRight,
+                          child: const Text(
+                            'نام کاربری / یوزنیم',
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(
+                              fontFamily: 'vazir',
+                              fontWeight: FontWeight.w900,
+                              fontSize: 22.0,
                             ),
-                          )
-
-                          // labelText: 'نام و نام خانوادگی',
                           ),
+                        ),
+                      ),
                     ),
-                    // const SizedBox(
-                    //   height: 20,
-                    // ),
                     TextFormField(
                       validator: (String? value) {
                         if (value!.isEmpty) {
@@ -112,136 +103,137 @@ class _SignupState extends State<Signup> {
                       ],
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          filled: true,
-                          fillColor: const Color.fromARGB(255, 239, 227, 233),
-                          // hintText : 'سید امیرحسین اشرفیان',
-
-                          label: Container(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
-                            alignment: Alignment.centerRight,
-                            child: const Text(
-                              'شماره دانشجویی',
-                              textDirection: TextDirection.rtl,
-                              style: TextStyle(
-                                fontFamily: 'vazir',
-                                fontWeight: FontWeight.w900,
-                                fontSize: 22.0,
-                              ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        filled: true,
+                        fillColor: const Color.fromARGB(255, 239, 227, 233),
+                        label: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          alignment: Alignment.centerRight,
+                          child: const Text(
+                            'شماره دانشجویی',
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(
+                              fontFamily: 'vazir',
+                              fontWeight: FontWeight.w900,
+                              fontSize: 22.0,
                             ),
-                          )
-
-                          // labelText: 'نام و نام خانوادگی',
                           ),
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    Stack(children: [
-                      TextFormField(
-                        validator: (String? value) {
-                          pass = value;
-                          if (!RegExp(
-                                  "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}\$")
-                              .hasMatch(value!)) {
-                            return "!حداقل 8 حرف شامل حروف و کوچک و بزرگ و اعداد";
-                          } else if (value.contains(username!)) {
-                            return ".رمز عبور نباید شامل نام کاربری باشد";
-                          } else {
-                            return null;
-                          }
-                        },
-                        obscureText: visable,
-                        textDirection: TextDirection.ltr,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          filled: true,
-                          fillColor: const Color.fromARGB(255, 239, 227, 233),
-                          label: Container(
-                            padding: const EdgeInsets.only(right: 35.0),
-                            alignment: Alignment.centerRight,
-                            child: const Text(
-                              'رمز عبور',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontFamily: 'vazir',
-                                fontSize: 22.0,
+                    Stack(
+                      children: [
+                        TextFormField(
+                          validator: (String? value) {
+                            pass = value;
+                            if (!RegExp(
+                                    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}\$")
+                                .hasMatch(value!)) {
+                              return "!حداقل 8 حرف شامل حروف و کوچک و بزرگ و اعداد";
+                            } else if (value.contains(username!)) {
+                              return ".رمز عبور نباید شامل نام کاربری باشد";
+                            } else {
+                              return null;
+                            }
+                          },
+                          obscureText: visable,
+                          textDirection: TextDirection.ltr,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            filled: true,
+                            fillColor: const Color.fromARGB(255, 239, 227, 233),
+                            label: Container(
+                              padding: const EdgeInsets.only(right: 35.0),
+                              alignment: Alignment.centerRight,
+                              child: const Text(
+                                'رمز عبور',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: 'vazir',
+                                  fontSize: 22.0,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.only(top: 7.5),
-                        child: IconButton(
-                          icon: Icon(visable
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () {
-                            setState(() {
-                              visable = !visable;
-                            });
-                          },
+                        Container(
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(top: 7.5),
+                          child: IconButton(
+                            icon: Icon(
+                              visable ? Icons.visibility_off : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                visable = !visable;
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                    ]),
+                      ],
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
-                    Stack(children: [
-                      TextFormField(
-                        validator: (String? value) {
-                          if (value != pass) {
-                            return 'تکرار رمز عبور با رمز عبور باید یکسان باشد.';
-                          } else if (value!.isEmpty) {
-                            return '!تکرار رمز عبور نمیتواند خالی باشد';
-                          } else {
-                            return null;
-                          }
-                        },
-                        obscureText: visable2,
-                        textDirection: TextDirection.ltr,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          filled: true,
-                          fillColor: const Color.fromARGB(255, 239, 227, 233),
-                          label: Container(
-                            padding: const EdgeInsets.only(right: 35.0),
-                            alignment: Alignment.centerRight,
-                            child: const Text(
-                              'تکرار رمز عبور',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontFamily: 'vazir',
-                                fontSize: 22.0,
+                    Stack(
+                      children: [
+                        TextFormField(
+                          validator: (String? value) {
+                            if (value != pass) {
+                              return 'تکرار رمز عبور با رمز عبور باید یکسان باشد.';
+                            } else if (value!.isEmpty) {
+                              return '!تکرار رمز عبور نمیتواند خالی باشد';
+                            } else {
+                              return null;
+                            }
+                          },
+                          obscureText: visable2,
+                          textDirection: TextDirection.ltr,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            filled: true,
+                            fillColor: const Color.fromARGB(255, 239, 227, 233),
+                            label: Container(
+                              padding: const EdgeInsets.only(right: 35.0),
+                              alignment: Alignment.centerRight,
+                              child: const Text(
+                                'تکرار رمز عبور',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: 'vazir',
+                                  fontSize: 22.0,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.only(top: 7.5),
-                        child: IconButton(
-                          icon: Icon(visable2
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () {
-                            setState(() {
-                              visable2 = !visable2;
-                            });
-                          },
+                        Container(
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(top: 7.5),
+                          child: IconButton(
+                            icon: Icon(
+                              visable2
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                visable2 = !visable2;
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                    ]),
+                      ],
+                    ),
                     const SizedBox(
                       height: 50.0,
                     ),
@@ -284,7 +276,7 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

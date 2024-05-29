@@ -17,6 +17,8 @@ INJECTED from D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src
 INJECTED from D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:1:1-44:12
 INJECTED from D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:1:1-44:12
 MERGED from D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:1:1-44:12
+MERGED from [:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-21:12
+MERGED from [:flutter_plugin_android_lifecycle] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\be2948cf2bff100be2490aa4076c5d1b\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:17:1-23:12
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\amirhossein\.gradle\caches\transforms-3\9ce61c3d902f564a20cbab4d20d66584\transformed\fragment-1.1.0\AndroidManifest.xml:17:1-24:12
@@ -53,6 +55,8 @@ INJECTED from D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src
 		ADDED from D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:1:11-69
 queries
 ADDED from D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:38:5-43:15
+MERGED from [:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:13:5-19:15
+MERGED from [:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:13:5-19:15
 intent#action:name:android.intent.action.PROCESS_TEXT+data:mimeType:text/plain
 ADDED from D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:39:9-42:18
 action#android.intent.action.PROCESS_TEXT
@@ -67,6 +71,10 @@ uses-sdk
 INJECTED from D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml
 INJECTED from D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml
+MERGED from [:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_plugin_android_lifecycle] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_plugin_android_lifecycle] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\be2948cf2bff100be2490aa4076c5d1b\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\be2948cf2bff100be2490aa4076c5d1b\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41
@@ -113,6 +121,18 @@ uses-permission#android.permission.INTERNET
 ADDED from D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\debug\AndroidManifest.xml:6:5-66
 	android:name
 		ADDED from D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\debug\AndroidManifest.xml:6:22-64
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from [:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-11:38
+	android:maxSdkVersion
+		ADDED from [:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:11:9-35
+	android:name
+		ADDED from [:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-64
+intent#action:name:android.intent.action.GET_CONTENT+data:mimeType:*/*
+ADDED from [:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:14:9-18:18
+action#android.intent.action.GET_CONTENT
+ADDED from [:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-72
+	android:name
+		ADDED from [:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:15:21-69
 uses-library#androidx.window.extensions
 ADDED from [androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
 	android:required

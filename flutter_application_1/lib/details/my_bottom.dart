@@ -46,7 +46,6 @@ class _MyBottomState extends State<MyBottom> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               label: 'signin',
-              
               icon: Icon(
                 Icons.person,
                 color: Colors.black,
