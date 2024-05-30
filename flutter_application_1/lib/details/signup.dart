@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_application_1/details/information.dart';
 import 'my_app_bar.dart';
 import 'my_bottom.dart';
+import 'classes/student.dart';
 
 class Signup extends StatefulWidget {
   static const routeName = 'signup';
@@ -13,11 +14,14 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-  String? pass;
-  String? username;
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController studentCodeController = TextEditingController();
+
   final _keyform = GlobalKey<FormState>();
   bool visable = true;
   bool visable2 = true;
+  Student newStudent = Student();
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +55,11 @@ class _SignupState extends State<Signup> {
                       height: 20,
                     ),
                     TextFormField(
+                      controller: usernameController,
                       inputFormatters: [
                         FilteringTextInputFormatter.deny(' '),
                       ],
                       validator: (String? value) {
-                        username = value;
                         if (value!.isEmpty) {
                           return '!نام کاربری نمیتواند خالی باشد ';
                         } else if (value.length <= 2) {
@@ -68,7 +72,7 @@ class _SignupState extends State<Signup> {
                         }
                       },
                       decoration: InputDecoration(
-                        helperText: 'نام کاربری شامل حروف کوچک و بزرگ و اعداد',
+                        //helperText: 'نام کاربری شامل حروف کوچک و بزرگ و اعداد',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),
@@ -89,7 +93,11 @@ class _SignupState extends State<Signup> {
                         ),
                       ),
                     ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     TextFormField(
+                      controller: studentCodeController,
                       validator: (String? value) {
                         if (value!.isEmpty) {
                           return '!شماره دانشجویی نمیتواند خالی باشد';
@@ -129,13 +137,13 @@ class _SignupState extends State<Signup> {
                     Stack(
                       children: [
                         TextFormField(
+                          controller: passwordController,
                           validator: (String? value) {
-                            pass = value;
                             if (!RegExp(
                                     "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}\$")
                                 .hasMatch(value!)) {
                               return "!حداقل 8 حرف شامل حروف و کوچک و بزرگ و اعداد";
-                            } else if (value.contains(username!)) {
+                            } else if (value.contains(newStudent.username!)) {
                               return ".رمز عبور نباید شامل نام کاربری باشد";
                             } else {
                               return null;
@@ -186,7 +194,7 @@ class _SignupState extends State<Signup> {
                       children: [
                         TextFormField(
                           validator: (String? value) {
-                            if (value != pass) {
+                            if (value != passwordController.text) {
                               return 'تکرار رمز عبور با رمز عبور باید یکسان باشد.';
                             } else if (value!.isEmpty) {
                               return '!تکرار رمز عبور نمیتواند خالی باشد';
@@ -259,8 +267,12 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                         onPressed: () {
+                          newStudent.username = usernameController.text;
+                          newStudent.studenCode = studentCodeController.text;
+                          newStudent.password = passwordController.text;
                           if (_keyform.currentState!.validate()) {
-                            Navigator.pushNamed(context, Information.routeName);
+                            Navigator.pushNamed(context, Information.routeName,
+                                arguments: newStudent);
                           }
                         },
                         child: const Padding(

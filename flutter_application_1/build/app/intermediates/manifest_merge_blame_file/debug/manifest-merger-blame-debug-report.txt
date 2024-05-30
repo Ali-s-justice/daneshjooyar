@@ -34,77 +34,60 @@
 27-->D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:41:13-50
 27-->D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:41:19-48
 28        </intent>
-29        <intent>
-29-->[:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:14:9-18:18
-30            <action android:name="android.intent.action.GET_CONTENT" />
-30-->[:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-72
-30-->[:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:15:21-69
-31
-32            <data android:mimeType="*/*" />
-32-->D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:41:13-50
-32-->D:\daneshjooyar\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:41:19-48
-33        </intent>
-34    </queries>
-35
-36    <uses-permission
-36-->[:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-11:38
-37        android:name="android.permission.READ_EXTERNAL_STORAGE"
-37-->[:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-64
-38        android:maxSdkVersion="32" />
-38-->[:file_picker] D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:11:9-35
-39
-40    <application
-41        android:name="android.app.Application"
-42        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-42-->[androidx.core:core:1.6.0] C:\Users\amirhossein\.gradle\caches\transforms-3\4e7f9690383d26d26133e30bd361248d\transformed\core-1.6.0\AndroidManifest.xml:24:18-86
-43        android:debuggable="true"
-44        android:icon="@mipmap/ic_launcher"
-45        android:label="flutter_application_1" >
-46        <activity
-47            android:name="com.example.flutter_application_1.MainActivity"
-48            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-49            android:exported="true"
-50            android:hardwareAccelerated="true"
-51            android:launchMode="singleTop"
-52            android:theme="@style/LaunchTheme"
-53            android:windowSoftInputMode="adjustResize" >
-54
-55            <!--
-56                 Specifies an Android theme to apply to this Activity as soon as
-57                 the Android process has started. This theme is visible to the user
-58                 while the Flutter UI initializes. After that, this theme continues
-59                 to determine the Window background behind the Flutter UI.
-60            -->
-61            <meta-data
-62                android:name="io.flutter.embedding.android.NormalTheme"
-63                android:resource="@style/NormalTheme" />
-64
-65            <intent-filter>
-66                <action android:name="android.intent.action.MAIN" />
-67
-68                <category android:name="android.intent.category.LAUNCHER" />
-69            </intent-filter>
-70        </activity>
-71        <!--
-72             Don't delete the meta-data below.
-73             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
-74        -->
-75        <meta-data
-76            android:name="flutterEmbedding"
-77            android:value="2" />
-78
-79        <uses-library
-79-->[androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
-80            android:name="androidx.window.extensions"
-80-->[androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
-81            android:required="false" />
-81-->[androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
-82        <uses-library
-82-->[androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
-83            android:name="androidx.window.sidecar"
-83-->[androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
-84            android:required="false" />
-84-->[androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
-85    </application>
-86
-87</manifest>
+29    </queries>
+30
+31    <application
+32        android:name="android.app.Application"
+33        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+33-->[androidx.core:core:1.6.0] C:\Users\amirhossein\.gradle\caches\transforms-3\4e7f9690383d26d26133e30bd361248d\transformed\core-1.6.0\AndroidManifest.xml:24:18-86
+34        android:debuggable="true"
+35        android:icon="@mipmap/ic_launcher"
+36        android:label="flutter_application_1" >
+37        <activity
+38            android:name="com.example.flutter_application_1.MainActivity"
+39            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+40            android:exported="true"
+41            android:hardwareAccelerated="true"
+42            android:launchMode="singleTop"
+43            android:theme="@style/LaunchTheme"
+44            android:windowSoftInputMode="adjustResize" >
+45
+46            <!--
+47                 Specifies an Android theme to apply to this Activity as soon as
+48                 the Android process has started. This theme is visible to the user
+49                 while the Flutter UI initializes. After that, this theme continues
+50                 to determine the Window background behind the Flutter UI.
+51            -->
+52            <meta-data
+53                android:name="io.flutter.embedding.android.NormalTheme"
+54                android:resource="@style/NormalTheme" />
+55
+56            <intent-filter>
+57                <action android:name="android.intent.action.MAIN" />
+58
+59                <category android:name="android.intent.category.LAUNCHER" />
+60            </intent-filter>
+61        </activity>
+62        <!--
+63             Don't delete the meta-data below.
+64             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+65        -->
+66        <meta-data
+67            android:name="flutterEmbedding"
+68            android:value="2" />
+69
+70        <uses-library
+70-->[androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+71            android:name="androidx.window.extensions"
+71-->[androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+72            android:required="false" />
+72-->[androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+73        <uses-library
+73-->[androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+74            android:name="androidx.window.sidecar"
+74-->[androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+75            android:required="false" />
+75-->[androidx.window:window:1.0.0-beta04] C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+76    </application>
+77
+78</manifest>

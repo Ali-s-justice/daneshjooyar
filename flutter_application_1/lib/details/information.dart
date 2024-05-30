@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'package:flutter_application_1/details/edit_informations.dart';
+import 'package:flutter_application_1/details/edit_password.dart';
 
+import 'classes/student.dart';
 // import 'package:file_picker/file_picker.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +25,7 @@ class Information extends StatefulWidget {
 
 class _InformationState extends State<Information> {
   File? image;
+
   // Reusable gradient decoration
   BoxDecoration get gradientBackground => const BoxDecoration(
         gradient: LinearGradient(
@@ -33,21 +37,34 @@ class _InformationState extends State<Information> {
           end: Alignment.bottomRight,
         ),
       );
+  static const color = Color.fromRGBO(230, 230, 250, 1.0);
 
   @override
   Widget build(BuildContext context) {
+    final Student newStudent =
+        ModalRoute.of(context)!.settings.arguments as Student;
     return Container(
       decoration: gradientBackground,
       child: Scaffold(
-        backgroundColor: Colors.transparent, // Transparent to show gradient
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () {},
+              iconSize: 35,
+              color: Colors.white,
+            ),
+          ],
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.transparent,
+          toolbarHeight: 37,
+        ),
         body: SingleChildScrollView(
           child: Center(
             // Center the content horizontally
             child: Column(
               children: [
-                const SizedBox(
-                  height: 50.0,
-                ),
                 Stack(
                   children: [
                     const CircleAvatar(
@@ -79,9 +96,9 @@ class _InformationState extends State<Information> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'سید امیرحسین اشرفیان',
-                  style: TextStyle(
+                Text(
+                  newStudent.username!,
+                  style: const TextStyle(
                     fontSize: 25.0,
                     color: Colors.white,
                     fontFamily: 'vazir',
@@ -104,20 +121,41 @@ class _InformationState extends State<Information> {
                     padding: const EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(35),
-                      color: Colors.white,
+                      color: color,
                     ),
                     child: Column(
                       children: <Widget>[
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           textDirection: TextDirection.rtl,
                           children: [
+                            const Text(
+                              'نام و نام خانوادگی',
+                              style: Information.infoStyle,
+                            ),
                             Text(
+                              newStudent.name!,
+                              style: Information.infoStyle,
+                            ),
+                          ],
+                        ),
+                        const Fasel(),
+                        Container(
+                          width: double.infinity,
+                          height: 1,
+                          color: Colors.black.withOpacity(0.1),
+                        ),
+                        const Fasel(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          textDirection: TextDirection.rtl,
+                          children: [
+                            const Text(
                               'شماره دانشجویی',
                               style: Information.infoStyle,
                             ),
                             Text(
-                              '402243035',
+                              newStudent.studenCode!,
                               style: Information.infoStyle,
                             ),
                           ],
@@ -150,16 +188,16 @@ class _InformationState extends State<Information> {
                           color: Colors.black.withOpacity(0.1),
                         ),
                         const Fasel(),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           textDirection: TextDirection.rtl,
                           children: [
-                            Text(
+                            const Text(
                               'تعداد واحد',
                               style: Information.infoStyle,
                             ),
                             Text(
-                              '16',
+                              newStudent.numberOfCourseUnit.toString(),
                               style: Information.infoStyle,
                             ),
                           ],
@@ -171,16 +209,16 @@ class _InformationState extends State<Information> {
                           color: Colors.black.withOpacity(0.1),
                         ),
                         const Fasel(),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           textDirection: TextDirection.rtl,
                           children: [
-                            Text(
+                            const Text(
                               'معدل کل',
                               style: Information.infoStyle,
                             ),
                             Text(
-                              '19.01',
+                              newStudent.totalAverage.toString(),
                               style: Information.infoStyle,
                             ),
                           ],
@@ -196,12 +234,20 @@ class _InformationState extends State<Information> {
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(35),
-                      color: Colors.white,
+                      color: color,
                     ),
                     child: Column(
                       children: <Widget>[
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              Navigator.pushNamed(
+                                context,
+                                EditInformation.routeName,
+                                arguments: newStudent,
+                              );
+                            });
+                          },
                           style: TextButton.styleFrom(
                             alignment: Alignment.centerRight,
                           ),
@@ -241,7 +287,12 @@ class _InformationState extends State<Information> {
                           color: Colors.black.withOpacity(0.1),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              Navigator.pushNamed(
+                                  context, EditPassword.routeName,arguments: newStudent);
+                            });
+                          },
                           style: TextButton.styleFrom(
                             alignment: Alignment.centerRight,
                           ),
@@ -280,7 +331,7 @@ class _InformationState extends State<Information> {
                   ),
                 ),
                 const SizedBox(
-                  height: 100.0,
+                  height: 70.0,
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(

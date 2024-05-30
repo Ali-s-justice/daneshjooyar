@@ -10,3 +10,5 @@ com.example.flutter_application_1.app-rs-8 D:\daneshjooyar\daneshjooyar\flutter_
 com.example.flutter_application_1.app-mergeDebugResources-9 D:\daneshjooyar\daneshjooyar\flutter_application_1\build\app\intermediates\incremental\debug\mergeDebugResources\merged.dir
 com.example.flutter_application_1.app-mergeDebugResources-10 D:\daneshjooyar\daneshjooyar\flutter_application_1\build\app\intermediates\incremental\debug\mergeDebugResources\stripped.dir
 com.example.flutter_application_1.app-merged_res-11 D:\daneshjooyar\daneshjooyar\flutter_application_1\build\app\intermediates\merged_res\debug
+com.example.flutter_application_1.app-packaged_res-12 D:\daneshjooyar\daneshjooyar\flutter_application_1\build\file_picker\intermediates\packaged_res\debug
+com.example.flutter_application_1.app-packaged_res-13 D:\daneshjooyar\daneshjooyar\flutter_application_1\build\flutter_plugin_android_lifecycle\intermediates\packaged_res\debug

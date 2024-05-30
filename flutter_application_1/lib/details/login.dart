@@ -50,7 +50,6 @@ class _LoginState extends State<Login> {
                     TextFormField(
                       inputFormatters: [
                         FilteringTextInputFormatter.deny(' '),
-                        
                       ],
                       validator: (String? value) {
                         username = value;
@@ -76,7 +75,7 @@ class _LoginState extends State<Login> {
                                 const EdgeInsets.symmetric(horizontal: 12.0),
                             alignment: Alignment.centerRight,
                             child: const Text(
-                              'نام کاربری / یوزنیم',
+                              'نام کاربری / شماره دانشجویی',
                               textDirection: TextDirection.rtl,
                               style: TextStyle(
                                 fontFamily: 'vazir',

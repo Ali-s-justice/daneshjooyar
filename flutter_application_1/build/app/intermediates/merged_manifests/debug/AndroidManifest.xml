@@ -26,16 +26,7 @@
 
             <data android:mimeType="text/plain" />
         </intent>
-        <intent>
-            <action android:name="android.intent.action.GET_CONTENT" />
-
-            <data android:mimeType="*/*" />
-        </intent>
     </queries>
-
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
 
     <application
         android:name="android.app.Application"
