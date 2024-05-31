@@ -28,8 +28,6 @@ class Information extends StatefulWidget {
 }
 
 class _InformationState extends State<Information> {
-  File? image;
-
   // Reusable gradient decoration
   BoxDecoration get gradientBackground => const BoxDecoration(
         gradient: LinearGradient(
@@ -72,34 +70,34 @@ class _InformationState extends State<Information> {
             // Center the content horizontally
             child: Column(
               children: [
-                Stack(
+                const Stack(
                   children: [
-                    const CircleAvatar(
-                      radius: 75.0,
+                    CircleAvatar(
+                      radius: 95.0,
                       backgroundImage: AssetImage('assets/images/mypic.jpg'),
                     ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 40,
-                        height: 40,
-                        decoration: const ShapeDecoration(
-                          color: Color(0xFF24201D),
-                          shape: OvalBorder(),
-                        ),
-                        child: Center(
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.camera_alt_rounded,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Positioned(
+                    //   bottom: 0,
+                    //   right: 0,
+                    //   child: Container(
+                    //     alignment: Alignment.center,
+                    //     width: 40,
+                    //     height: 40,
+                    //     decoration: const ShapeDecoration(
+                    //       color: Color(0xFF24201D),
+                    //       shape: OvalBorder(),
+                    //     ),
+                    //     child: Center(
+                    //       child: IconButton(
+                    //         onPressed: () {},
+                    //         icon: const Icon(
+                    //           Icons.camera_alt_rounded,
+                    //           color: Colors.white,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 const SizedBox(height: 20),

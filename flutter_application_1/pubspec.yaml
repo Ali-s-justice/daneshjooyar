@@ -91,6 +91,9 @@ flutter:
     - family: pinar
       fonts:
         - asset: assets/fonts/pinar.ttf
+    - family: phone
+      fonts:
+        - asset: assets/fonts/bahnschrift.ttf
 
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700

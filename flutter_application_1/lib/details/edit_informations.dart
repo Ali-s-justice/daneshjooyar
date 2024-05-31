@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -19,6 +21,7 @@ class _MyWidgetState extends State<EditInformation> {
   TextEditingController rePasswordController = TextEditingController();
   bool visable = true;
   bool visable2 = true;
+  File? image;
 
   static const textFormFieldColor = Color.fromARGB(142, 255, 255, 255);
   static const textFormStyle = TextStyle(
@@ -104,7 +107,7 @@ class _MyWidgetState extends State<EditInformation> {
                                             const Align(
                                               alignment: Alignment(0.8, 0),
                                               child: Text(
-                                                'نام کاربری ',
+                                                'تغییر نام کاربری',
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w900,
                                                   fontSize: 20.0,
@@ -161,7 +164,7 @@ class _MyWidgetState extends State<EditInformation> {
                                               ),
                                             ),
                                             const SizedBox(
-                                              height: 20,
+                                              height: 10,
                                             ),
 
                                             TextFormField(
@@ -195,12 +198,12 @@ class _MyWidgetState extends State<EditInformation> {
                                             ),
 
                                             const SizedBox(
-                                              height: 20,
+                                              height: 5,
                                             ),
                                             ElevatedButton(
                                               style: ElevatedButton.styleFrom(
                                                 minimumSize:
-                                                    const Size(200.0, 30),
+                                                    const Size(200.0, 20),
                                                 backgroundColor: Colors.green,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
@@ -241,9 +244,9 @@ class _MyWidgetState extends State<EditInformation> {
                                                 ),
                                               ),
                                             ),
-                                            // const SizedBox(
-                                            //   height: 10,
-                                            // ),
+                                            const SizedBox(
+                                              height: 15,
+                                            ),
                                             //******************************************************************** */
                                             Form(
                                               key: _keyform2,
@@ -253,7 +256,7 @@ class _MyWidgetState extends State<EditInformation> {
                                                     alignment:
                                                         Alignment(0.8, 0),
                                                     child: Text(
-                                                      'رمز عبور',
+                                                      'تغییر رمز عبور',
                                                       style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w900,
@@ -349,7 +352,7 @@ class _MyWidgetState extends State<EditInformation> {
                                                     ],
                                                   ),
                                                   const SizedBox(
-                                                    height: 20,
+                                                    height: 10,
                                                   ),
                                                   Stack(
                                                     children: [
@@ -429,7 +432,7 @@ class _MyWidgetState extends State<EditInformation> {
                                                     ],
                                                   ),
                                                   const SizedBox(
-                                                    height: 20,
+                                                    height: 10,
                                                   ),
 
                                                   TextFormField(
@@ -467,7 +470,7 @@ class _MyWidgetState extends State<EditInformation> {
 
                                                   //*** */
                                                   const SizedBox(
-                                                    height: 20,
+                                                    height: 5,
                                                   ),
                                                   ElevatedButton(
                                                     style: ElevatedButton
