@@ -152,7 +152,7 @@ class _LoginState extends State<Login> {
                         gradient: LinearGradient(
                           colors: [
                             Color.fromARGB(255, 93, 0, 255),
-                            Color.fromARGB(255, 131, 58, 180),
+                            Color.fromARGB(255, 15, 199, 255),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,

@@ -22,7 +22,7 @@ class _MyBottomState extends State<MyBottom> {
         gradient: LinearGradient(
           colors: [
             Color.fromARGB(255, 93, 0, 255),
-            Color.fromARGB(255, 131, 58, 180),
+            Color.fromARGB(255, 15, 199, 255),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -45,17 +45,17 @@ class _MyBottomState extends State<MyBottom> {
           elevation: 0,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              label: 'signin',
+              label: '',
               icon: Icon(
                 Icons.person,
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
             BottomNavigationBarItem(
-              label: 'signup',
+              label: '',
               icon: Icon(
                 Icons.person_add,
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
           ],

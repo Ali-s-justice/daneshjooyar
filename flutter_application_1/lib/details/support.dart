@@ -6,8 +6,8 @@ class Support extends StatelessWidget {
   BoxDecoration get gradientBackground => const BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color.fromARGB(255, 93, 0, 255),
-            Color.fromARGB(255, 131, 58, 180),
+            Color.fromARGB(212, 255, 255, 255),
+            Color.fromARGB(255, 15, 199, 255),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -17,20 +17,28 @@ class Support extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       decoration: gradientBackground,
-    
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 20,
-          right: 20,
-          top: 20,
-          bottom: 0,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(
+            'ارتباط با ما',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 30,
+              fontFamily: 'vazir',
+            ),
+          ),
+          backgroundColor: Colors.transparent,
+          toolbarHeight: 40,
         ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.8),
-            border: BorderRad
+        body: const Padding(
+          padding: EdgeInsets.only(
+            left: 10,
+            right: 10,
+            top: 20,
+            bottom: 0,
           ),
         ),
       ),

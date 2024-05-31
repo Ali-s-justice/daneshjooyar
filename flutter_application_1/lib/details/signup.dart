@@ -33,13 +33,13 @@ class _SignupState extends State<Signup> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 50,
+              height: 60,
             ),
             const Text(
               'ثبت نام در درسا',
               textDirection: TextDirection.rtl,
               style: TextStyle(
-                fontFamily: 'vazir',
+                fontFamily: 'dastnevis',
                 fontSize: 37.0,
               ),
             ),
@@ -51,9 +51,9 @@ class _SignupState extends State<Signup> {
                   textDirection: TextDirection.rtl,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    // const SizedBox(
+                    //   height: 20,
+                    // ),
                     TextFormField(
                       controller: usernameController,
                       inputFormatters: [
@@ -142,7 +142,7 @@ class _SignupState extends State<Signup> {
                             if (!RegExp(
                                     "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}\$")
                                 .hasMatch(value!)) {
-                              return "!حداقل 8 حرف شامل حروف و کوچک و بزرگ و اعداد";
+                              return "!حداقل 8 حرف شامل حروف کوچک و بزرگ و اعداد";
                             } else if (value.contains(newStudent.username!)) {
                               return ".رمز عبور نباید شامل نام کاربری باشد";
                             } else {
@@ -195,7 +195,7 @@ class _SignupState extends State<Signup> {
                         TextFormField(
                           validator: (String? value) {
                             if (value != passwordController.text) {
-                              return 'تکرار رمز عبور با رمز عبور باید یکسان باشد.';
+                              return '.تکرار رمز عبور با رمز عبور باید یکسان باشد';
                             } else if (value!.isEmpty) {
                               return '!تکرار رمز عبور نمیتواند خالی باشد';
                             } else {
@@ -250,7 +250,7 @@ class _SignupState extends State<Signup> {
                         gradient: LinearGradient(
                           colors: [
                             Color.fromARGB(255, 93, 0, 255),
-                            Color.fromARGB(255, 131, 58, 180),
+                            Color.fromARGB(255, 15, 199, 255),
                           ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
