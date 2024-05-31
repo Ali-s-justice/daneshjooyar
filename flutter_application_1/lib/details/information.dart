@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter_application_1/details/edit_informations.dart';
 import 'package:flutter_application_1/details/edit_password.dart';
+import 'package:flutter_application_1/details/support.dart';
 
 import 'classes/student.dart';
 // import 'package:file_picker/file_picker.dart';
@@ -290,7 +291,8 @@ class _InformationState extends State<Information> {
                           onPressed: () {
                             setState(() {
                               Navigator.pushNamed(
-                                  context, EditPassword.routeName,arguments: newStudent);
+                                  context, Support.routeName,
+                                  arguments: newStudent);
                             });
                           },
                           style: TextButton.styleFrom(
@@ -299,7 +301,7 @@ class _InformationState extends State<Information> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              const Text('تغییر رمز عبور',
+                              const Text('ارتباط با ما',
                                   style: Information.infoStyle),
                               const SizedBox(width: 8),
                               Stack(
@@ -318,7 +320,7 @@ class _InformationState extends State<Information> {
                                     ),
                                   ),
                                   const Icon(
-                                    Icons.lock,
+                                    Icons.support_agent_rounded,
                                     color: Colors.white,
                                   ),
                                 ],

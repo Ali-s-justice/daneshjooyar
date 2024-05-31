@@ -12,7 +12,10 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  String? username;
+  TextEditingController usernameOrStudentCodeController =
+      TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   final _keyform = GlobalKey<FormState>();
   bool visable = true;
 
@@ -52,7 +55,6 @@ class _LoginState extends State<Login> {
                         FilteringTextInputFormatter.deny(' '),
                       ],
                       validator: (String? value) {
-                        username = value;
                         if (value!.isEmpty) {
                           return '!نام کاربری نمیتواند خالی باشد ';
                         } else if (!RegExp("^([A-Za-z0-9]){4,20}\$")
@@ -98,7 +100,8 @@ class _LoginState extends State<Login> {
                                   "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}\$")
                               .hasMatch(value!)) {
                             return "!رمز عبور نامعتبر است";
-                          } else if (value.contains(username!)) {
+                          } else if (value
+                              .contains(usernameOrStudentCodeController.text)) {
                             return ".رمز عبور نمیتواند شامل نام کاربری باشد";
                           } else {
                             return null;
@@ -166,7 +169,15 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         onPressed: () {
-                          if (_keyform.currentState!.validate()) {}
+                          if (_keyform.currentState!.validate()) {
+                            //send information to backend
+                            bool backendValidation = true; //must be edit
+                            setState(() {
+                              if (backendValidation) {
+                                //Navigator.pushNamed(context, routeName);
+                              }
+                            });
+                          }
                         },
                         child: const Padding(
                           padding: EdgeInsets.symmetric(vertical: 10.0),
