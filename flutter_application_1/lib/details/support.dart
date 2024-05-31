@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 
-class Support extends StatelessWidget {
+class Support extends StatefulWidget {
   const Support({super.key});
   static const String routeName = "support";
+
+  @override
+  State<Support> createState() => _SupportState();
+}
+
+class _SupportState extends State<Support> {
+  
   BoxDecoration get gradientBackground => const BoxDecoration(
         gradient: LinearGradient(
           colors: [
