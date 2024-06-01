@@ -1,5 +1,4 @@
 package AmirhosseinObligationToFuckingMVCPrograming;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class AdminView {
@@ -17,6 +16,7 @@ public class AdminView {
                 AdminLoginOrSignup = input.nextInt();
             }catch (Exception exception){
                 System.out.println("Invalid input!\n");
+                continue;
             }
             switch (AdminLoginOrSignup){
                 case 1:
@@ -51,14 +51,14 @@ public class AdminView {
                                             STUDENT:
                                             [1]:Signing up student~
                                             [2]:Deleting account of a student~
-                                            [3]:Adding Course to a student
-                                            [4]:Removing course of a student
-                                            [5]:Printing number of course units of a student
+                                            [3]:Adding a student to a Course~
+                                            [4]:Removing a student from a course~
+                                            [5]:Setting Score for a student~
                                             [6]:Printing current average of a student
                                             [7]:Printing total average of a student
                                             [8]:Printing courses of a student
-                                            [9]:Setting Score for a student
-                                            [10]:Removing student from a course
+                                            [9]:Printing number of course units of a student
+                                            [10]:
                                             [11]:
                                             
                                             TEACHER:
@@ -100,8 +100,18 @@ public class AdminView {
                     removeStudent();
                     break;
                 case 3://Set Course for Student
-                    if (getStudentId()){
+                    if (getStudentId("set")){
                         System.out.println("Course has been set successfully!\n");
+                    }
+                    break;
+                case 4://remove Student from a course
+                    if (getStudentId("remove")){
+                        System.out.println("Student has been removed successfully!\n");
+                    }
+                    break;
+                case 5://set score for student
+                    if (getStudentId("setScore")){
+                        System.out.println("Score has been set successfully!\n");
                     }
                     break;
                 case 12://Adding teacher
@@ -136,7 +146,7 @@ public class AdminView {
         }
     }
 
-    private boolean getStudentId(){
+    private boolean getStudentId(String obligation){
         while (true){
             System.out.println("Enter ID of student\n[1]:Go back");
             Scanner input = new Scanner(System.in);
@@ -148,13 +158,13 @@ public class AdminView {
                 System.out.println("No student with ID " + studentId + "\n");
                 continue;
             }
-            if (getCourseIdSetScore(studentId)){
+            if (getCourseIdSetStudent(studentId, obligation)){
                 return true;
             }
         }
     }
 
-    private boolean getCourseIdSetScore(String studentId){
+    private boolean getCourseIdSetStudent(String studentId, String obligation){
         while (true){
             System.out.println("Enter course ID\n[1]:Go back");
             Scanner input = new Scanner(System.in);
@@ -166,13 +176,67 @@ public class AdminView {
                 System.out.println("There is no course with ID " + courseId + "\n");
                 continue;
             }
-            setStudentCourse(studentId, courseId);
+            switch (obligation) {
+                case "set" -> {
+                    if (!adminController.getStudentHasCourse(this, studentId, courseId)) {
+                        setStudentCourse(studentId, courseId);
+                    } else {
+                        System.out.println("Student already has this course!\n");
+                        return false;
+                    }
+                }
+                case "remove" -> {
+                    if (adminController.getStudentHasCourse(this, studentId, courseId)) {
+                        removeStudentCourse(studentId, courseId);
+                    } else {
+                        System.out.println("Student does not has this course!\n");
+                        return false;
+                    }
+                }
+                case "setScore" -> {
+                    if (adminController.getStudentHasCourse(this, studentId, courseId)) {
+                        if (!setStudentScore(studentId, courseId)){
+                            continue;
+                        }
+                    } else {
+                        System.out.println("Student does not has this course!\n");
+                        return false;
+                    }
+                }
+            }
             return true;
         }
     }
 
     private void setStudentCourse(String studentId, String courseId){
         adminController.getSetStudentCourse(this, studentId, courseId);
+    }
+
+    private void removeStudentCourse(String studentId, String courseId){
+        adminController.getRemoveStudentCourse(this, studentId, courseId);
+    }
+
+    private boolean setStudentScore(String studentId, String courseId){
+        while (true){
+            System.out.println("Enter Score(In double form --> 00.00)\n[-1]:Go back");
+            Scanner input = new Scanner(System.in);
+            double score;
+            try {
+                score = input.nextDouble();
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+                continue;
+            }
+            if(score == -1){
+                return false;
+            }
+            if (score<00.00 || score >20.00){
+                System.out.println("this score is not in true range!\nEnter a number between 0 and 20\n");
+                continue;
+            }
+            adminController.getSetStudentScore(this, studentId, courseId, score);
+            return true;
+        }
     }
 
     private void removeCourse(){

@@ -164,4 +164,24 @@ public class AdminController {
         }
     }
 
+    public void getRemoveStudentCourse(AdminView adminView, String studentId, String courseId){
+        if (adminView.equals(this.adminView)){
+            this.adminModel.removeStudentCourse(studentId, courseId);
+        }
+    }
+
+    public boolean getStudentHasCourse(AdminView adminView, String studentId, String courseId){
+        if (adminView.equals(this.adminView)){
+            return this.adminModel.studentHasCourse(studentId, courseId);
+        }else {
+            return false;
+        }
+    }
+
+    public void getSetStudentScore(AdminView adminView, String studentId, String courseId, double score){
+        if (adminView.equals(this.adminView)){
+            this.adminModel.setStudentScore(studentId, courseId, score);
+        }
+    }
+
 }

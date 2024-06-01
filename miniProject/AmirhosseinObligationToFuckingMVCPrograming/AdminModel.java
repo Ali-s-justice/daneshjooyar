@@ -283,6 +283,96 @@ public class AdminModel {
         }
     }
 
+    public void setStudentScore(String studentId, String courseId, double score){
+        ArrayList<String> allOfFile = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(courseId)){
+                    String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                    HashMap<String, String> map = new HashMap<>();
+                    String[] keyValuePairs = mapAsString.split(",");
+                    for (String pair : keyValuePairs) {
+                        String[] entry = pair.split("=");
+                        map.put(entry[0], entry[1]);
+                    }
+                    map.replace(studentId, String.valueOf(score));
+                    Info[1] = map.toString();
+                    String last = Info[0] + "//" + Info[1];
+                    allOfFile.add(last);
+                }else {
+                    allOfFile.add(line);
+                }
+            }
+            bufferedReader.close();
+            courseWriter(allOfFile);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void removeStudentCourse(String studentId, String courseId){
+        ArrayList<String> allOfFile = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(courseId)){
+                    String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                    HashMap<String, String> map = new HashMap<>();
+                    String[] keyValuePairs = mapAsString.split(",");
+                    for (String pair : keyValuePairs) {
+                        String[] entry = pair.split("=");
+                        map.put(entry[0], entry[1]);
+                    }
+                    map.remove(studentId);
+                    Info[1] = map.toString();
+                    String last = Info[0] + "//" + Info[1];
+                    allOfFile.add(last);
+                }else {
+                    allOfFile.add(line);
+                }
+            }
+            bufferedReader.close();
+            courseWriter(allOfFile);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public boolean studentHasCourse(String studentId, String courseId){
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(courseId)){
+                    String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                    HashMap<String, String> map = new HashMap<>();
+                    String[] keyValuePairs = mapAsString.split(",");
+                    for (String pair : keyValuePairs) {
+                        String[] entry = pair.split("=");
+                        map.put(entry[0], entry[1]);
+                    }
+                    if (map.containsKey(studentId)){
+                        return true;
+                    }
+                }
+            }
+            bufferedReader.close();
+            return false;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
     public void courseWriter(ArrayList<String> allOfFile){
         try {
             FileWriter writer = new FileWriter("daneshjooyar/informations/student_course_score.txt");
