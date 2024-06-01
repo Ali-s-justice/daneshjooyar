@@ -7,7 +7,6 @@ public class AdminView {
 
     public void run(AdminController adminController){
         this.adminController = adminController;
-        this.adminController.getStudentIDSetter(this);
         while (true){
             boolean Exit = false;
             System.out.println("Are you new admin?\n[1]:Yes-->(Signup)\n[2]:No-->(Login)\n[3]:Go Back");
@@ -40,6 +39,203 @@ public class AdminView {
         }
     }
 
+    private void adminPowers(){
+        boolean Exit;
+        Scanner input = new Scanner(System.in);
+        while (true){
+            Exit = false;
+            String ALL_OBLIGATIONS = """
+                                            What do you want to to?
+                                            
+                                            STUDENT:
+                                            [1]:Signing up student~
+                                            [2]:Deleting account of a student~
+                                            [3]:Removing course of a student
+                                            [4]:Adding Course to a student
+                                            [5]:Printing number of course units of a student
+                                            [6]:Printing current average of a student
+                                            [7]:Printing total average of a student
+                                            [8]:Printing courses of a student
+                                            [9]:Setting Score for a student
+                                            [10]:Removing student from a course
+                                            [11]:
+                                            
+                                            TEACHER:
+                                            [12]:Adding teacher~
+                                            [13]:Deleting teacher~
+                                            
+                                            COURSE:
+                                            [14]:Adding a course~
+                                            [15]:Removing a course~
+                                            [16]:Set teacher for a course~
+                                            [17]:Setting exam day for a course
+                                            
+                                            ASSIGNMENT:
+                                            [18]:Adding assignment
+                                            [19]:Changing deadline of an assignment
+                                            [20]:Deactivating assignment
+                                            
+                                            PROJECT:
+                                            [21]:Deactivating project
+                                            [22]:Adding project
+                                            
+                                            [23]:Log out!
+                                            """;
+            System.out.println(ALL_OBLIGATIONS.substring(0,ALL_OBLIGATIONS.length()-1));
+            int inOperation;
+            String Operation;
+            try {
+                Operation = input.next();
+                inOperation = Integer.parseInt(Operation);
+            }catch (Exception e){
+                System.out.println("Something went wrong!\n");
+                continue;
+            }
+            switch (inOperation){
+                case 1://Signing up a student
+                    getStudentName();
+                    break;
+                case 2://Removing Student
+                    removeStudent();
+                    break;
+                case 12://Adding teacher
+                    teacherNameValidation();
+                    break;
+                case 13://removing teacher
+                    removeTeacher();
+                    break;
+                case 14://add course
+                    if (getCourseName()){
+                        System.out.println("Course has been created!\n");
+                    }else {
+                        System.out.println("No course create!\n");
+                    }
+                    break;
+                case 15://removing a course
+                    removeCourse();
+                    break;
+                case 16://set teacher for a course
+                    setTeacher();
+                    break;
+                case 23://
+                    Exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid input!\n");
+                    break;
+            }
+            if (Exit){
+                break;
+            }
+        }
+    }
+
+    private void removeCourse(){
+        while (true){
+            System.out.println("Enter the ID of course you want to remove:\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String courseId = input.next();
+            if (courseId.equals("1")){
+                break;
+            }
+            if (!adminController.getCourseIdChecker(this, courseId)){
+                System.out.println("No course found with ID " + courseId);
+                continue;
+            }
+            String courseName = adminController.getCourseNameById(this, courseId);
+            System.out.println("Are you sure you want to remove course " + courseName + " with ID " + courseId + " ?\n[1]:Continue\n[2]:Go back");
+            String lastChance = input.next();
+            if (lastChance.equals("2")){
+                break;
+            }else if (lastChance.equals("1")){
+                adminController.getRemoveCourse(this, courseId);
+                System.out.println("Course name " + courseName + " and ID " + courseId + " has successfully removed\n");
+                break;
+            }else {
+                System.out.println("Invalid input!\n");
+            }
+        }
+    }
+
+    private void setTeacher(){
+        while (true){
+            String courseId = getCourseId();
+            if (courseId == null){
+                break;
+            }
+            if (adminController.getCourseIdChecker(this, courseId)){
+                if (setCourseTeacher(courseId)){
+                    break;
+                }
+            }else {
+                System.out.println("No course with ID: " + courseId );
+            }
+        }
+    }
+
+    private boolean setCourseTeacher(String courseId){
+        while (true){
+            System.out.println("Enter teacher username:\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String teacherUsername = input.next();
+            if (teacherUsername.equals("1")){
+                return false;
+            }
+            if (adminController.getNoTeacherFound(this, teacherUsername)){
+                System.out.println("No teacher with username: " + teacherUsername + " found!\n");
+                continue;
+            }else {
+                adminController.getSetCourseTeacher(this, courseId, teacherUsername);
+                System.out.println("teacher with username: " + teacherUsername + " successfully been set as " + courseId + " teacher!\n");
+            }
+            return true;
+        }
+    }
+
+    private String getCourseId(){
+        System.out.println("Enter course ID:\n[1]:go back");
+        Scanner input = new Scanner(System.in);
+        String courseId = input.next();
+        if (courseId.equals("1")){
+            return null;
+        }
+        return courseId;
+    }
+
+    private boolean getCourseName(){
+        while (true){
+            System.out.println("Enter name of course you want to add:\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String courseName = input.next();
+            if (courseName.equals("1")){
+                return false;
+            }
+            if (getCourseCredit(courseName)){
+                return true;
+            }
+        }
+    }
+
+    private boolean getCourseCredit(String courseName){
+        while (true){
+            System.out.println("What is this course credit:\n[-1]:Go back");
+            Scanner input = new Scanner(System.in);
+            int creditNum;
+            try {
+                creditNum = input.nextInt();
+                input.nextLine();
+            }catch (Exception e){
+                System.out.println("Invalid input!\n");
+                continue;
+            }
+            if (creditNum == -1){
+                return false;
+            }
+            adminController.getAddCourse(this, courseName, creditNum);
+            return true;
+        }
+    }
+
     private void adminLogin(){
         String adminLoginUserName;
         String adminLoginPassword;
@@ -47,7 +243,7 @@ public class AdminView {
         boolean Exit;
         while (true){
             Exit = false;
-            System.out.println("Enter your name:\n[1]:Go back");
+            System.out.println("Enter your username:\n[1]:Go back");
             adminLoginUserName = input.next();
             if (adminLoginUserName.equals("1")){
                 Exit = true;
@@ -70,74 +266,99 @@ public class AdminView {
         }
     }
 
-    private void adminPowers(){
-        boolean Exit;
+    private void removeTeacher(){
+        while (true){
+            Scanner input = new Scanner(System.in);
+            System.out.println("Enter the username of teacher you want to remove:\n[1]:Go back");
+            String removingTeacherUsername = input.next();
+            if (removingTeacherUsername.equals("1")){
+                break;
+            }
+            if (adminController.getNoTeacherFound(this, removingTeacherUsername)){
+                System.out.println("There is no teacher with username: " + removingTeacherUsername);
+                continue;
+            }else {
+                int lastRemoveChoice;
+                while (true){
+                    System.out.println("Are you sure you want to remove teacher with username: " + removingTeacherUsername + " ? \n[1]:Continue\n[2]:Go back");
+                    try {
+                        lastRemoveChoice = input.nextInt();
+                    }catch (Exception exception){
+                        System.out.println("Invalid input!\n");
+                        continue;
+                    }
+                    break;
+                }
+                switch (lastRemoveChoice){
+                    case 1:
+                        System.out.println("Removing teacher...\n");
+                        adminController.getTeacherAccountRemover(this, removingTeacherUsername);
+                        System.out.println("Teacher named: " + removingTeacherUsername + " has successfully removed!\n");
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        System.out.println("Invalid input\n");
+                }
+            }
+            break;
+        }
+    }
+
+    private void teacherNameValidation(){
         Scanner input = new Scanner(System.in);
         while (true){
-            Exit = false;
-            String ALL_OBLIGATIONS = """
-                                            What do you want to to?
-                                            
-                                            STUDENT:
-                                            [1]:Signing up student
-                                            [2]:Deleting account of a student
-                                            [3]:
-                                            [4]:Removing course of a student
-                                            [5]:Adding Course to a student
-                                            [6]:Printing number of course units of a student
-                                            [7]:Printing current average of a student
-                                            [8]:Printing total average of a student
-                                            [9]:Printing courses of a student
-                                            [10]:Setting Score for a student
-                                            [11]:Removing student from a course
-                                            [12]:Adding student to a course
-                                            
-                                            TEACHER:
-                                            [13]:Adding teacher
-                                            [14]:Deleting teacher
-                                            
-                                            COURSE:
-                                            [15]:Removing a course
-                                            [16]:Adding a course
-                                            [17]:Setting exam day for a course
-                                            
-                                            ASSIGNMENT:
-                                            [18]:Adding assignment
-                                            [19]:Changing deadline of an assignment
-                                            [20]:Deactivating assignment
-                                            
-                                            PROJECT:
-                                            [21]:Deactivating project
-                                            [22]:Adding project
-                                            
-                                            [23]:Log out!
-                                            """;
-            System.out.println(ALL_OBLIGATIONS.substring(0,ALL_OBLIGATIONS.length()-1));
-            int inOperation; 
-            String Operation;
-            try {
-                Operation = input.next();
-                inOperation = Integer.parseInt(Operation);
-            }catch (Exception e){
-                System.out.println("Something went wrong!\n");
+            System.out.println("Enter teacher name:\n[1]:Go back");
+            String teacherName = input.next();
+            if (teacherName.equals("1")){
+                break;
+            }
+            if (teacherUsernameGetter(teacherName)){
+                continue;
+            }else {
+                break;
+            }
+        }
+    }
+
+    private boolean teacherUsernameGetter(String teacherName){
+        Scanner input = new Scanner(System.in);
+        while (true){
+            System.out.println("Enter teacher username:\n[1]:Go back");
+            String teacherUsername = input.next();
+            if (teacherUsername.equals("1")){
+                return true;
+            }
+            if (adminController.getTeacherUsernameValidation(this, teacherUsername)){
+                System.out.println("This username is already exist!\n");
                 continue;
             }
-            switch (inOperation){
-                case 1://Signing up a student
-                    getStudentName();
-                    break;
-                case 2://Removing Student
-                    removeStudent();
-                    break;
-                case 23://
-                    Exit = true;
-                    break;
-                default:
-                    System.out.println("Invalid input!\n");
-                    break;
+            if (teacherPasswordGetter(teacherName, teacherUsername)){
+                continue;
+            }else {
+                return false;
             }
-            if (Exit){
-                break;
+        }
+    }
+
+    private boolean teacherPasswordGetter(String teacherName, String teacherUsername){
+        Scanner input = new Scanner(System.in);
+        String teacherPassword;
+        while (true){//Password
+            System.out.println("Enter your password:\n[1]:Go back");
+            teacherPassword = input.next();
+            if (teacherPassword.equals("1")){
+                return true;
+            }
+            if (adminController.getAdminPasswordNotValidation(this, teacherPassword, teacherUsername)){
+                System.out.println("The password does not follow the correct pattern\n");
+                continue;
+            }
+            if (!adminController.getTeacherSignup(this,teacherName, teacherUsername, teacherPassword)){
+                System.out.println("Something went wrong!\n");
+            }else {
+                System.out.println("Signup successfully!\n");
+                return false;
             }
         }
     }
@@ -261,7 +482,7 @@ public class AdminView {
             Scanner input = new Scanner(System.in);
             String choice = input.next();
             
-            if (choice.length() < 2 && choice.charAt(0)=='1'){ //if input is "a" -> Exception! -> handled*
+            if (choice.equals("1")){ //if input is "a" -> Exception! -> handled*
                 break;
             }
             
@@ -285,7 +506,7 @@ public class AdminView {
             while (true){
                 System.out.println("Enter your username:\n[1]:Exit");
                 adminUserName = input.next(); 
-                if (adminUserName.length() < 2 && adminUserName.charAt(0)=='1'){ // change condition of if -> exception handeling
+                if (adminUserName.equals("1")){ // change condition of if -> exception handeling
                     break number1;
                     // Exit1 = true;
                     // break;
@@ -309,7 +530,7 @@ public class AdminView {
                 input.nextLine();
                 System.out.println("Enter your password:\n[1]:Go back");
                 adminPassword = input.nextLine();
-                if (adminPassword.length() < 2 && adminPassword.equals("1")){
+                if (adminPassword.equals("1")){
                     continue number1;
                     // Exit2 = true;
                     // continue;

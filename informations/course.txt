@@ -1,0 +1,5 @@
+riazi//1001//3//null//null
+fizik//1002//3//null//null
+fizik//1003//3//null//null
+fizik2//1004//3//rhm//null
+fizik5//1006//3//null//null

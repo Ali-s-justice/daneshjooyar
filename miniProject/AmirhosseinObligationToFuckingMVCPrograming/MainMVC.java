@@ -1,9 +1,15 @@
 package AmirhosseinObligationToFuckingMVCPrograming;
-
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class MainMVC {
     public static void main(String[] args) {
+        MainModel.studentIdSetter();
+        MainModel.courseIdSetter();
+        //Beginning
         while (true){
             boolean Exit1 = false;
             System.out.println("Who are you?\n[1]:Admin\n[2]:Teacher\n[3]:Exit");

@@ -17,7 +17,7 @@ public class TeacherModel {
     public boolean teacherNameValidation(String teacherName){
         ArrayList<String> allTeachersName = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("informations/teachers.txt");
+            FileReader fileReader = new FileReader("daneshjooyar/informations/teachers.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -37,7 +37,7 @@ public class TeacherModel {
     public boolean teacherUsernameValidation(String teacherUsername){
         ArrayList<String> allTeachersUsername = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("informations/teachers.txt");
+            FileReader fileReader = new FileReader("daneshjooyar/informations/teachers.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -67,7 +67,7 @@ public class TeacherModel {
 
     public boolean teacherSignup(String teacherName, String teacherUsername, String teacherPassword){
         try {
-            FileWriter AdminFileWriter = new FileWriter("informations/teachers.txt", true);
+            FileWriter AdminFileWriter = new FileWriter("daneshjooyar/informations/teachers.txt", true);
             AdminFileWriter.write(teacherName + "//" + teacherUsername + "//" + hashPassword(teacherPassword) + "\n");
             AdminFileWriter.close();
             return true;
@@ -106,7 +106,7 @@ public class TeacherModel {
         ArrayList<String> AllTeachersName = new ArrayList<>();
         ArrayList<String> AllTeachersPassword = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("informations/teachers.txt");
+            FileReader fileReader = new FileReader("daneshjooyar/informations/teachers.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
