@@ -6,10 +6,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -205,6 +202,96 @@ public class AdminModel {
         }catch (Exception e){
             System.out.println(e.getMessage());
             return false;
+        }
+    }
+
+    public boolean noStudentFoundById(String studentId){
+        ArrayList<String> allStudentId = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/students.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                allStudentId.add(Info[1]);
+            }
+            bufferedReader.close();
+            return !allStudentId.contains(studentId);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean noCourseFoundById(String courseId){
+        ArrayList<String> allStudentId = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                allStudentId.add(Info[1]);
+            }
+            bufferedReader.close();
+            return !allStudentId.contains(courseId);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public void setStudentCourse(String studentId, String courseId){
+        ArrayList<String> allOfFile = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            boolean isSet = false;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(courseId)){
+                    String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                    HashMap<String, String> map = new HashMap<>();
+                    String[] keyValuePairs = mapAsString.split(",");
+                    for (String pair : keyValuePairs) {
+                        String[] entry = pair.split("=");
+                        map.put(entry[0], entry[1]);
+                    }
+                    map.put(studentId, "0");
+                    Info[1] = map.toString();
+                    String last = Info[0] + "//" + Info[1];
+                    allOfFile.add(last);
+                    isSet = true;
+                }else {
+                    allOfFile.add(line);
+                }
+            }
+            bufferedReader.close();
+            if (isSet){
+                courseWriter(allOfFile);
+            }else {
+                HashMap<String, String> hashMap = new HashMap<>();
+                hashMap.put(studentId, "0");
+                allOfFile.add(courseId + "//" + hashMap.toString());
+                courseWriter(allOfFile);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void courseWriter(ArrayList<String> allOfFile){
+        try {
+            FileWriter writer = new FileWriter("daneshjooyar/informations/student_course_score.txt");
+            for (String s : allOfFile) {
+                writer.write(s + "\n");
+            }
+            writer.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 

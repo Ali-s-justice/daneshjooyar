@@ -70,6 +70,22 @@ public class AdminController {
         }
     }
 
+    public boolean getNoStudentFoundById(AdminView adminView, String studentId){
+        if (adminView.equals(this.adminView)){
+            return this.adminModel.noStudentFoundById(studentId);
+        }else {
+            return true;
+        }
+    }
+
+    public boolean getNoCourseFoundById(AdminView adminView, String courseId){
+        if (adminView.equals(this.adminView)){
+            return this.adminModel.noCourseFoundById(courseId);
+        }else {
+            return true;
+        }
+    }
+
     public void getStudentAccountRemover(AdminView adminView, String studentName){
         if (adminView.equals(this.adminView)){
             this.adminModel.studentAccountRemover(studentName);
@@ -139,6 +155,12 @@ public class AdminController {
             this.adminModel.removeCourse(courseId);
         }else {
             System.out.println("Something goes wrong!\n");
+        }
+    }
+
+    public void getSetStudentCourse(AdminView adminView, String studentId, String courseId){
+        if (adminView.equals(this.adminView)){
+            this.adminModel.setStudentCourse(studentId, courseId);
         }
     }
 

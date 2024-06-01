@@ -1,4 +1,5 @@
 package AmirhosseinObligationToFuckingMVCPrograming;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class AdminView {
@@ -50,8 +51,8 @@ public class AdminView {
                                             STUDENT:
                                             [1]:Signing up student~
                                             [2]:Deleting account of a student~
-                                            [3]:Removing course of a student
-                                            [4]:Adding Course to a student
+                                            [3]:Adding Course to a student
+                                            [4]:Removing course of a student
                                             [5]:Printing number of course units of a student
                                             [6]:Printing current average of a student
                                             [7]:Printing total average of a student
@@ -98,6 +99,11 @@ public class AdminView {
                 case 2://Removing Student
                     removeStudent();
                     break;
+                case 3://Set Course for Student
+                    if (getStudentId()){
+                        System.out.println("Course has been set successfully!\n");
+                    }
+                    break;
                 case 12://Adding teacher
                     teacherNameValidation();
                     break;
@@ -128,6 +134,45 @@ public class AdminView {
                 break;
             }
         }
+    }
+
+    private boolean getStudentId(){
+        while (true){
+            System.out.println("Enter ID of student\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String studentId = input.next();
+            if (studentId.equals("1")){
+                return false;
+            }
+            if (adminController.getNoStudentFoundById(this, studentId)){
+                System.out.println("No student with ID " + studentId + "\n");
+                continue;
+            }
+            if (getCourseIdSetScore(studentId)){
+                return true;
+            }
+        }
+    }
+
+    private boolean getCourseIdSetScore(String studentId){
+        while (true){
+            System.out.println("Enter course ID\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String courseId = input.next();
+            if (courseId.equals("1")){
+                return false;
+            }
+            if (adminController.getNoCourseFoundById(this, courseId)){
+                System.out.println("There is no course with ID " + courseId + "\n");
+                continue;
+            }
+            setStudentCourse(studentId, courseId);
+            return true;
+        }
+    }
+
+    private void setStudentCourse(String studentId, String courseId){
+        adminController.getSetStudentCourse(this, studentId, courseId);
     }
 
     private void removeCourse(){
