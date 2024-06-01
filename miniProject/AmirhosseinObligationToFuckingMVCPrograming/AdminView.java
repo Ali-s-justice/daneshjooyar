@@ -54,8 +54,8 @@ public class AdminView {
                                             [3]:Adding a student to a Course~
                                             [4]:Removing a student from a course~
                                             [5]:Setting Score for a student~
-                                            [6]:Printing current average of a student
-                                            [7]:Printing total average of a student
+                                            [6]:Printing current average of a student~
+                                            [7]:Printing total average of a student~
                                             [8]:Printing courses of a student
                                             [9]:Printing number of course units of a student
                                             [10]:
@@ -114,6 +114,12 @@ public class AdminView {
                         System.out.println("Score has been set successfully!\n");
                     }
                     break;
+                case 6://printing Current Average
+                    printAverage("current");
+                    break;
+                case 7://printing total average
+                    printAverage("total");
+                    break;
                 case 12://Adding teacher
                     teacherNameValidation();
                     break;
@@ -143,6 +149,29 @@ public class AdminView {
             if (Exit){
                 break;
             }
+        }
+    }
+
+    private void printAverage(String kind){
+        String studentId;
+        while (true){
+            System.out.println("Enter student ID\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            studentId = input.next();
+            if (studentId.equals("1")){
+                break;
+            }
+            if (adminController.getNoStudentFoundById(this, studentId)){
+                System.out.println("There is no student with ID " + studentId + "\n");
+                continue;
+            }
+            double average = adminController.getPrintAverage(this, studentId, kind);
+            if (average == -1){
+                System.out.println("This student has no course!\n");
+                continue;
+            }
+            System.out.println(average);
+            break;
         }
     }
 

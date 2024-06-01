@@ -260,7 +260,7 @@ public class AdminModel {
                         String[] entry = pair.split("=");
                         map.put(entry[0], entry[1]);
                     }
-                    map.put(studentId, "0");
+                    map.put(studentId, "null");
                     Info[1] = map.toString();
                     String last = Info[0] + "//" + Info[1];
                     allOfFile.add(last);
@@ -274,7 +274,7 @@ public class AdminModel {
                 courseWriter(allOfFile);
             }else {
                 HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put(studentId, "0");
+                hashMap.put(studentId, "null");
                 allOfFile.add(courseId + "//" + hashMap.toString());
                 courseWriter(allOfFile);
             }
@@ -313,6 +313,97 @@ public class AdminModel {
             System.out.println(e.getMessage());
         }
     }
+
+    public int getCourseCredit(String courseId){
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[1].equals(courseId)){
+                    return Integer.parseInt(Info[2]);
+                }
+            }
+            bufferedReader.close();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
+
+    public double printAverage(String studentId, String kind){
+        if (kind.equals("current")){
+            double sum = 0.0;
+            int courseCredit = 0;
+            try {
+                FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    String[] Info = line.split("//");
+                    int credit = getCourseCredit(Info[0]);
+                    String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                    HashMap<String, String> map = new HashMap<>();
+                    String[] keyValuePairs = mapAsString.split(",");
+                    for (String pair : keyValuePairs) {
+                        String[] entry = pair.split("=");
+                        map.put(entry[0], entry[1]);
+                    }
+                    if (map.containsKey(studentId) && !map.get(studentId).equals("null")){
+                        courseCredit += credit;
+                        String score = map.get(studentId);
+                        sum += (Double.parseDouble(score) * credit) ;
+                    }
+                }
+                bufferedReader.close();
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+            if (courseCredit == 0){
+                return -1;
+            }else {
+                return (sum/courseCredit);
+            }
+        } else if (kind.equals("total")) {
+            double sum = 0.0;
+            int courseCredit = 0;
+            try {
+                FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    String[] Info = line.split("//");
+                    int credit = getCourseCredit(Info[0]);
+                    String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                    HashMap<String, String> map = new HashMap<>();
+                    String[] keyValuePairs = mapAsString.split(",");
+                    for (String pair : keyValuePairs) {
+                        String[] entry = pair.split("=");
+                        map.put(entry[0], entry[1]);
+                    }
+                    if (map.containsKey(studentId)){
+                        courseCredit += credit;
+                        String score = map.get(studentId);
+                        if (!score.equals("null")){
+                            sum += (Double.parseDouble(score) * credit);
+                        }
+                    }
+                }
+                bufferedReader.close();
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+            if (courseCredit == 0){
+                return -1;
+            }else {
+                return (sum/courseCredit);
+            }
+        }else {
+            return -1;
+        }
+    }
+
 
     public void removeStudentCourse(String studentId, String courseId){
         ArrayList<String> allOfFile = new ArrayList<>();

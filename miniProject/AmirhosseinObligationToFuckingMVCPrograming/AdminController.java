@@ -184,4 +184,12 @@ public class AdminController {
         }
     }
 
+    public double getPrintAverage(AdminView adminView, String studentId, String kind){
+        if (adminView.equals(this.adminView)){
+            return adminModel.printAverage(studentId, kind);
+        }else {
+            return -1;
+        }
+    }
+
 }
