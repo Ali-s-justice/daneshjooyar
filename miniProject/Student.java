@@ -12,7 +12,7 @@ public class Student {
     private HashMap<Course , Double> currentCourses;
     private double totalAverage;
     private double averageOfCurrentTerm;
-    private String student_code; //Id
+    private String studentCode; //Id
     private String Username;
     private String Password;
 //finish
@@ -24,16 +24,16 @@ public class Student {
         numberOfCourses = 0 ;
         numberOfCourseUnit = 0 ;
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\student_num.txt");
+            FileReader fileReader = new FileReader("informations/student_num.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line = bufferedReader.readLine();
             int code = Integer.parseInt(line);
             code++;
-            student_code = String.valueOf(code);
+            studentCode = String.valueOf(code);
             bufferedReader.close();
             try {//writing new code
-                FileWriter writer = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\student_num.txt");
-                writer.write(student_code);
+                FileWriter writer = new FileWriter("informations/student_num.txt");
+                writer.write(studentCode);
                 writer.close();
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -49,8 +49,8 @@ public class Student {
         this.Password = Password;
         this.name = name;
         try {
-            FileWriter writer = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt",true);
-            writer.write(name + "//" + student_code + "//" + Username + "//" + Model.getModel().hashPassword(Password) + "\n");
+            FileWriter writer = new FileWriter("informations/students.txt",true);
+            writer.write(name + "//" + studentCode + "//" + Username + "//" + Model.getModel().hashPassword(Password) + "\n");
             writer.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -136,8 +136,8 @@ public void removeCourse(Course removedCourse){
     public void setAverageOfCurrentTerm(double averageOfCurrentTerm) {
         this.averageOfCurrentTerm = averageOfCurrentTerm;
     }
-    public void setStudent_code(String student_code) {
-        this.student_code = student_code;
+    public void setStudentCode(String student_code) {
+        this.studentCode = student_code;
     }
 //finish
 
@@ -174,8 +174,8 @@ public void removeCourse(Course removedCourse){
         return averageOfCurrentTerm;
         
     }
-    public String getStudent_code() {
-        return student_code;
+    public String getStudentCode() {
+        return studentCode;
     }
     public Double getScoreOfaCourse(Course target){
         try{
@@ -200,6 +200,6 @@ public void removeCourse(Course removedCourse){
 
 @Override 
 public String toString(){
-    return String.format("<%s>\t<%s>",name,student_code);
+    return String.format("<%s>\t<%s>",name,studentCode);
 }
 }

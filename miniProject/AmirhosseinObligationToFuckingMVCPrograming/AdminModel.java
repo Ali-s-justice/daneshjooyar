@@ -7,34 +7,18 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AdminModel {
 
-    public void studentIDSetter(){
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\student_num.txt"))) {
-            String code;
-            code = reader.readLine();
-            if (code==null){
-                try {
-                    FileWriter writer = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\student_num.txt");
-                    writer.write("402243000");
-                    writer.close();
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
     public boolean adminNameValidation(String NewAdminName){//Admin Name Validation
         ArrayList<String> AllAdminsName = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\admins.txt");
+            FileReader fileReader = new FileReader("daneshjooyar/informations/admins.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -64,7 +48,7 @@ public class AdminModel {
 
     public boolean saveAdmin(String userName, String password){
         try {
-            FileWriter AdminFileWriter = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\admins.txt", true);
+            FileWriter AdminFileWriter = new FileWriter("daneshjooyar/informations/admins.txt", true);
             String HashPassword = hashPassword(password);
             AdminFileWriter.write(userName + "//" + HashPassword + "\n");
             AdminFileWriter.close();
@@ -101,7 +85,7 @@ public class AdminModel {
         ArrayList<String> AllAdminsName = new ArrayList<>();
         ArrayList<String> AllAdminsPassword = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\admins.txt");
+            FileReader fileReader = new FileReader("daneshjooyar/informations/admins.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -140,7 +124,7 @@ public class AdminModel {
     public boolean StudentNameValidation(String studentName){
         ArrayList<String> AllStudentsName = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+            FileReader fileReader = new FileReader("daneshjooyar/informations/students.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -160,7 +144,7 @@ public class AdminModel {
     public boolean StudentUsernameValidation(String Username){
         ArrayList<String> AllStudentsUsername = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+            FileReader fileReader = new FileReader("daneshjooyar/informations/students.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -179,7 +163,7 @@ public class AdminModel {
     public void SignUpStudent(String StudentName, String Username, String Password){
         String student_code = "";
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\student_num.txt");
+            FileReader fileReader = new FileReader("daneshjooyar/informations/student_num.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line = bufferedReader.readLine();
             int code = Integer.parseInt(line);
@@ -187,7 +171,7 @@ public class AdminModel {
             student_code = String.valueOf(code);
             bufferedReader.close();
             try {//writing new code
-                FileWriter writer = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\student_num.txt");
+                FileWriter writer = new FileWriter("daneshjooyar/informations/student_num.txt");
                 writer.write(student_code);
                 writer.close();
             } catch (Exception e) {
@@ -197,7 +181,7 @@ public class AdminModel {
             System.out.println(e.getMessage());
         }
         try {
-            FileWriter writer = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt",true);
+            FileWriter writer = new FileWriter("daneshjooyar/informations/students.txt",true);
             writer.write(StudentName + "//" + student_code + "//" + Username + "//" + hashPassword(Password) + "\n");
             writer.close();
         } catch (Exception e) {
@@ -208,7 +192,7 @@ public class AdminModel {
     public boolean noStudentFound(String studentName){
         ArrayList<String> AllStudentsName = new ArrayList<>();
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+            FileReader fileReader = new FileReader("daneshjooyar/informations/students.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -227,7 +211,7 @@ public class AdminModel {
     //Remove account of a student
     public void studentAccountRemover(String studentName){
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+            FileReader fileReader = new FileReader("daneshjooyar/informations/students.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             ArrayList<String> allOfFile = new ArrayList<>();
@@ -239,7 +223,217 @@ public class AdminModel {
             }
             bufferedReader.close();
             try {
-                FileWriter writer = new FileWriter("C:\\Users\\Asus\\Desktop\\Ap-Project\\daneshjooyar\\informations\\students.txt");
+                FileWriter writer = new FileWriter("daneshjooyar/informations/students.txt");
+                for (String s : allOfFile) {
+                    writer.write(s + "\n");
+                }
+                writer.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    //return true if username is not available
+    public boolean teacherUsernameValidation(String teacherUsername){
+        ArrayList<String> allTeachersUsername = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/teachers.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                allTeachersUsername.add(Info[1]);
+            }
+            bufferedReader.close();
+            return allTeachersUsername.contains(teacherUsername);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean teacherSignup(String teacherName, String teacherUsername, String teacherPassword){
+        try {
+            FileWriter AdminFileWriter = new FileWriter("daneshjooyar/informations/teachers.txt", true);
+            AdminFileWriter.write(teacherName + "//" + teacherUsername + "//" + hashPassword(teacherPassword) + "\n");
+            AdminFileWriter.close();
+            return true;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean noTeacherFound(String teacherUsername){
+        ArrayList<String> allTeachersUsername = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/teachers.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                allTeachersUsername.add(Info[1]);
+            }
+            bufferedReader.close();
+            return !allTeachersUsername.contains(teacherUsername);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public void teacherAccountRemover(String teacherUsername){
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/teachers.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            ArrayList<String> allOfFile = new ArrayList<>();
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (!(Info[1].equals(teacherUsername))){
+                    allOfFile.add(line);
+                }
+            }
+            bufferedReader.close();
+            try {
+                FileWriter writer = new FileWriter("daneshjooyar/informations/teachers.txt");
+                for (String s : allOfFile) {
+                    writer.write(s + "\n");
+                }
+                writer.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void addCourse(String courseName, int credit){
+        String courseId = "";
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/course_num.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line = bufferedReader.readLine();
+            int code = Integer.parseInt(line);
+            code++;
+            courseId = String.valueOf(code);
+            bufferedReader.close();
+            try {//writing new code
+                FileWriter writer = new FileWriter("daneshjooyar/informations/course_num.txt");
+                writer.write(courseId);
+                writer.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        try {
+            FileWriter writer = new FileWriter("daneshjooyar/informations/course.txt",true);
+            writer.write(courseName + "//" + courseId + "//" + credit + "//" + "null" + "//" + "null" + "\n");
+            writer.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void setCourseTeacher(String courseId, String teacherUsername){
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            ArrayList<String> allOfFile = new ArrayList<>();
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (!(Info[1].equals(courseId))){
+                    allOfFile.add(line);
+                }else {
+                    Info[3] = teacherUsername;
+                    StringBuilder newString = new StringBuilder();
+                    for (String s : Info) {
+                        newString.append(s);
+                        newString.append("//");
+                    }
+                    newString = new StringBuilder(newString.substring(0, newString.length() - 2));
+                    allOfFile.add(newString.toString());
+                }
+            }
+            bufferedReader.close();
+            try {
+                FileWriter writer = new FileWriter("daneshjooyar/informations/course.txt");
+                for (String s : allOfFile) {
+                    writer.write(s + "\n");
+                }
+                writer.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public boolean courseIdChecker(String courseId){
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            ArrayList<String> allId = new ArrayList<>();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                allId.add(Info[1]);
+            }
+            return allId.contains(courseId);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public String courseNameById(String courseId){
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            ArrayList<String> allId = new ArrayList<>();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[1].equals(courseId)){
+                    return Info[0];
+                }
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return null;
+    }
+
+    public void removeCourse(String courseId){
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            ArrayList<String> allOfFile = new ArrayList<>();
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (!(Info[1].equals(courseId))){
+                    allOfFile.add(line);
+                }
+            }
+            bufferedReader.close();
+            try {
+                FileWriter writer = new FileWriter("daneshjooyar/informations/course.txt");
                 for (String s : allOfFile) {
                     writer.write(s + "\n");
                 }
