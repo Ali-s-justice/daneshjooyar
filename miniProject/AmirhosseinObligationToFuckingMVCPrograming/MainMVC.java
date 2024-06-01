@@ -50,10 +50,6 @@ public class MainMVC {
                 System.out.println("Exiting system!\n");
                 break;
             }
-
-            
-            
         }
-        
     }
 }
