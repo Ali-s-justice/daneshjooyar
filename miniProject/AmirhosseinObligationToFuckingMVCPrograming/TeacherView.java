@@ -134,8 +134,8 @@ public class TeacherView {
                                             What do you want to to?
                                             
                                             STUDENT:
-                                            [1]:Signing up student
-                                            [2]:Deleting account of a student
+                                            [1]:
+                                            [2]:
                                             [3]:
                                             [4]:Removing course of a student
                                             [5]:Adding Course to a student
