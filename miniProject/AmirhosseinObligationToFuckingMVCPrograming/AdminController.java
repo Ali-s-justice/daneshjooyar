@@ -192,4 +192,26 @@ public class AdminController {
         }
     }
 
+    public String getPrintAllCourse(AdminView adminView, String studentId){
+        if (adminView.equals(this.adminView)){
+            return this.adminModel.printAllCourse(studentId);
+        }else {
+            return "null";
+        }
+    }
+
+    public int getPrintAllCredit(AdminView adminView, String studentId){
+        if (adminView.equals(this.adminView)){
+            return this.adminModel.printAllCredit(studentId);
+        }else {
+            return -1;
+        }
+    }
+
+    public void getSetExamDate(AdminView adminView, String courseId, String examDate, String examHour){
+        if (adminView.equals(this.adminView)){
+            this.adminModel.setExamDate(courseId, examDate, examHour);
+        }
+    }
+
 }

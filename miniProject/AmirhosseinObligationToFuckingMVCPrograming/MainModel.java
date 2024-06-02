@@ -1,5 +1,4 @@
 package AmirhosseinObligationToFuckingMVCPrograming;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -43,4 +42,6 @@ public class MainModel {
             System.out.println(e.getMessage());
         }
     }
+
+
 }

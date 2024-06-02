@@ -1,5 +1,7 @@
 package AmirhosseinObligationToFuckingMVCPrograming;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AdminView {
 
@@ -56,25 +58,24 @@ public class AdminView {
                                             [5]:Setting Score for a student~
                                             [6]:Printing current average of a student~
                                             [7]:Printing total average of a student~
-                                            [8]:Printing courses of a student
-                                            [9]:Printing number of course units of a student
-                                            [10]:
-                                            [11]:
+                                            [8]:Printing courses of a student~
+                                            [9]:Printing course credit of a student~
                                             
                                             TEACHER:
-                                            [12]:Adding teacher~
-                                            [13]:Deleting teacher~
+                                            [10]:Adding teacher~
+                                            [11]:Deleting teacher~
                                             
                                             COURSE:
-                                            [14]:Adding a course~
-                                            [15]:Removing a course~
-                                            [16]:Set teacher for a course~
-                                            [17]:Setting exam day for a course
+                                            [12]:Adding a course~
+                                            [13]:Removing a course~
+                                            [14]:Set teacher for a course~
+                                            [15]:Setting exam day for a course~
                                             
                                             ASSIGNMENT:
-                                            [18]:Adding assignment
-                                            [19]:Changing deadline of an assignment
+                                            [16]:Adding assignment
+                                            [19]:Setting deadline for an assignment
                                             [20]:Deactivating assignment
+                                            [21]:Activating assignment
                                             
                                             PROJECT:
                                             [21]:Deactivating project
@@ -120,24 +121,36 @@ public class AdminView {
                 case 7://printing total average
                     printAverage("total");
                     break;
-                case 12://Adding teacher
+                case 8://printing course
+                    studentIdGetterPrintCourse();
+                    break;
+                case 9://print course credit
+                    studentIdGetterPrintCredit();
+                    break;
+                case 10://Adding teacher
                     teacherNameValidation();
                     break;
-                case 13://removing teacher
+                case 11://removing teacher
                     removeTeacher();
                     break;
-                case 14://add course
+                case 12://add course
                     if (getCourseName()){
                         System.out.println("Course has been created!\n");
                     }else {
                         System.out.println("No course create!\n");
                     }
                     break;
-                case 15://removing a course
+                case 13://removing a course
                     removeCourse();
                     break;
-                case 16://set teacher for a course
+                case 14://set teacher for a course
                     setTeacher();
+                    break;
+                case 15://set exam date
+                    courseIdGetterExam();
+                    break;
+                case 16://add assignment
+
                     break;
                 case 23://
                     Exit = true;
@@ -149,6 +162,110 @@ public class AdminView {
             if (Exit){
                 break;
             }
+        }
+    }
+
+    private void courseIdGetterExam(){
+        while (true){
+            System.out.println("Enter course ID\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String courseId = input.next();
+            if (courseId.equals("1")){
+                break;
+            }
+            if (adminController.getNoCourseFoundById(this, courseId)){
+                System.out.println("There is no course with ID " + courseId + "\n");
+                continue;
+            }
+            if (getExamDate(courseId)){
+                break;
+            }
+        }
+    }
+
+    private boolean getExamDate(String courseId){
+        while (true){
+            System.out.println("Enter exam date in pattern YYYY/MM/DD\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String examDate = input.next();
+            if (examDate.equals("1")){
+                return false;
+            }
+            String pattern = "^(\\d{4})/(0?[1-9]|1[0-2])/(0?[1-9]|[12][0-9]|3[01])$"; // Pattern for yyyy/mm/dd format
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(examDate);
+            if (m.find()) {
+                if (getExamHour(courseId, examDate)){
+                    return true;
+                }
+            } else {
+                System.out.println("The input does not match the yyyy/mm/dd format!\n");
+            }
+        }
+    }
+
+    private boolean getExamHour(String courseId, String examDate){
+        while (true){
+            System.out.println("Enter exam hour in format HH:MM\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String examHour = input.next();
+            if (examHour.equals("1")){
+                return false;
+            }
+            String pattern = "^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"; // Pattern for hh:mm format
+            Pattern r = Pattern.compile(pattern);
+
+            Matcher m = r.matcher(examHour);
+            if (m.find()) {
+                adminController.getSetExamDate(this, courseId, examDate, examHour);
+                return true;
+            } else {
+                System.out.println("The input does not match the hh:mm format!\n");
+            }
+        }
+    }
+
+    private void studentIdGetterPrintCredit(){
+        while (true){
+            System.out.println("Enter ID of student\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String studentId = input.next();
+            if (studentId.equals("1")){
+                break;
+            }
+            if (adminController.getNoStudentFoundById(this, studentId)){
+                System.out.println("There is no student with ID " + studentId );
+                continue;
+            }
+            if (adminController.getPrintAllCredit(this, studentId) == -1){
+                System.out.println("Something went wrong!\n");
+                continue;
+            }else {
+                System.out.println("This student has " + adminController.getPrintAllCredit(this, studentId) + "credit!\n");
+            }
+            break;
+        }
+    }
+
+    private void studentIdGetterPrintCourse(){
+        while (true){
+            System.out.println("Enter ID of student\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String studentId = input.next();
+            if (studentId.equals("1")){
+                break;
+            }
+            if (adminController.getNoStudentFoundById(this, studentId)){
+                System.out.println("There is no student with ID " + studentId );
+                continue;
+            }
+            String courses = adminController.getPrintAllCourse(this, studentId);
+            if (courses.equals("null")){
+                System.out.println("This student has no course!\n");
+            }else {
+                System.out.println(courses + "\n");
+            }
+            break;
         }
     }
 
@@ -615,7 +732,7 @@ public class AdminView {
 
     private void adminSignUpValidation(){
         while (true){
-            String ValidationCode = "S";
+            String ValidationCode = "SBU_ADMIN";
             System.out.println("Enter your SBU validation code:\n[1]:Exit");
             Scanner input = new Scanner(System.in);
             String choice = input.next();
