@@ -1,3 +1,1 @@
-FARSI//1001//3//monire//null
-fizik//1002//3//monire//null
-Az//1003//2//null//null
+FIZIK//1005//3//null

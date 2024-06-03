@@ -62,5 +62,23 @@ public class MainModel {
         }
     }
 
+    public static void teacherIdSetter(){
+        try (BufferedReader reader = new BufferedReader(new FileReader("daneshjooyar/informations/teacher_num.txt"))) {
+            String code;
+            code = reader.readLine();
+            if (code==null){
+                try {
+                    FileWriter writer = new FileWriter("daneshjooyar/informations/teacher_num.txt");
+                    writer.write("1000");
+                    writer.close();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }

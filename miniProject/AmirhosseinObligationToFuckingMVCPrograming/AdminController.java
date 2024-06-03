@@ -86,9 +86,9 @@ public class AdminController {
         }
     }
 
-    public void getStudentAccountRemover(AdminView adminView, String studentName){
+    public void getStudentAccountRemover(AdminView adminView, String studentId){
         if (adminView.equals(this.adminView)){
-            this.adminModel.studentAccountRemover(studentName);
+            this.adminModel.studentAccountRemover(studentId);
         }
     }
 
@@ -116,9 +116,17 @@ public class AdminController {
         }
     }
 
-    public void getTeacherAccountRemover(AdminView adminView, String teacherUsername){
+    public boolean getNoTeacherFoundById(AdminView adminView, String teacherId){
         if (adminView.equals(this.adminView)){
-            this.adminModel.teacherAccountRemover(teacherUsername);
+            return this.adminModel.noTeacherFoundById(teacherId);
+        }else {
+            return true;
+        }
+    }
+
+    public void getTeacherAccountRemover(AdminView adminView, String teacherId){
+        if (adminView.equals(this.adminView)){
+            this.adminModel.teacherAccountRemover(teacherId);
         }
     }
 
@@ -128,9 +136,9 @@ public class AdminController {
         }
     }
 
-    public void getSetCourseTeacher(AdminView adminView,String courseId, String teacherUsername){
+    public void getSetCourseTeacher(AdminView adminView,String courseId, String teacherId){
         if (adminView.equals(this.adminView)){
-            this.adminModel.setCourseTeacher(courseId, teacherUsername);
+            this.adminModel.setCourseTeacher(courseId, teacherId);
         }
     }
 
@@ -247,6 +255,24 @@ public class AdminController {
     public void getSetAssignmentForCourse(AdminView adminView, String assignmentId, String courseId){
         if (adminView.equals(this.adminView)){
             this.adminModel.setAssignmentForCourse(assignmentId, courseId);
+        }
+    }
+
+    public void getSetDeadline(AdminView adminView, String assignmentId, String dateOfDeadline, String hourOfDeadline){
+        if (adminView.equals(this.adminView)){
+            this.adminModel.setDeadline(assignmentId, dateOfDeadline, hourOfDeadline);
+        }
+    }
+
+    public void getSetAssignmentActivity(AdminView adminView, String assignmentId, String obligation){
+        if (adminView.equals(this.adminView)){
+            this.adminModel.setAssignmentActivity(assignmentId, obligation);
+        }
+    }
+
+    public void getSetCaptionForAssignment(AdminView adminView, String assignmentId, String caption){
+        if (adminView.equals(this.adminView)){
+            this.adminModel.setCaptionForAssignment(assignmentId, caption);
         }
     }
 

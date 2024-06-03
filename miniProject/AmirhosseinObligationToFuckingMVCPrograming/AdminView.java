@@ -1,7 +1,5 @@
 package AmirhosseinObligationToFuckingMVCPrograming;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class AdminView {
 
@@ -52,7 +50,7 @@ public class AdminView {
 
                                             STUDENT:
                                             [1]:Signing up student~
-                                            [2]:Deleting account of a student~
+                                            [2]:Removing student~
                                             [3]:Adding a student to a Course~
                                             [4]:Removing a student from a course~
                                             [5]:Setting Score for a student~
@@ -74,15 +72,12 @@ public class AdminView {
                                             ASSIGNMENT:
                                             [16]:Adding assignment~
                                             [17]:Set assignment for a course~
-                                            [19]:Setting deadline for an assignment
-                                            [20]:Deactivating assignment
-                                            [21]:Activating assignment
+                                            [18]:Setting deadline for an assignment~
+                                            [19]:Activating assignment~
+                                            [20]:Deactivating assignment~
+                                            [21]:Set caption for an assignment
 
-                                            PROJECT:
-                                            [21]:Deactivating project
-                                            [22]:Adding project
-
-                                            [23]:Log out!
+                                            [22]:Log out!
                                             """;
             System.out.println(ALL_OBLIGATIONS.substring(0,ALL_OBLIGATIONS.length()-1));
             int inOperation;
@@ -94,6 +89,7 @@ public class AdminView {
                 System.out.println("Something went wrong!\n");
                 continue;
             }
+            input.nextLine();
             switch (inOperation){
                 case 1://Signing up a student
                     getStudentName();
@@ -129,7 +125,7 @@ public class AdminView {
                     studentIdGetterPrintCredit();
                     break;
                 case 10://Adding teacher
-                    teacherNameValidation();
+                    teacherNameGetter();
                     break;
                 case 11://removing teacher
                     removeTeacher();
@@ -145,7 +141,7 @@ public class AdminView {
                     removeCourse();
                     break;
                 case 14://set teacher for a course
-                    setTeacher();
+                    setTeacherForCourse();
                     break;
                 case 15://set exam date
                     courseIdGetterExam();
@@ -156,7 +152,19 @@ public class AdminView {
                 case 17://set assignment for a course
                     assignmentIdGetterSetCourse();
                     break;
-                case 23://
+                case 18://set deadline for assignment
+                    assignmentIdGetterSetDeadline();
+                    break;
+                case 19://activating assignment
+                    assignmentIdGetterSetActivity("activate");
+                    break;
+                case 20://deactivating assignment
+                    assignmentIdGetterSetActivity("deactivate");
+                    break;
+                case 21://Set caption for assignment
+                    getAssignmentId();
+                    break;
+                case 22://
                     Exit = true;
                     break;
                 default:
@@ -165,6 +173,118 @@ public class AdminView {
             }
             if (Exit){
                 break;
+            }
+        }
+    }
+
+    private void getAssignmentId(){
+        while (true){
+            System.out.println("Enter assignment ID\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String assignmentId = input.next();
+            if (assignmentId.equals("1")){
+                break;
+            }
+            if (adminController.getNoAssignmentFoundById(this, assignmentId)){
+                System.out.println("There is no assignment with ID " + assignmentId + "\n");
+                continue;
+            }
+            if (setAssignmentCaption(assignmentId)){
+                break;
+            }
+        }
+    }
+
+    private boolean setAssignmentCaption(String assignmentId){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter your caption --> (press Enter twice to end)\n[1]:Go back");
+        StringBuilder paragraphBuilder = new StringBuilder();
+        String line;
+        while (!(line = scanner.nextLine()).isEmpty()) {
+            paragraphBuilder.append(line).append("\n");
+        }
+        String paragraph = paragraphBuilder.toString();
+        if (paragraph.equals("1")){
+            return false;
+        }
+        adminController.getSetCaptionForAssignment(this, assignmentId, paragraph);
+        System.out.println("The caption has been set successfully!\n");
+        return true;
+    }
+
+
+    private void assignmentIdGetterSetActivity(String obligation){
+        while (true){
+            System.out.println("Enter assignment ID\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String assignmentId = input.next();
+            if (assignmentId.equals("1")){
+                break;
+            }
+            if (adminController.getNoAssignmentFoundById(this, assignmentId)){
+                System.out.println("No assignment found by ID " + assignmentId);
+                continue;
+            }
+            adminController.getSetAssignmentActivity(this, assignmentId, obligation);
+            if (obligation.equals("activate")){
+                System.out.println("Assignment with ID " + assignmentId + " is activated!\n");
+            }else {
+                System.out.println("Assignment with ID " + assignmentId + " is deactivated!\n");
+            }
+            break;
+        }
+    }
+
+    private void assignmentIdGetterSetDeadline(){
+        while (true){
+            System.out.println("Enter assignment ID\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String assignmentId = input.next();
+            if (assignmentId.equals("1")){
+                break;
+            }
+            if (adminController.getNoAssignmentFoundById(this, assignmentId)){
+                System.out.println("No assignment found by ID " + assignmentId + "\n");
+                continue;
+            }
+            if (assignmentDateOfDeadlineGetter(assignmentId)){
+                break;
+            }
+        }
+    }
+
+    private boolean assignmentDateOfDeadlineGetter(String assignmentId){
+        while (true){
+            System.out.println("Enter date of deadline in pattern YYYY/MM/DD\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String dateOfDeadline = input.next();
+            if (dateOfDeadline.equals("1")){
+                return false;
+            }
+            if (adminController.getDateHasValidPattern(this, dateOfDeadline)){
+                if (assignmentHourOfDeadlineGetter(assignmentId, dateOfDeadline)){
+                    return true;
+                }
+            }else {
+                System.out.println("The date doesn't have correct pattern!\n");
+            }
+        }
+    }
+
+    private boolean assignmentHourOfDeadlineGetter(String assignmentId, String dateOfDeadline){
+        while (true){
+            System.out.println("Enter hour of deadline in pattern HH:MM\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String hourOfDeadline = input.next();
+            if (hourOfDeadline.equals("1")){
+                return false;
+            }
+            if (adminController.getHourHasValidPattern(this, hourOfDeadline)){
+                adminController.getSetDeadline(this, assignmentId, dateOfDeadline, hourOfDeadline);
+                System.out.println("Deadline set successfully!\n");
+                return true;
+            }else {
+                System.out.println("The hour doesn't have correct pattern!\n");
             }
         }
     }
@@ -520,7 +640,7 @@ public class AdminView {
         }
     }
 
-    private void setTeacher(){
+    private void setTeacherForCourse(){
         while (true){
             String courseId = getCourseId();
             if (courseId == null){
@@ -538,18 +658,18 @@ public class AdminView {
 
     private boolean setCourseTeacher(String courseId){
         while (true){
-            System.out.println("Enter teacher username:\n[1]:Go back");
+            System.out.println("Enter teacher ID:\n[1]:Go back");
             Scanner input = new Scanner(System.in);
-            String teacherUsername = input.next();
-            if (teacherUsername.equals("1")){
+            String teacherId = input.next();
+            if (teacherId.equals("1")){
                 return false;
             }
-            if (adminController.getNoTeacherFound(this, teacherUsername)){
-                System.out.println("No teacher with username: " + teacherUsername + " found!\n");
+            if (adminController.getNoTeacherFoundById(this, teacherId)){
+                System.out.println("No teacher with ID " + teacherId + " found!\n");
                 continue;
             }else {
-                adminController.getSetCourseTeacher(this, courseId, teacherUsername);
-                System.out.println("teacher with username: " + teacherUsername + " successfully been set as " + courseId + " teacher!\n");
+                adminController.getSetCourseTeacher(this, courseId, teacherId);
+                System.out.println("teacher with username: " + teacherId + " successfully been set as " + courseId + " teacher!\n");
             }
             return true;
         }
@@ -632,18 +752,18 @@ public class AdminView {
     private void removeTeacher(){
         while (true){
             Scanner input = new Scanner(System.in);
-            System.out.println("Enter the username of teacher you want to remove:\n[1]:Go back");
-            String removingTeacherUsername = input.next();
-            if (removingTeacherUsername.equals("1")){
+            System.out.println("Enter the ID of teacher you want to remove:\n[1]:Go back");
+            String removingTeacherId = input.next();
+            if (removingTeacherId.equals("1")){
                 break;
             }
-            if (adminController.getNoTeacherFound(this, removingTeacherUsername)){
-                System.out.println("There is no teacher with username: " + removingTeacherUsername);
+            if (adminController.getNoTeacherFoundById(this, removingTeacherId)){
+                System.out.println("There is no teacher with ID " + removingTeacherId + "\n");
                 continue;
             }else {
                 int lastRemoveChoice;
                 while (true){
-                    System.out.println("Are you sure you want to remove teacher with username: " + removingTeacherUsername + " ? \n[1]:Continue\n[2]:Go back");
+                    System.out.println("Are you sure you want to remove teacher with ID " + removingTeacherId + " ? \n[1]:Continue\n[2]:Go back");
                     try {
                         lastRemoveChoice = input.nextInt();
                     }catch (Exception exception){
@@ -655,8 +775,8 @@ public class AdminView {
                 switch (lastRemoveChoice){
                     case 1:
                         System.out.println("Removing teacher...\n");
-                        adminController.getTeacherAccountRemover(this, removingTeacherUsername);
-                        System.out.println("Teacher named: " + removingTeacherUsername + " has successfully removed!\n");
+                        adminController.getTeacherAccountRemover(this, removingTeacherId);
+                        System.out.println("Teacher with ID " + removingTeacherId + " has successfully removed!\n");
                         break;
                     case 2:
                         break;
@@ -668,7 +788,7 @@ public class AdminView {
         }
     }
 
-    private void teacherNameValidation(){
+    private void teacherNameGetter(){
         Scanner input = new Scanner(System.in);
         while (true){
             System.out.println("Enter teacher name:\n[1]:Go back");
@@ -729,18 +849,18 @@ public class AdminView {
     private void removeStudent(){
         while (true){
             Scanner input = new Scanner(System.in);
-            System.out.println("Enter the name of student you want to remove:\n[1]:Go back");
-            String removingStudentName = input.next();
-            if (removingStudentName.equals("1")){
+            System.out.println("Enter the ID of student you want to remove:\n[1]:Go back");
+            String studentId = input.next();
+            if (studentId.equals("1")){
                 break;
             }
-            if (adminController.getNoStudentFound(this, removingStudentName)){
-                System.out.println("There is no student named: " + removingStudentName);
+            if (adminController.getNoStudentFoundById(this, studentId)){
+                System.out.println("There is no student with ID " + studentId);
                 continue;
             }else {
                 int lastRemoveChoice;
                 while (true){
-                    System.out.println("Are you sure you want to remove student named: " + removingStudentName + " ? \n[1]:Continue\n[2]:Go back");
+                    System.out.println("Are you sure you want to remove student with ID " + studentId + " ? \n[1]:Continue\n[2]:Go back");
                     try {
                         lastRemoveChoice = input.nextInt();
                     }catch (Exception exception){
@@ -752,8 +872,8 @@ public class AdminView {
                 switch (lastRemoveChoice){
                     case 1:
                         System.out.println("Removing Student...\n");
-                        adminController.getStudentAccountRemover(this, removingStudentName);
-                        System.out.println("Student named: " + removingStudentName + " has successfully removed!\n");
+                        adminController.getStudentAccountRemover(this, studentId);
+                        System.out.println("Student named: " + studentId + " has successfully removed!\n");
                         break;
                     case 2:
                         break;
@@ -766,76 +886,35 @@ public class AdminView {
     }
 
     private void getStudentName(){
-        String StudentSignUpName;
+        String studentName;
         Scanner input = new Scanner(System.in);
-        boolean DoubleName = true;//FOR AMIR HOSSEIN LOVE!
         while (true){
             System.out.println("Enter student name:\n[1]:Go back");
-            StudentSignUpName = input.next();
-            if (StudentSignUpName.equals("1")){
+            studentName = input.nextLine();
+            if (studentName.equals("1")){
                 return;
             }
-            if (DoubleName && !adminController.getStudentNameValidation(this, StudentSignUpName)){
-                System.out.println("Student named: " + StudentSignUpName + " is already signed up!\n[1]:Go back\n[2]:Signup anyway");
+            if (!adminController.getStudentNameValidation(this, studentName)){
+                System.out.println("Student named: " + studentName + " is already signed up!\n[1]:Go back\n[2]:Signup anyway");
                 String choice = input.next();
                 if (choice.equals("1")){
                     continue;
                 } else if (choice.equals("2")) {
-                    DoubleName = false;
+                    signUpStudent(studentName);
+                    break;
                 }else {
                     System.out.println("Invalid input!\n");
                 }
                 continue;
             }
-            if (!getStudentUsername(StudentSignUpName)){
-                continue;
-            }
+            signUpStudent(studentName);
             break;
         }
     }
 
-    private boolean getStudentUsername(String studentName){
-        Scanner input = new Scanner(System.in);
-        String StudentSignUpUsername;
-        while (true){
-            System.out.println("Enter student username:\n[1]:Go back");
-            StudentSignUpUsername = input.next();
-            if (StudentSignUpUsername.equals("1")){
-                return false;
-            }
-            if (adminController.getStudentUsernameValidation(this, StudentSignUpUsername)){
-                System.out.println("Username is already token!\n");
-                continue;
-            }
-            if (!getStudentPassword(studentName,StudentSignUpUsername)){
-                continue;
-            }
-            break;
-        }
-        return true;
-    }
-    private boolean getStudentPassword(String StudentName, String StudentSignUpUsername){
-        Scanner input = new Scanner(System.in);
-        String StudentSignUpPassword;
-        while (true){
-            System.out.println("Enter student password:\n[1]:Go back");
-            StudentSignUpPassword = input.next();
-            if (StudentSignUpPassword.equals("1")){
-                return false;
-            }
-            if (adminController.getAdminPasswordNotValidation(this, StudentSignUpPassword, StudentSignUpUsername)){
-                System.out.println("The password does not follow the correct pattern\n");
-                continue;
-            }
-            break;
-        }
-        signUpStudent(StudentName, StudentSignUpUsername, StudentSignUpPassword);
-        return true;
-    }
-
-    private void signUpStudent(String StudentName, String Username, String Password){
-        this.adminController.getStudentSignUp(this, StudentName, Username, Password);
-        System.out.println("Student named: " + StudentName + " successfully signed up!");
+    private void signUpStudent(String StudentName){
+        this.adminController.getStudentSignUp(this, StudentName, "$", "$");
+        System.out.println("Student named: " + StudentName + " successfully signed up!\n");
     }
 
     private void adminSignUpValidation(){

@@ -10,6 +10,7 @@ public class MainMVC {
         MainModel.studentIdSetter();
         MainModel.courseIdSetter();
         MainModel.assignmentIdSetter();
+        MainModel.teacherIdSetter();
         //Beginning
         while (true){
             boolean Exit1 = false;
