@@ -49,7 +49,7 @@ public class AdminView {
             Exit = false;
             String ALL_OBLIGATIONS = """
                                             What do you want to to?
-                                            
+
                                             STUDENT:
                                             [1]:Signing up student~
                                             [2]:Deleting account of a student~
@@ -60,27 +60,28 @@ public class AdminView {
                                             [7]:Printing total average of a student~
                                             [8]:Printing courses of a student~
                                             [9]:Printing course credit of a student~
-                                            
+
                                             TEACHER:
                                             [10]:Adding teacher~
                                             [11]:Deleting teacher~
-                                            
+
                                             COURSE:
                                             [12]:Adding a course~
                                             [13]:Removing a course~
                                             [14]:Set teacher for a course~
                                             [15]:Setting exam day for a course~
-                                            
+
                                             ASSIGNMENT:
-                                            [16]:Adding assignment
+                                            [16]:Adding assignment~
+                                            [17]:Set assignment for a course~
                                             [19]:Setting deadline for an assignment
                                             [20]:Deactivating assignment
                                             [21]:Activating assignment
-                                            
+
                                             PROJECT:
                                             [21]:Deactivating project
                                             [22]:Adding project
-                                            
+
                                             [23]:Log out!
                                             """;
             System.out.println(ALL_OBLIGATIONS.substring(0,ALL_OBLIGATIONS.length()-1));
@@ -150,7 +151,10 @@ public class AdminView {
                     courseIdGetterExam();
                     break;
                 case 16://add assignment
-
+                    assignmentNameGetter();
+                    break;
+                case 17://set assignment for a course
+                    assignmentIdGetterSetCourse();
                     break;
                 case 23://
                     Exit = true;
@@ -161,6 +165,115 @@ public class AdminView {
             }
             if (Exit){
                 break;
+            }
+        }
+    }
+
+    private void assignmentIdGetterSetCourse(){
+        while (true){
+            System.out.println("Enter assignment ID you want to set\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String assignmentId = input.next();
+            if (assignmentId.equals("1")){
+                break;
+            }
+            if (adminController.getNoAssignmentFoundById(this, assignmentId)){
+                System.out.println("No assignment found with id " + assignmentId + "\n");
+                continue;
+            }
+            if (courseIdGetterSetAssignment(assignmentId)){
+                break;
+            }
+        }
+    }
+
+    private boolean courseIdGetterSetAssignment(String assignmentId){
+        while (true){
+            System.out.println("Enter course ID you want to set assignment for\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String courseId = input.next();
+            if (courseId.equals("1")){
+                return false;
+            }
+            if (adminController.getNoCourseFoundById(this, courseId)){
+                System.out.println("No course found with ID " + courseId + "\n");
+                continue;
+            }
+            adminController.getSetAssignmentForCourse(this, assignmentId, courseId);
+            System.out.println("Assignment set successfully!\n");
+            return true;
+        }
+    }
+
+    private void assignmentNameGetter(){
+        while (true){
+            System.out.println("Enter assignment name\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String assignmentName = input.next();
+            if (assignmentName.equals("1")){
+                break;
+            }else {
+                if (assignmentIsActiveGetter(assignmentName)){
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean assignmentIsActiveGetter(String assignmentName){
+        while (true){
+            System.out.println("Is this assignment active\n[0]:No\n[1]:Yes\n[2]:Go back");
+            Scanner input = new Scanner(System.in);
+            String isActive = input.next();
+            switch (isActive) {
+                case "2" -> {
+                    return false;
+                }
+                case "1" -> isActive = "true";
+                case "0" -> isActive = "false";
+                default -> {
+                    System.out.println("Invalid input!\n");
+                    continue;
+                }
+            }
+            if (assignmentDateOfDeadlineGetter(assignmentName, isActive)){
+                return true;
+            }
+        }
+    }
+
+    private boolean assignmentDateOfDeadlineGetter(String assignmentName, String isActive){
+        while (true){
+            System.out.println("Enter date of deadline in pattern YYYY/MM/DD\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String dateOfDeadline = input.next();
+            if (dateOfDeadline.equals("1")){
+                return false;
+            }
+            if (adminController.getDateHasValidPattern(this, dateOfDeadline)){
+                if (assignmentHourOfDeadlineGetter(assignmentName, isActive, dateOfDeadline)){
+                    return true;
+                }
+            }else {
+                System.out.println("The date doesn't have correct pattern!\n");
+            }
+        }
+    }
+
+    private boolean assignmentHourOfDeadlineGetter(String assignmentName, String isActive, String dateOfDeadline){
+        while (true){
+            System.out.println("Enter hour of deadline in pattern HH:MM\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String hourOfDeadline = input.next();
+            if (hourOfDeadline.equals("1")){
+                return false;
+            }
+            if (adminController.getHourHasValidPattern(this, hourOfDeadline)){
+                adminController.getAddAssignment(this, assignmentName, isActive, dateOfDeadline, hourOfDeadline);
+                System.out.println("Assignment add successfully!\n");
+                return true;
+            }else {
+                System.out.println("The hour doesn't have correct pattern!\n");
             }
         }
     }
@@ -191,10 +304,8 @@ public class AdminView {
             if (examDate.equals("1")){
                 return false;
             }
-            String pattern = "^(\\d{4})/(0?[1-9]|1[0-2])/(0?[1-9]|[12][0-9]|3[01])$"; // Pattern for yyyy/mm/dd format
-            Pattern r = Pattern.compile(pattern);
-            Matcher m = r.matcher(examDate);
-            if (m.find()) {
+
+            if (adminController.getDateHasValidPattern(this, examDate)) {
                 if (getExamHour(courseId, examDate)){
                     return true;
                 }
@@ -212,11 +323,8 @@ public class AdminView {
             if (examHour.equals("1")){
                 return false;
             }
-            String pattern = "^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"; // Pattern for hh:mm format
-            Pattern r = Pattern.compile(pattern);
 
-            Matcher m = r.matcher(examHour);
-            if (m.find()) {
+            if (adminController.getHourHasValidPattern(this, examHour)) {
                 adminController.getSetExamDate(this, courseId, examDate, examHour);
                 return true;
             } else {
@@ -736,18 +844,18 @@ public class AdminView {
             System.out.println("Enter your SBU validation code:\n[1]:Exit");
             Scanner input = new Scanner(System.in);
             String choice = input.next();
-            
+
             if (choice.equals("1")){ //if input is "a" -> Exception! -> handled*
                 break;
             }
-            
-            else if (choice.equals(ValidationCode)){ 
+
+            else if (choice.equals(ValidationCode)){
                 adminSignUp();
                 break;
             }else {
                 System.out.println("Unable to validate your information!\n");
             }
-            
+
         }
     }
 
@@ -760,13 +868,13 @@ public class AdminView {
             number2:
             while (true){
                 System.out.println("Enter your username:\n[1]:Exit");
-                adminUserName = input.next(); 
+                adminUserName = input.next();
                 if (adminUserName.equals("1")){ // change condition of if -> exception handeling
                     break number1;
                     // Exit1 = true;
                     // break;
                 }
-                
+
                 else if (adminController.getAdminNameValidation(this,adminUserName)){ //unreachable methode ? (AdminValidation)?
                     System.out.println("Your username is unavailable!\n");
                     continue;
@@ -776,10 +884,10 @@ public class AdminView {
             // if (Exit1){
             //     break;
             // }
-            
+
             boolean Exit2 = false;
             String adminPassword;
-      
+
             number3:
             while (true){//Password
                 input.nextLine();

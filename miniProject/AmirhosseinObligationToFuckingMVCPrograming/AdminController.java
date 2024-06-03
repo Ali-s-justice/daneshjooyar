@@ -214,4 +214,41 @@ public class AdminController {
         }
     }
 
+    public boolean getDateHasValidPattern(AdminView adminView, String date){
+        if (adminView.equals(this.adminView)){
+            return this.adminModel.dateHasValidPattern(date);
+        }else {
+            return false;
+        }
+    }
+
+    public boolean getHourHasValidPattern(AdminView adminView, String hour){
+        if (adminView.equals(this.adminView)){
+            return this.adminModel.hourHasValidPattern(hour);
+        }else {
+            return false;
+        }
+    }
+
+    public void getAddAssignment(AdminView adminView, String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline){
+        if (adminView.equals(this.adminView)){
+            this.adminModel.addAssignment(assignmentName, isActive, dateOfDeadline, hourOfDeadline);
+        }
+    }
+
+    public boolean getNoAssignmentFoundById(AdminView adminView, String assignmentId){
+        if (adminView.equals(this.adminView)){
+            return this.adminModel.noAssignmentFoundById(assignmentId);
+        }else {
+            return true;
+        }
+    }
+
+    public void getSetAssignmentForCourse(AdminView adminView, String assignmentId, String courseId){
+        if (adminView.equals(this.adminView)){
+            this.adminModel.setAssignmentForCourse(assignmentId, courseId);
+        }
+    }
+
+
 }

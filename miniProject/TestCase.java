@@ -1,7 +1,13 @@
+import java.util.HashSet;
+import java.util.Set;
+
 public class TestCase {
     public static void main(String[] args) {
-        int a = 402243000;
-        System.out.println(a);
+        Set<String> set = new HashSet<>();
+        set.add("a");
+        set.add("a");
+        set.add("b");
+        System.out.println(set.toString());
     }
 }
 ////I am Hamid

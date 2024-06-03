@@ -9,13 +9,14 @@ public class MainMVC {
     public static void main(String[] args) {
         MainModel.studentIdSetter();
         MainModel.courseIdSetter();
+        MainModel.assignmentIdSetter();
         //Beginning
         while (true){
             boolean Exit1 = false;
             System.out.println("Who are you?\n[1]:Admin\n[2]:Teacher\n[3]:Exit");
             Scanner input = new Scanner(System.in);
             String role;
-            int intRole ; 
+            int intRole ;
             try {
                 role = input.next();
                 intRole = Integer.parseInt(role); //bug fixed !
