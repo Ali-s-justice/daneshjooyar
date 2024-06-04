@@ -216,9 +216,9 @@ public class AdminController {
         }
     }
 
-    public void getAddAssignment(AdminView adminView, String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline) {
+    public void getAddAssignment(AdminView adminView, String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline, String maker) {
         if (adminView.equals(this.adminView)) {
-            this.adminModel.addAssignment(assignmentName, isActive, dateOfDeadline, hourOfDeadline);
+            this.adminModel.addAssignment(assignmentName, isActive, dateOfDeadline, hourOfDeadline, maker);
         }
     }
 

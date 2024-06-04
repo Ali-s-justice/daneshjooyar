@@ -5,10 +5,12 @@ import java.util.Scanner;
 public class AdminView {
 
     AdminController adminController;
+    String thisAdminUsername;
 
     public void run(AdminController adminController) {
         this.adminController = adminController;
         while (true) {
+            thisAdminUsername = "";
             boolean Exit = false;
             System.out.println("Are you new admin?\n[1]:Yes-->(Signup)\n[2]:No-->(Login)\n[3]:Go Back");
             Scanner input = new Scanner(System.in);
@@ -465,7 +467,7 @@ public class AdminView {
                 return false;
             }
             if (adminController.getHourHasValidPattern(this, hourOfDeadline)) {
-                adminController.getAddAssignment(this, assignmentName, isActive, dateOfDeadline, hourOfDeadline);
+                adminController.getAddAssignment(this, assignmentName, isActive, dateOfDeadline, hourOfDeadline, thisAdminUsername);
                 System.out.println("Assignment add successfully!\n");
                 return true;
             } else {
@@ -606,16 +608,16 @@ public class AdminView {
                 return false;
             }
             if (adminController.getNoStudentFoundById(this, studentId)) {
-                System.out.println("No student with ID " + studentId + "\n");
+                System.out.println("No student with ID " + studentId + " found\n");
                 continue;
             }
-            if (getCourseIdSetStudent(studentId, obligation)) {
+            if (getCourseIdSetStudentScore(studentId, obligation)) {
                 return true;
             }
         }
     }
 
-    private boolean getCourseIdSetStudent(String studentId, String obligation) {
+    private boolean getCourseIdSetStudentScore(String studentId, String obligation) {
         while (true) {
             System.out.println("Enter course ID\n[1]:Go back");
             Scanner input = new Scanner(System.in);
@@ -827,6 +829,7 @@ public class AdminView {
                 continue;
             }
             System.out.println("You successfully logged in!\n");
+            thisAdminUsername = username;
             adminPowers();
             return true;
         }
@@ -913,7 +916,7 @@ public class AdminView {
                 return false;
             }
             if (adminController.getPasswordNotValidate(this, teacherPassword, teacherUsername)) {
-                System.out.println("The password does not follow the correct pattern\n");
+                System.out.println("The password does not follow the correct pattern\n1:The password should not contains username\n2:The password should be at least 8 character\n3:The password must contain at least one lowercase letter, one uppercase letter and one number\n");
                 continue;
             }
             if (!adminController.getTeacherSignup(this, teacherName, teacherUsername, teacherPassword)) {
@@ -1046,6 +1049,7 @@ public class AdminView {
             }
             if (adminController.getSaveAdmin(this, username, password)) {
                 System.out.println("Signup successfully!\n");
+                thisAdminUsername = username;
                 adminPowers();
             } else {
                 System.out.println("Something went wrong!\n");

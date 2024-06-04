@@ -443,7 +443,7 @@ public class AdminModel {
         return m.find();
     }
 
-    public void addAssignment(String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline) {
+    public void addAssignment(String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline, String maker) {
         String assignmentId = "";
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/assignment_num.txt");
@@ -472,7 +472,7 @@ public class AdminModel {
                 allOfFile.add(line);
             }
             bufferedReader.close();
-            String last = assignmentId + "//" + isActive + "//" + assignmentName + "//" + dateOfDeadline + "," + hourOfDeadline;
+            String last = assignmentId + "//" + isActive + "//" + assignmentName + "//" + dateOfDeadline + "," + hourOfDeadline + "//" + maker;
             allOfFile.add(last);
             writer(allOfFile, "daneshjooyar/informations/assignment.txt");
         } catch (Exception e) {
@@ -617,19 +617,7 @@ public class AdminModel {
             if (!isSet) {
                 allOfFile.add(courseId + "//" + examDate + "//" + examHour);
             }
-            examWriter(allOfFile);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void examWriter(ArrayList<String> allOfFile) {
-        try {
-            FileWriter writer = new FileWriter("daneshjooyar/informations/exam.txt");
-            for (String s : allOfFile) {
-                writer.write(s + "\n");
-            }
-            writer.close();
+            writer(allOfFile, "daneshjooyar/informations/exam.txt");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

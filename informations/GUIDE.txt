@@ -2,7 +2,7 @@ admins:
 Admin username // Admin hash password
 
 assignment:
-Assignment ID // Activity // Assignment Name // Deadline ( Date , Hour ) //TODO(Caption)
+Assignment ID // Activity // Assignment Name // Deadline ( Date , Hour ) // Maker Code ( Admin: username, Teacher: teacher ID )
 
 assignment num:
 Last assignment ID
