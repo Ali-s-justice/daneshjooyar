@@ -5,274 +5,274 @@ public class AdminController {
     private final AdminModel adminModel;
     private final AdminView adminView;
 
-    AdminController(AdminModel adminModel, AdminView adminView){
+    AdminController(AdminModel adminModel, AdminView adminView) {
         this.adminModel = adminModel;
         this.adminView = adminView;
     }
-    public boolean getAdminNameValidation(AdminView adminView, String username){
-        if (adminView.equals(this.adminView)){
-            return this.adminModel.adminNameValidation(username);
-        }else {
-            return false;
-        }
-    }
-    public boolean getAdminPasswordNotValidation(AdminView adminView, String password,String username){
-        if (adminView.equals(this.adminView)){
-            return this.adminModel.PasswordNotValidation(password, username);
-        }else {
+
+    public boolean getAdminUsernameNotAvailable(AdminView adminView, String username) {
+        if (adminView.equals(this.adminView)) {
+            return this.adminModel.adminUsernameNotAvailable(username);
+        } else {
             return false;
         }
     }
 
-    public boolean getSaveAdmin(AdminView adminView, String userName , String password){
-        if (adminView.equals(this.adminView)){
+    public boolean getPasswordNotValidate(AdminView adminView, String password, String username) {
+        if (adminView.equals(this.adminView)) {
+            return this.adminModel.PasswordNotValidate(password, username);
+        } else {
+            return false;
+        }
+    }
+
+    public boolean getSaveAdmin(AdminView adminView, String userName, String password) {
+        if (adminView.equals(this.adminView)) {
             return this.adminModel.saveAdmin(userName, password);
-        }else {
+        } else {
             return false;
         }
     }
 
-    public boolean getAdminLoginValidation(AdminView adminView, String adminLoginUsername, String adminLoginPassword ){
-        if (adminView.equals(this.adminView)){
-            return this.adminModel.adminLoginValidation(adminLoginUsername, adminLoginPassword);
-        }else {
+    public boolean getAdminPasswordIsWrong(AdminView adminView, String username, String password) {
+        if (adminView.equals(this.adminView)) {
+            return this.adminModel.adminPasswordIsWrong(username, password);
+        } else {
             return false;
         }
     }
 
-    public boolean getStudentNameValidation(AdminView adminView, String studentName){
-        if (adminView.equals(this.adminView)){
-            return this.adminModel.StudentNameValidation(studentName);
-        }else {
-            return false;
-        }
-    }
-
-    public boolean getStudentUsernameValidation(AdminView adminView, String username){
-        if (adminView.equals(this.adminView)){
-            return this.adminModel.StudentUsernameValidation(username);
-        }else {
-            return false;
-        }
-    }
-
-    public void getStudentSignUp(AdminView adminView , String StudentName, String Username, String Password){
-        if (adminView.equals(this.adminView)){
+    public void getStudentSignUp(AdminView adminView, String StudentName, String Username, String Password) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.SignUpStudent(StudentName, Username, Password);
         }
     }
 
-    public boolean getNoStudentFound(AdminView adminView, String studentName){
-        if (adminView.equals(this.adminView)){
+    public boolean getNoStudentFound(AdminView adminView, String studentName) {
+        if (adminView.equals(this.adminView)) {
             return this.adminModel.noStudentFound(studentName);
-        }else {
+        } else {
             return true;
         }
     }
 
-    public boolean getNoStudentFoundById(AdminView adminView, String studentId){
-        if (adminView.equals(this.adminView)){
+    public boolean getNoStudentFoundById(AdminView adminView, String studentId) {
+        if (adminView.equals(this.adminView)) {
             return this.adminModel.noStudentFoundById(studentId);
-        }else {
+        } else {
             return true;
         }
     }
 
-    public boolean getNoCourseFoundById(AdminView adminView, String courseId){
-        if (adminView.equals(this.adminView)){
+    public boolean getNoCourseFoundById(AdminView adminView, String courseId) {
+        if (adminView.equals(this.adminView)) {
             return this.adminModel.noCourseFoundById(courseId);
-        }else {
+        } else {
             return true;
         }
     }
 
-    public void getStudentAccountRemover(AdminView adminView, String studentId){
-        if (adminView.equals(this.adminView)){
+    public void getStudentAccountRemover(AdminView adminView, String studentId) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.studentAccountRemover(studentId);
         }
     }
 
-    public boolean getTeacherUsernameValidation(AdminView adminView, String teacherUsername){
-        if (adminView.equals(this.adminView)){
+    public boolean getTeacherUsernameValidation(AdminView adminView, String teacherUsername) {
+        if (adminView.equals(this.adminView)) {
             return adminModel.teacherUsernameValidation(teacherUsername);
-        }else {
+        } else {
             return true;
         }
     }
 
-    public boolean getTeacherSignup(AdminView adminView, String teacherName, String teacherUsername, String teacherPassword){
-        if (adminView.equals(this.adminView)){
+    public boolean getTeacherSignup(AdminView adminView, String teacherName, String teacherUsername, String teacherPassword) {
+        if (adminView.equals(this.adminView)) {
             return adminModel.teacherSignup(teacherName, teacherUsername, teacherPassword);
-        }else {
+        } else {
             return false;
         }
     }
 
-    public boolean getNoTeacherFound(AdminView adminView, String teacherUsername){
-        if (adminView.equals(this.adminView)){
-            return this.adminModel.noTeacherFound(teacherUsername);
-        }else {
-            return true;
-        }
-    }
-
-    public boolean getNoTeacherFoundById(AdminView adminView, String teacherId){
-        if (adminView.equals(this.adminView)){
+    public boolean getNoTeacherFoundById(AdminView adminView, String teacherId) {
+        if (adminView.equals(this.adminView)) {
             return this.adminModel.noTeacherFoundById(teacherId);
-        }else {
+        } else {
             return true;
         }
     }
 
-    public void getTeacherAccountRemover(AdminView adminView, String teacherId){
-        if (adminView.equals(this.adminView)){
+    public void getTeacherAccountRemover(AdminView adminView, String teacherId) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.teacherAccountRemover(teacherId);
         }
     }
 
-    public void getAddCourse(AdminView adminView, String courseName, int credit){
-        if (adminView.equals(this.adminView)){
+    public void getAddCourse(AdminView adminView, String courseName, int credit) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.addCourse(courseName, credit);
         }
     }
 
-    public void getSetCourseTeacher(AdminView adminView,String courseId, String teacherId){
-        if (adminView.equals(this.adminView)){
+    public void getSetCourseTeacher(AdminView adminView, String courseId, String teacherId) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.setCourseTeacher(courseId, teacherId);
         }
     }
 
-    public boolean getCourseIdChecker(AdminView adminView, String courseId){
-        if (adminView.equals(this.adminView)){
+    public boolean getCourseIdChecker(AdminView adminView, String courseId) {
+        if (adminView.equals(this.adminView)) {
             return this.adminModel.courseIdChecker(courseId);
-        }else {
+        } else {
             return false;
         }
     }
 
-    public String getCourseNameById(AdminView adminView, String courseId){
-        if (adminView.equals(this.adminView)){
+    public String getCourseNameById(AdminView adminView, String courseId) {
+        if (adminView.equals(this.adminView)) {
             return this.adminModel.courseNameById(courseId);
-        }else {
+        } else {
             return null;
         }
     }
 
-    public void getRemoveCourse(AdminView adminView, String courseId){
-        if (adminView.equals(this.adminView)){
+    public void getRemoveCourse(AdminView adminView, String courseId) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.removeCourse(courseId);
-        }else {
+        } else {
             System.out.println("Something goes wrong!\n");
         }
     }
 
-    public void getSetStudentCourse(AdminView adminView, String studentId, String courseId){
-        if (adminView.equals(this.adminView)){
+    public void getSetStudentCourse(AdminView adminView, String studentId, String courseId) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.setStudentCourse(studentId, courseId);
         }
     }
 
-    public void getRemoveStudentCourse(AdminView adminView, String studentId, String courseId){
-        if (adminView.equals(this.adminView)){
+    public void getRemoveStudentCourse(AdminView adminView, String studentId, String courseId) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.removeStudentCourse(studentId, courseId);
         }
     }
 
-    public boolean getStudentHasCourse(AdminView adminView, String studentId, String courseId){
-        if (adminView.equals(this.adminView)){
+    public boolean getStudentHasCourse(AdminView adminView, String studentId, String courseId) {
+        if (adminView.equals(this.adminView)) {
             return this.adminModel.studentHasCourse(studentId, courseId);
-        }else {
+        } else {
             return false;
         }
     }
 
-    public void getSetStudentScore(AdminView adminView, String studentId, String courseId, double score){
-        if (adminView.equals(this.adminView)){
+    public void getSetStudentScore(AdminView adminView, String studentId, String courseId, double score) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.setStudentScore(studentId, courseId, score);
         }
     }
 
-    public double getPrintAverage(AdminView adminView, String studentId, String kind){
-        if (adminView.equals(this.adminView)){
+    public double getPrintAverage(AdminView adminView, String studentId, String kind) {
+        if (adminView.equals(this.adminView)) {
             return adminModel.printAverage(studentId, kind);
-        }else {
+        } else {
             return -1;
         }
     }
 
-    public String getPrintAllCourse(AdminView adminView, String studentId){
-        if (adminView.equals(this.adminView)){
+    public String getPrintAllCourse(AdminView adminView, String studentId) {
+        if (adminView.equals(this.adminView)) {
             return this.adminModel.printAllCourse(studentId);
-        }else {
+        } else {
             return "null";
         }
     }
 
-    public int getPrintAllCredit(AdminView adminView, String studentId){
-        if (adminView.equals(this.adminView)){
+    public int getPrintAllCredit(AdminView adminView, String studentId) {
+        if (adminView.equals(this.adminView)) {
             return this.adminModel.printAllCredit(studentId);
-        }else {
+        } else {
             return -1;
         }
     }
 
-    public void getSetExamDate(AdminView adminView, String courseId, String examDate, String examHour){
-        if (adminView.equals(this.adminView)){
+    public void getSetExamDate(AdminView adminView, String courseId, String examDate, String examHour) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.setExamDate(courseId, examDate, examHour);
         }
     }
 
-    public boolean getDateHasValidPattern(AdminView adminView, String date){
-        if (adminView.equals(this.adminView)){
+    public boolean getDateHasValidPattern(AdminView adminView, String date) {
+        if (adminView.equals(this.adminView)) {
             return this.adminModel.dateHasValidPattern(date);
-        }else {
+        } else {
             return false;
         }
     }
 
-    public boolean getHourHasValidPattern(AdminView adminView, String hour){
-        if (adminView.equals(this.adminView)){
+    public boolean getHourHasValidPattern(AdminView adminView, String hour) {
+        if (adminView.equals(this.adminView)) {
             return this.adminModel.hourHasValidPattern(hour);
-        }else {
+        } else {
             return false;
         }
     }
 
-    public void getAddAssignment(AdminView adminView, String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline){
-        if (adminView.equals(this.adminView)){
+    public void getAddAssignment(AdminView adminView, String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.addAssignment(assignmentName, isActive, dateOfDeadline, hourOfDeadline);
         }
     }
 
-    public boolean getNoAssignmentFoundById(AdminView adminView, String assignmentId){
-        if (adminView.equals(this.adminView)){
+    public boolean getNoAssignmentFoundById(AdminView adminView, String assignmentId) {
+        if (adminView.equals(this.adminView)) {
             return this.adminModel.noAssignmentFoundById(assignmentId);
-        }else {
+        } else {
             return true;
         }
     }
 
-    public void getSetAssignmentForCourse(AdminView adminView, String assignmentId, String courseId){
-        if (adminView.equals(this.adminView)){
+    public void getSetAssignmentForCourse(AdminView adminView, String assignmentId, String courseId) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.setAssignmentForCourse(assignmentId, courseId);
         }
     }
 
-    public void getSetDeadline(AdminView adminView, String assignmentId, String dateOfDeadline, String hourOfDeadline){
-        if (adminView.equals(this.adminView)){
+    public void getSetDeadline(AdminView adminView, String assignmentId, String dateOfDeadline, String hourOfDeadline) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.setDeadline(assignmentId, dateOfDeadline, hourOfDeadline);
         }
     }
 
-    public void getSetAssignmentActivity(AdminView adminView, String assignmentId, String obligation){
-        if (adminView.equals(this.adminView)){
+    public void getSetAssignmentActivity(AdminView adminView, String assignmentId, String obligation) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.setAssignmentActivity(assignmentId, obligation);
         }
     }
 
-    public void getSetCaptionForAssignment(AdminView adminView, String assignmentId, String caption){
-        if (adminView.equals(this.adminView)){
+    public void getSetCaptionForAssignment(AdminView adminView, String assignmentId, String caption) {
+        if (adminView.equals(this.adminView)) {
             this.adminModel.setCaptionForAssignment(assignmentId, caption);
+        }
+    }
+
+    public String getAssignmentNameById(AdminView adminView, String assignmentId) {
+        if (adminView.equals(this.adminView)) {
+            return this.adminModel.assignmentNameById(assignmentId);
+        } else {
+            return null;
+        }
+    }
+
+    public void getRemoveAssignment(AdminView adminView, String assignmentId) {
+        if (adminView.equals(this.adminView)) {
+            this.adminModel.removeAssignment(assignmentId);
+        }
+    }
+
+    public boolean getRemoveAssignmentFromCourse(AdminView adminView, String assignmentId, String courseId) {
+        if (adminView.equals(this.adminView)) {
+           return this.adminModel.removeAssignmentFromCourse(assignmentId, courseId);
+        }else {
+            return false;
         }
     }
 

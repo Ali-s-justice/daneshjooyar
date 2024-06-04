@@ -1,4 +1,5 @@
 package AmirhosseinObligationToFuckingMVCPrograming;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -11,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class AdminModel {
 
-    public boolean adminNameValidation(String NewAdminName){//Admin Name Validation
+    public boolean adminUsernameNotAvailable(String username) {//Admin Name Validation
         ArrayList<String> AllAdminsName = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/admins.txt");
@@ -22,15 +23,15 @@ public class AdminModel {
                 AllAdminsName.add(Info[0]);
             }
             bufferedReader.close();
-            return AllAdminsName.contains(NewAdminName);
+            return AllAdminsName.contains(username);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
-    public boolean PasswordNotValidation(String password, String username){
+    public boolean PasswordNotValidate(String password, String username) {
         String pattern = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,}$";
         Pattern p = Pattern.compile(pattern);
 
@@ -42,14 +43,14 @@ public class AdminModel {
         return !m.matches();
     }
 
-    public boolean saveAdmin(String userName, String password){
+    public boolean saveAdmin(String userName, String password) {
         try {
             FileWriter AdminFileWriter = new FileWriter("daneshjooyar/informations/admins.txt", true);
             String HashPassword = hashPassword(password);
             AdminFileWriter.write(userName + "//" + HashPassword + "\n");
             AdminFileWriter.close();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
@@ -77,25 +78,23 @@ public class AdminModel {
     }
 
     //Admin Login
-    public boolean adminLoginValidation(String AdminLoginName, String Password){//Admin Login Validation
-        ArrayList<String> AllAdminsName = new ArrayList<>();
-        ArrayList<String> AllAdminsPassword = new ArrayList<>();
+    public boolean adminPasswordIsWrong(String username, String password) {
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/admins.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                AllAdminsName.add(Info[0]);
-                AllAdminsPassword.add(Info[1]);
+                if (Info[0].equals(username)) {
+                    return !checkPassword(password, Info[1]);
+                }
             }
             bufferedReader.close();
-            return !(AllAdminsName.contains(AdminLoginName) && checkPassword(Password, AllAdminsPassword.get(AllAdminsName.indexOf(AdminLoginName))));
-
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-            return false;
+            return true;
         }
+        return true;
     }
 
     public boolean checkPassword(String password, String storedPassword) {
@@ -116,47 +115,7 @@ public class AdminModel {
         }
     }
 
-    //Signup Student Name validation --> return true if name is valid
-    public boolean StudentNameValidation(String studentName){
-        ArrayList<String> AllStudentsName = new ArrayList<>();
-        try {
-            FileReader fileReader = new FileReader("daneshjooyar/informations/students.txt");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] Info = line.split("//");
-                AllStudentsName.add(Info[0]);
-            }
-            bufferedReader.close();
-            return !AllStudentsName.contains(studentName);
-
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    //Signup Student Username Validation --> return true if username is unavailable
-    public boolean StudentUsernameValidation(String Username){
-        ArrayList<String> AllStudentsUsername = new ArrayList<>();
-        try {
-            FileReader fileReader = new FileReader("daneshjooyar/informations/students.txt");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] Info = line.split("//");
-                AllStudentsUsername.add(Info[2]);
-            }
-            bufferedReader.close();
-            return AllStudentsUsername.contains(Username);
-
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public void SignUpStudent(String StudentName, String Username, String Password){
+    public void SignUpStudent(String StudentName, String Username, String Password) {
         String student_code = "";
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/student_num.txt");
@@ -173,11 +132,11 @@ public class AdminModel {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         try {
-            FileWriter writer = new FileWriter("daneshjooyar/informations/students.txt",true);
+            FileWriter writer = new FileWriter("daneshjooyar/informations/students.txt", true);
             writer.write(StudentName + "//" + student_code + "//" + Username + "//" + Password + "\n");
             writer.close();
         } catch (Exception e) {
@@ -185,7 +144,7 @@ public class AdminModel {
         }
     }
 
-    public boolean noStudentFound(String studentName){
+    public boolean noStudentFound(String studentName) {
         ArrayList<String> AllStudentsName = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/students.txt");
@@ -198,13 +157,13 @@ public class AdminModel {
             bufferedReader.close();
             return !AllStudentsName.contains(studentName);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
-    public boolean noStudentFoundById(String studentId){
+    public boolean noStudentFoundById(String studentId) {
         ArrayList<String> allStudentId = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/students.txt");
@@ -217,13 +176,13 @@ public class AdminModel {
             bufferedReader.close();
             return !allStudentId.contains(studentId);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
-    public boolean noCourseFoundById(String courseId){
+    public boolean noCourseFoundById(String courseId) {
         ArrayList<String> allStudentId = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
@@ -236,13 +195,13 @@ public class AdminModel {
             bufferedReader.close();
             return !allStudentId.contains(courseId);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
-    public void setStudentCourse(String studentId, String courseId){
+    public void setStudentCourse(String studentId, String courseId) {
         ArrayList<String> allOfFile = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
@@ -251,7 +210,7 @@ public class AdminModel {
             boolean isSet = false;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (Info[0].equals(courseId)){
+                if (Info[0].equals(courseId)) {
                     String mapAsString = Info[1].replaceAll("[{}\\s]", "");
                     HashMap<String, String> map = new HashMap<>();
                     String[] keyValuePairs = mapAsString.split(",");
@@ -264,25 +223,25 @@ public class AdminModel {
                     String last = Info[0] + "//" + Info[1];
                     allOfFile.add(last);
                     isSet = true;
-                }else {
+                } else {
                     allOfFile.add(line);
                 }
             }
             bufferedReader.close();
-            if (isSet){
+            if (isSet) {
                 writer(allOfFile, "daneshjooyar/informations/student_course_score.txt");
-            }else {
+            } else {
                 HashMap<String, String> hashMap = new HashMap<>();
                 hashMap.put(studentId, "null");
-                allOfFile.add(courseId + "//" + hashMap.toString());
+                allOfFile.add(courseId + "//" + hashMap);
                 writer(allOfFile, "daneshjooyar/informations/student_course_score.txt");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void setStudentScore(String studentId, String courseId, double score){
+    public void setStudentScore(String studentId, String courseId, double score) {
         ArrayList<String> allOfFile = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
@@ -290,7 +249,7 @@ public class AdminModel {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (Info[0].equals(courseId)){
+                if (Info[0].equals(courseId)) {
                     String mapAsString = Info[1].replaceAll("[{}\\s]", "");
                     HashMap<String, String> map = new HashMap<>();
                     String[] keyValuePairs = mapAsString.split(",");
@@ -302,37 +261,37 @@ public class AdminModel {
                     Info[1] = map.toString();
                     String last = Info[0] + "//" + Info[1];
                     allOfFile.add(last);
-                }else {
+                } else {
                     allOfFile.add(line);
                 }
             }
             bufferedReader.close();
             writer(allOfFile, "daneshjooyar/informations/student_course_score.txt");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public int getCourseCredit(String courseId){
+    public int getCourseCredit(String courseId) {
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (Info[1].equals(courseId)){
+                if (Info[1].equals(courseId)) {
                     return Integer.parseInt(Info[2]);
                 }
             }
             bufferedReader.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return 0;
     }
 
-    public double printAverage(String studentId, String kind){
-        if (kind.equals("current")){
+    public double printAverage(String studentId, String kind) {
+        if (kind.equals("current")) {
             double sum = 0.0;
             int courseCredit = 0;
             try {
@@ -349,20 +308,20 @@ public class AdminModel {
                         String[] entry = pair.split("=");
                         map.put(entry[0], entry[1]);
                     }
-                    if (map.containsKey(studentId) && !map.get(studentId).equals("null")){
+                    if (map.containsKey(studentId) && !map.get(studentId).equals("null")) {
                         courseCredit += credit;
                         String score = map.get(studentId);
-                        sum += (Double.parseDouble(score) * credit) ;
+                        sum += (Double.parseDouble(score) * credit);
                     }
                 }
                 bufferedReader.close();
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-            if (courseCredit == 0){
+            if (courseCredit == 0) {
                 return -1;
-            }else {
-                return (sum/courseCredit);
+            } else {
+                return (sum / courseCredit);
             }
         } else if (kind.equals("total")) {
             double sum = 0.0;
@@ -381,29 +340,29 @@ public class AdminModel {
                         String[] entry = pair.split("=");
                         map.put(entry[0], entry[1]);
                     }
-                    if (map.containsKey(studentId)){
+                    if (map.containsKey(studentId)) {
                         courseCredit += credit;
                         String score = map.get(studentId);
-                        if (!score.equals("null")){
+                        if (!score.equals("null")) {
                             sum += (Double.parseDouble(score) * credit);
                         }
                     }
                 }
                 bufferedReader.close();
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-            if (courseCredit == 0){
+            if (courseCredit == 0) {
                 return -1;
-            }else {
-                return (sum/courseCredit);
+            } else {
+                return (sum / courseCredit);
             }
-        }else {
+        } else {
             return -1;
         }
     }
 
-    public String printAllCourse(String studentId){
+    public String printAllCourse(String studentId) {
         ArrayList<String> allCourseId = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
@@ -418,14 +377,14 @@ public class AdminModel {
                     String[] entry = pair.split("=");
                     map.put(entry[0], entry[1]);
                 }
-                if (map.containsKey(studentId)){
+                if (map.containsKey(studentId)) {
                     allCourseId.add(Info[0]);
                 }
             }
             bufferedReader.close();
-            if (allCourseId.isEmpty()){
+            if (allCourseId.isEmpty()) {
                 return "null";
-            }else {
+            } else {
                 StringBuilder out = new StringBuilder();
                 out.append("Course name : Course ID\n");
                 for (String s : allCourseId) {
@@ -434,15 +393,15 @@ public class AdminModel {
                     out.append(s);
                     out.append("\n");
                 }
-                return out.substring(0,out.length()-1);
+                return out.substring(0, out.length() - 1);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return "null";
     }
 
-    public int printAllCredit(String studentId){
+    public int printAllCredit(String studentId) {
         int courseCredit = 0;
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
@@ -458,33 +417,33 @@ public class AdminModel {
                     String[] entry = pair.split("=");
                     map.put(entry[0], entry[1]);
                 }
-                if (map.containsKey(studentId)){
+                if (map.containsKey(studentId)) {
                     courseCredit += credit;
                 }
             }
             bufferedReader.close();
             return courseCredit;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return -1;
     }
 
-    public boolean dateHasValidPattern(String date){
+    public boolean dateHasValidPattern(String date) {
         String pattern = "^(\\d{4})/(0?[1-9]|1[0-2])/(0?[1-9]|[12][0-9]|3[01])$"; // Pattern for yyyy/mm/dd format
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(date);
         return m.find();
     }
 
-    public boolean hourHasValidPattern(String hour){
+    public boolean hourHasValidPattern(String hour) {
         String pattern = "^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"; // Pattern for hh:mm format
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(hour);
         return m.find();
     }
 
-    public void addAssignment(String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline){
+    public void addAssignment(String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline) {
         String assignmentId = "";
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/assignment_num.txt");
@@ -501,7 +460,7 @@ public class AdminModel {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         try {
@@ -513,15 +472,15 @@ public class AdminModel {
                 allOfFile.add(line);
             }
             bufferedReader.close();
-            String last = assignmentId + "//" + isActive + "//" + assignmentName + "//" + dateOfDeadline + "," + hourOfDeadline ;
+            String last = assignmentId + "//" + isActive + "//" + assignmentName + "//" + dateOfDeadline + "," + hourOfDeadline;
             allOfFile.add(last);
             writer(allOfFile, "daneshjooyar/informations/assignment.txt");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public boolean noAssignmentFoundById(String assignmentId){
+    public boolean noAssignmentFoundById(String assignmentId) {
         ArrayList<String> allAssignmentId = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/assignment.txt");
@@ -533,13 +492,13 @@ public class AdminModel {
             }
             bufferedReader.close();
             return !allAssignmentId.contains(assignmentId);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return true;
     }
 
-    public void setAssignmentForCourse(String assignmentId, String courseId){
+    public void setAssignmentForCourse(String assignmentId, String courseId) {
         ArrayList<String> allOfFile = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/course_assignment.txt");
@@ -548,32 +507,32 @@ public class AdminModel {
             boolean isSet = false;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (Info[0].equals(courseId)){
+                if (Info[0].equals(courseId)) {
                     Set<String> set = new HashSet<>();
                     String[] elements = Info[1].substring(1, Info[1].length() - 1).split(", ");
                     Collections.addAll(set, elements);
                     set.add(assignmentId);
-                    String last = Info[0] + "//" + set.toString();
+                    String last = Info[0] + "//" + set;
                     allOfFile.add(last);
                     isSet = true;
-                }else {
+                } else {
                     allOfFile.add(line);
                 }
             }
             bufferedReader.close();
-            if (!isSet){
+            if (!isSet) {
                 Set<String> set = new HashSet<>();
                 set.add(assignmentId);
-                String last = courseId + "//" + set.toString();
+                String last = courseId + "//" + set;
                 allOfFile.add(last);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         writer(allOfFile, "daneshjooyar/informations/course_assignment.txt");
     }
 
-    public void setDeadline(String assignmentId, String dateOfDeadline, String hourOfDeadline){
+    public void setDeadline(String assignmentId, String dateOfDeadline, String hourOfDeadline) {
         try {
             ArrayList<String> allOfFile = new ArrayList<>();
             FileReader fileReader = new FileReader("daneshjooyar/informations/assignment.txt");
@@ -581,22 +540,22 @@ public class AdminModel {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (Info[0].equals(assignmentId)){
+                if (Info[0].equals(assignmentId)) {
                     Info[3] = dateOfDeadline + "," + hourOfDeadline;
                     String last = Info[0] + "//" + Info[1] + "//" + Info[2] + "//" + Info[3];
                     allOfFile.add(last);
-                }else {
+                } else {
                     allOfFile.add(line);
                 }
             }
             bufferedReader.close();
             writer(allOfFile, "daneshjooyar/informations/assignment.txt");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void setAssignmentActivity(String assignmentId, String obligation){
+    public void setAssignmentActivity(String assignmentId, String obligation) {
         try {
             ArrayList<String> allOfFile = new ArrayList<>();
             FileReader fileReader = new FileReader("daneshjooyar/informations/assignment.txt");
@@ -604,26 +563,26 @@ public class AdminModel {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (Info[0].equals(assignmentId)){
-                    if (obligation.equals("deactivate")){
+                if (Info[0].equals(assignmentId)) {
+                    if (obligation.equals("deactivate")) {
                         Info[1] = "false";
                     } else if (obligation.equals("activate")) {
                         Info[1] = "true";
                     }
                     String last = Info[0] + "//" + Info[1] + "//" + Info[2] + "//" + Info[3];
                     allOfFile.add(last);
-                }else {
+                } else {
                     allOfFile.add(line);
                 }
             }
             bufferedReader.close();
             writer(allOfFile, "daneshjooyar/informations/assignment.txt");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void writer(ArrayList<String> allOfFile, String address){
+    public void writer(ArrayList<String> allOfFile, String address) {
         try {
             FileWriter writer = new FileWriter(address);
             for (String s : allOfFile) {
@@ -635,7 +594,7 @@ public class AdminModel {
         }
     }
 
-    public void setExamDate(String courseId, String examDate, String examHour){
+    public void setExamDate(String courseId, String examDate, String examHour) {
         try {
             ArrayList<String> allOfFile = new ArrayList<>();
             FileReader fileReader = new FileReader("daneshjooyar/informations/exam.txt");
@@ -644,27 +603,27 @@ public class AdminModel {
             boolean isSet = false;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (Info[0].equals(courseId)){
+                if (Info[0].equals(courseId)) {
                     Info[1] = examDate;
                     Info[2] = examHour;
                     String last = Info[0] + "//" + Info[1] + "//" + Info[2];
                     allOfFile.add(last);
                     isSet = true;
-                }else {
+                } else {
                     allOfFile.add(line);
                 }
             }
             bufferedReader.close();
-            if (!isSet){
+            if (!isSet) {
                 allOfFile.add(courseId + "//" + examDate + "//" + examHour);
             }
             examWriter(allOfFile);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void examWriter(ArrayList<String> allOfFile){
+    public void examWriter(ArrayList<String> allOfFile) {
         try {
             FileWriter writer = new FileWriter("daneshjooyar/informations/exam.txt");
             for (String s : allOfFile) {
@@ -676,9 +635,9 @@ public class AdminModel {
         }
     }
 
-    public void removeStudentCourse(String studentId, String courseId){
+    public void removeStudentCourse(String studentId, String courseId) {
         ArrayList<String> allOfFile = new ArrayList<>();
-        if (courseId.equals("ALL_COURSE")){
+        if (courseId.equals("ALL_COURSE")) {
             try {
                 FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
                 BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -693,23 +652,25 @@ public class AdminModel {
                         map.put(entry[0], entry[1]);
                     }
                     map.remove(studentId);
-                    Info[1] = map.toString();
-                    String last = Info[0] + "//" + Info[1];
-                    allOfFile.add(last);
+                    if (!map.isEmpty()){
+                        Info[1] = map.toString();
+                        String last = Info[0] + "//" + Info[1];
+                        allOfFile.add(last);
+                    }
                 }
                 bufferedReader.close();
                 writer(allOfFile, "daneshjooyar/informations/student_course_score.txt");
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-        }else {
+        } else {
             try {
                 FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
                 BufferedReader bufferedReader = new BufferedReader(fileReader);
                 String line;
                 while ((line = bufferedReader.readLine()) != null) {
                     String[] Info = line.split("//");
-                    if (Info[0].equals(courseId)){
+                    if (Info[0].equals(courseId)) {
                         String mapAsString = Info[1].replaceAll("[{}\\s]", "");
                         HashMap<String, String> map = new HashMap<>();
                         String[] keyValuePairs = mapAsString.split(",");
@@ -718,29 +679,31 @@ public class AdminModel {
                             map.put(entry[0], entry[1]);
                         }
                         map.remove(studentId);
-                        Info[1] = map.toString();
-                        String last = Info[0] + "//" + Info[1];
-                        allOfFile.add(last);
-                    }else {
+                        if (!map.isEmpty()){
+                            Info[1] = map.toString();
+                            String last = Info[0] + "//" + Info[1];
+                            allOfFile.add(last);
+                        }
+                    } else {
                         allOfFile.add(line);
                     }
                 }
                 bufferedReader.close();
                 writer(allOfFile, "daneshjooyar/informations/student_course_score.txt");
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
     }
 
-    public boolean studentHasCourse(String studentId, String courseId){
+    public boolean studentHasCourse(String studentId, String courseId) {
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (Info[0].equals(courseId)){
+                if (Info[0].equals(courseId)) {
                     String mapAsString = Info[1].replaceAll("[{}\\s]", "");
                     HashMap<String, String> map = new HashMap<>();
                     String[] keyValuePairs = mapAsString.split(",");
@@ -748,21 +711,21 @@ public class AdminModel {
                         String[] entry = pair.split("=");
                         map.put(entry[0], entry[1]);
                     }
-                    if (map.containsKey(studentId)){
+                    if (map.containsKey(studentId)) {
                         return true;
                     }
                 }
             }
             bufferedReader.close();
             return false;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return false;
     }
 
     //Remove account of a student
-    public void studentAccountRemover(String studentId){
+    public void studentAccountRemover(String studentId) {
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/students.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -770,22 +733,21 @@ public class AdminModel {
             ArrayList<String> allOfFile = new ArrayList<>();
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (!(Info[1].equals(studentId))){
+                if (!(Info[1].equals(studentId))) {
                     allOfFile.add(line);
                 }
             }
             bufferedReader.close();
             writer(allOfFile, "daneshjooyar/informations/students.txt");
             removeStudentCourse(studentId, "ALL_COURSE");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
 
-
     //return true if username is not available
-    public boolean teacherUsernameValidation(String teacherUsername){
+    public boolean teacherUsernameValidation(String teacherUsername) {
         ArrayList<String> allTeachersUsername = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/teachers.txt");
@@ -798,13 +760,13 @@ public class AdminModel {
             bufferedReader.close();
             return allTeachersUsername.contains(teacherUsername);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
-    public boolean teacherSignup(String teacherName, String teacherUsername, String teacherPassword){
+    public boolean teacherSignup(String teacherName, String teacherUsername, String teacherPassword) {
         String teacherId = "";
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/teacher_num.txt");
@@ -821,40 +783,21 @@ public class AdminModel {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         try {
             FileWriter AdminFileWriter = new FileWriter("daneshjooyar/informations/teachers.txt", true);
-            AdminFileWriter.write(teacherName + "//" + teacherUsername + "//" + hashPassword(teacherPassword) + "//" + teacherId +"\n");
+            AdminFileWriter.write(teacherName + "//" + teacherUsername + "//" + hashPassword(teacherPassword) + "//" + teacherId + "\n");
             AdminFileWriter.close();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
-    public boolean noTeacherFound(String teacherUsername){
-        ArrayList<String> allTeachersUsername = new ArrayList<>();
-        try {
-            FileReader fileReader = new FileReader("daneshjooyar/informations/teachers.txt");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] Info = line.split("//");
-                allTeachersUsername.add(Info[1]);
-            }
-            bufferedReader.close();
-            return !allTeachersUsername.contains(teacherUsername);
-
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean noTeacherFoundById(String teacherId){
+    public boolean noTeacherFoundById(String teacherId) {
         ArrayList<String> allTeachersId = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/teachers.txt");
@@ -867,13 +810,13 @@ public class AdminModel {
             bufferedReader.close();
             return !allTeachersId.contains(teacherId);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
-    public void teacherAccountRemover(String teacherId){
+    public void teacherAccountRemover(String teacherId) {
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/teachers.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -881,19 +824,19 @@ public class AdminModel {
             ArrayList<String> allOfFile = new ArrayList<>();
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (!(Info[3].equals(teacherId))){
+                if (!(Info[3].equals(teacherId))) {
                     allOfFile.add(line);
                 }
             }
             bufferedReader.close();
             writer(allOfFile, "daneshjooyar/informations/teachers.txt");
             removeTeacherFromAllCourse(teacherId);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void removeTeacherFromAllCourse(String teacherId){
+    public void removeTeacherFromAllCourse(String teacherId) {
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -901,9 +844,9 @@ public class AdminModel {
             ArrayList<String> allOfFile = new ArrayList<>();
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (!(Info[3].equals(teacherId))){
+                if (!(Info[3].equals(teacherId))) {
                     allOfFile.add(line);
-                }else {
+                } else {
                     Info[3] = "null";
                     StringBuilder newString = new StringBuilder();
                     for (String s : Info) {
@@ -916,12 +859,12 @@ public class AdminModel {
             }
             bufferedReader.close();
             writer(allOfFile, "daneshjooyar/informations/course.txt");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void addCourse(String courseName, int credit){
+    public void addCourse(String courseName, int credit) {
         String courseId = "";
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/course_num.txt");
@@ -938,11 +881,11 @@ public class AdminModel {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         try {
-            FileWriter writer = new FileWriter("daneshjooyar/informations/course.txt",true);
+            FileWriter writer = new FileWriter("daneshjooyar/informations/course.txt", true);
             writer.write(courseName + "//" + courseId + "//" + credit + "//" + "null" + "\n");
             writer.close();
         } catch (Exception e) {
@@ -950,7 +893,7 @@ public class AdminModel {
         }
     }
 
-    public void setCourseTeacher(String courseId, String teacherId){
+    public void setCourseTeacher(String courseId, String teacherId) {
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -958,9 +901,9 @@ public class AdminModel {
             ArrayList<String> allOfFile = new ArrayList<>();
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (!(Info[1].equals(courseId))){
+                if (!(Info[1].equals(courseId))) {
                     allOfFile.add(line);
-                }else {
+                } else {
                     Info[3] = teacherId;
                     StringBuilder newString = new StringBuilder();
                     for (String s : Info) {
@@ -982,12 +925,12 @@ public class AdminModel {
                 System.out.println(e.getMessage());
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public boolean courseIdChecker(String courseId){
+    public boolean courseIdChecker(String courseId) {
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -999,32 +942,31 @@ public class AdminModel {
             }
             return allId.contains(courseId);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
     }
 
-    public String courseNameById(String courseId){
+    public String courseNameById(String courseId) {
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            ArrayList<String> allId = new ArrayList<>();
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (Info[1].equals(courseId)){
+                if (Info[1].equals(courseId)) {
                     return Info[0];
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
         return null;
     }
 
-    public void removeCourse(String courseId){
+    public void removeCourse(String courseId) {
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -1032,7 +974,7 @@ public class AdminModel {
             ArrayList<String> allOfFile = new ArrayList<>();
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (!(Info[1].equals(courseId))){
+                if (!(Info[1].equals(courseId))) {
                     allOfFile.add(line);
                 }
             }
@@ -1041,12 +983,12 @@ public class AdminModel {
             clearCourseAndItsAssignments(courseId);
             clearCourseAndItsExam(courseId);
             clearCourseAndItsScore(courseId);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void clearCourseAndItsAssignments(String courseId){
+    public void clearCourseAndItsAssignments(String courseId) {
         ArrayList<String> allOfFile = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/course_assignment.txt");
@@ -1054,18 +996,18 @@ public class AdminModel {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (!Info[0].equals(courseId)){
+                if (!Info[0].equals(courseId)) {
                     allOfFile.add(line);
                 }
             }
             bufferedReader.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         writer(allOfFile, "daneshjooyar/informations/course_assignment.txt");
     }
 
-    public void clearCourseAndItsExam(String courseId){
+    public void clearCourseAndItsExam(String courseId) {
         ArrayList<String> allOfFile = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/exam.txt");
@@ -1073,18 +1015,18 @@ public class AdminModel {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (!Info[0].equals(courseId)){
+                if (!Info[0].equals(courseId)) {
                     allOfFile.add(line);
                 }
             }
             bufferedReader.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         writer(allOfFile, "daneshjooyar/informations/exam.txt");
     }
 
-    public void clearCourseAndItsScore(String courseId){
+    public void clearCourseAndItsScore(String courseId) {
         ArrayList<String> allOfFile = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
@@ -1092,18 +1034,18 @@ public class AdminModel {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 String[] Info = line.split("//");
-                if (!Info[0].equals(courseId)){
+                if (!Info[0].equals(courseId)) {
                     allOfFile.add(line);
                 }
             }
             bufferedReader.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         writer(allOfFile, "daneshjooyar/informations/student_course_score.txt");
     }
 
-    public void setCaptionForAssignment(String assignmentId, String caption){
+    public void setCaptionForAssignment(String assignmentId, String caption) {
         try {
             ArrayList<String> allOfFile = new ArrayList<>();
             FileReader fileReader = new FileReader("daneshjooyar/informations/caption.txt");
@@ -1114,36 +1056,161 @@ public class AdminModel {
             }
             bufferedReader.close();
             ArrayList<String> newAllOfFile = new ArrayList<>();
-            if (allOfFile.contains("//" + assignmentId + "//")){
+            if (allOfFile.contains("//" + assignmentId + "//")) {
                 for (int i = 0; i < allOfFile.size(); i++) {
-                    if (allOfFile.get(i).equals("//" + assignmentId + "//")){
+                    if (allOfFile.get(i).equals("//" + assignmentId + "//")) {
                         newAllOfFile.add(allOfFile.get(i));
                         newAllOfFile.add(caption);
-                        while (i < allOfFile.size()-1 && !captionAssignmentIdPatternChecker(allOfFile.get(i+1))){
+                        while (i < allOfFile.size() - 1 && captionAssignmentIdPatternChecker(allOfFile.get(i + 1))) {
                             i++;
                         }
-                    }else {
+                    } else {
                         newAllOfFile.add(allOfFile.get(i));
                     }
                 }
-            }else {
+            } else {
                 newAllOfFile = allOfFile;
                 newAllOfFile.add("//" + assignmentId + "//");
                 newAllOfFile.add(caption);
             }
             writer(newAllOfFile, "daneshjooyar/informations/caption.txt");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public boolean captionAssignmentIdPatternChecker(String input){
+    public boolean captionAssignmentIdPatternChecker(String input) {
 
         String pattern = "//\\d{5}//";
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(input);
-        return m.find();
+        return !m.find();
 
+    }
+
+    public String assignmentNameById(String assignmentId) {
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/assignment.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(assignmentId)) {
+                    return Info[2];
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public void removeAssignment(String assignmentId) {
+        try {
+            ArrayList<String> allOfFile = new ArrayList<>();
+            FileReader fileReader = new FileReader("daneshjooyar/informations/assignment.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (!Info[0].equals(assignmentId)) {
+                    allOfFile.add(line);
+                }
+            }
+            bufferedReader.close();
+            writer(allOfFile, "daneshjooyar/informations/assignment.txt");
+            removeAssignmentFromCourse(assignmentId, "ALL_COURSE");
+            removeAssignmentCaption(assignmentId);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void removeAssignmentCaption(String assignmentId) {
+        try {
+            ArrayList<String> allOfFile = new ArrayList<>();
+            FileReader fileReader = new FileReader("daneshjooyar/informations/caption.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                allOfFile.add(line);
+            }
+            bufferedReader.close();
+            ArrayList<String> newAllOfFile = new ArrayList<>();
+            if (allOfFile.contains("//" + assignmentId + "//")) {
+                for (int i = 0; i < allOfFile.size(); i++) {
+                    if (allOfFile.get(i).equals("//" + assignmentId + "//")) {
+                        while (i < allOfFile.size() - 1 && captionAssignmentIdPatternChecker(allOfFile.get(i + 1))) {
+                            i++;
+                        }
+                    } else {
+                        newAllOfFile.add(allOfFile.get(i));
+                    }
+                }
+            } else {
+                newAllOfFile = allOfFile;
+            }
+            writer(newAllOfFile, "daneshjooyar/informations/caption.txt");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public boolean removeAssignmentFromCourse(String assignmentId, String courseId) {
+        boolean hasAssignment = false;
+        ArrayList<String> allOfFile = new ArrayList<>();
+        if (courseId.equals("ALL_COURSE")) {
+            try {
+                FileReader fileReader = new FileReader("daneshjooyar/informations/course_assignment.txt");
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    String[] Info = line.split("//");
+                    Set<String> set = new HashSet<>();
+                    String[] elements = Info[1].substring(1, Info[1].length() - 1).split(", ");
+                    Collections.addAll(set, elements);
+                    set.remove(assignmentId);
+                    String last;
+                    if (!set.isEmpty()){
+                        last = Info[0] + "//" + set;
+                        allOfFile.add(last);
+                    }
+                }
+                bufferedReader.close();
+                writer(allOfFile, "daneshjooyar/informations/course_assignment.txt");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            return true;
+        } else {
+            try {
+                FileReader fileReader = new FileReader("daneshjooyar/informations/course_assignment.txt");
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    String[] Info = line.split("//");
+                    if (Info[0].equals(courseId)) {
+                        Set<String> set = new HashSet<>();
+                        String[] elements = Info[1].substring(1, Info[1].length() - 1).split(", ");
+                        Collections.addAll(set, elements);
+                        hasAssignment = set.remove(assignmentId);
+                        String last;
+                        if (!set.isEmpty()){
+                            last = Info[0] + "//" + set;
+                            allOfFile.add(last);
+                        }
+                    } else {
+                        allOfFile.add(line);
+                    }
+                }
+                bufferedReader.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        writer(allOfFile, "daneshjooyar/informations/course_assignment.txt");
+        return hasAssignment;
     }
 
 }
