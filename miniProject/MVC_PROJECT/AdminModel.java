@@ -1,4 +1,4 @@
-package AmirhosseinObligationToFuckingMVCPrograming;
+package MVC_PROJECT;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -1197,6 +1197,7 @@ public class AdminModel {
                 System.out.println(e.getMessage());
             }
         }
+
         writer(allOfFile, "daneshjooyar/informations/course_assignment.txt");
         return hasAssignment;
     }

@@ -1,4 +1,4 @@
-package AmirhosseinObligationToFuckingMVCPrograming;
+package MVC_PROJECT;
 
 import java.util.Scanner;
 

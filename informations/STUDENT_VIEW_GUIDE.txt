@@ -1,0 +1,28 @@
+INPUTS:
+
+SIGNUP: signup//studentId//studentUsername//password
+
+LOGIN: login//studentUsername|studentId//password
+
+CHANGE USERNAME: changeUsername//lastUsername//newUsername//password
+
+CHANGE PASSWORD: changePassword//studentId//newPassword//oldPassword
+
+
+
+
+
+OUTPUTS:
+
+IF STUDENT HASN'T SIGNUP BY ADMIN: "noStudentFoundInServer"
+
+IF STUDENT ALREADY SIGNED UP ON DARSA: "alreadySignedUp"
+
+IF USERNAME EXIST FROM BEFORE ON SERVER: "usernameExist"
+
+IF EVERYTHING WORKS GOOD: "successful" --> IT MAY HAVE INFORMATION AFTER IT > ( SIGNUP AND LOGIN : "successful//studentName"
+
+IF STUDENT DOESN'T SIGNED UP ON DARSA: "notSignedUp"
+
+IF INPUT PASSWORD IS WRONG WITH PASSWORD ON SEVER: "passwordIsWrong"
+
