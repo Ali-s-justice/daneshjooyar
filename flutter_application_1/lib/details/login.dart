@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'my_app_bar.dart';
@@ -15,12 +17,14 @@ class _LoginState extends State<Login> {
   TextEditingController usernameOrStudentCodeController =
       TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
   static const Color formColor = Color.fromARGB(255, 239, 227, 233);
   static const TextStyle formTextStyle = TextStyle(
     fontFamily: 'vazir',
     fontWeight: FontWeight.w900,
     fontSize: 22.0,
   );
+
   static const bottomnDecoration = BoxDecoration(
     gradient: LinearGradient(
       colors: [
@@ -31,10 +35,12 @@ class _LoginState extends State<Login> {
       end: Alignment.bottomRight,
     ),
     borderRadius: BorderRadius.all(Radius.circular(30.0)),
-  ) ; 
+  );
   final _keyform = GlobalKey<FormState>();
+
   bool visable = true;
 
+  String response = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,6 +175,7 @@ class _LoginState extends State<Login> {
                         onPressed: () {
                           if (_keyform.currentState!.validate()) {
                             //send information to backend
+                            login();
                             bool backendValidation = true; //must be edit
                             setState(() {
                               if (backendValidation) {
@@ -199,5 +206,27 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  //connect to server
+  Future<String> login() async {
+    await Socket.connect("172.20.121.111", 8080).then(
+      (serverSocket) {
+        serverSocket.write(
+            'login//${usernameOrStudentCodeController.text}//${passwordController.text}\\u000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(
+              () {
+                response = String.fromCharCodes(socketResponse);
+              },
+            );
+          },
+        );
+      },
+    );
+    print('--------------------->   server response is : ${response}');
+    return response;
   }
 }

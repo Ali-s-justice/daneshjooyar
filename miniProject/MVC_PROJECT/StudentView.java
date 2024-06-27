@@ -3,9 +3,9 @@ package MVC_PROJECT;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class StudentView implements Runnable{
+public class StudentView{
 
-    private final Socket clientSocket;
+    // private final Socket clientSocket;
     StudentController studentController;
 
     public StudentView(Socket clientSocket) {
@@ -48,35 +48,36 @@ public class StudentView implements Runnable{
 
 
 
-    //Testing Project
+    
     public StudentView(){//Testing Project
         this.clientSocket = null;
     }
 
-    @Override
-    public void run(){}
 
-    public void RUN(){
-        while (true){
-            System.out.println("Enter front message:\n[1]:BREAK!");
-            Scanner input = new Scanner(System.in);
-            String inputString = input.next();
-            if (inputString.equals("1")){
-                break;
-            }
-            String[] splitInputString = studentController.getObligationSplitter(this, inputString);
-            String[] restString = studentController.getObligationRemover(this, splitInputString);
-            if (restString == null){
-                System.out.println(":}\n");
-                continue;
-            }
-            String response = allObligation(splitInputString[0], restString);
-            System.out.println(response);
-        }
-    }
+    // public void RUN(){
+    //     while (true){
+    //         System.out.println("Enter front message:\n[1]:BREAK!");
+    //         Scanner input = new Scanner(System.in);
+    //         String inputString = input.next();
+    //         if (inputString.equals("1")){
+    //             break;
+    //         }
+    //         String[] splitInputString = studentController.getObligationSplitter(this, inputString);
+    //         String[] restString = studentController.getObligationRemover(this, splitInputString);
+    //         if (restString == null){
+    //             System.out.println(":}\n");
+    //             continue;
+    //         }
+    //         String response = allObligation(splitInputString[0], restString);
+    //         System.out.println(response);
+    //     }
+    // }
     //Testing Project
 
-    private String allObligation(String obligation, String[] restString){
+    private String allObligation(String[] command){
+
+        String obligation = command[0];
+        String[] restString = studentController.getObligationRemover(this, command);
         switch (obligation){
             case "signup"://signup student
                 return signup(restString);

@@ -6,6 +6,12 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Server",
+            "request": "launch",
+            "mainClass": "Server"
+        },
+        {
+            "type": "java",
             "name": "MainMVC",
             "request": "launch",
             "mainClass": "AmirhosseinObligationToFuckingMVCPrograming.MainMVC"
