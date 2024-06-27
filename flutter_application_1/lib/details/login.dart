@@ -73,6 +73,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     TextFormField(
+                      controller: usernameOrStudentCodeController,
                       inputFormatters: [
                         FilteringTextInputFormatter.deny(' '),
                       ],
@@ -113,6 +114,7 @@ class _LoginState extends State<Login> {
                     ),
                     Stack(children: [
                       TextFormField(
+                        controller: passwordController,
                         validator: (String? value) {
                           if (!RegExp(
                                   "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}\$")
