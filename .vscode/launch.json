@@ -8,6 +8,12 @@
             "type": "java",
             "name": "Server",
             "request": "launch",
+            "mainClass": "MVC_PROJECT.Server"
+        },
+        {
+            "type": "java",
+            "name": "Server",
+            "request": "launch",
             "mainClass": "Server"
         },
         {

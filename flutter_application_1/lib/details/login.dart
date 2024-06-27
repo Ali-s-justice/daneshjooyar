@@ -173,7 +173,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         onPressed: () {
-                          if (_keyform.currentState!.validate()) {
+                          if (!_keyform.currentState!.validate()) {
                             //send information to backend
                             login();
                             bool backendValidation = true; //must be edit

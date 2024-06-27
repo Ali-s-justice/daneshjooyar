@@ -1,4 +1,4 @@
-package MVC_PROJECT;
+import MVC_PROJECT.*;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -54,10 +54,6 @@ class ClientHandler extends Thread {
 
     @Override
     public void run() {
-        StudentView studentView = new StudentView();
-        StudentModel studentModel = new StudentModel();
-        StudentController studentController = new StudentController(studentView, studentModel);
-        studentView.setStudentController(studentController);
         super.run();
         String command;
         try {
@@ -66,8 +62,12 @@ class ClientHandler extends Thread {
         } catch (IOException io) {
             throw new RuntimeException(io);
         }
+        StudentView studentView = new StudentView();
+        StudentModel studentModel = new StudentModel();
+        StudentController studentController = new StudentController(studentView, studentModel);
+        studentView.setStudentController(studentController);
         String[] split = command.split("//");
-        String response = studentView.allObligation(split);
+        String response = allObligation(split);
         System.out.println(response);
     }
 }
