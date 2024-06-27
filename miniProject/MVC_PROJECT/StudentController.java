@@ -104,6 +104,14 @@ public class StudentController {
         }
     }
 
+    public String getStudentUsernameByID(StudentView studentView, String ID){
+        if (studentView.equals(this.studentView)){
+            return this.studentModel.studentUsernameByID(ID);
+        }else {
+            return null;
+        }
+    }
+
     public void getChangeUsername(StudentView studentView, String studentId, String newUsername){
         if (studentView.equals(this.studentView)){
             this.studentModel.changeUsername(studentId, newUsername);
@@ -113,6 +121,38 @@ public class StudentController {
     public void getChangePassword(StudentView studentView, String studentId, String newPassword){
         if (studentView.equals(this.studentView)){
             this.studentModel.changePassword(studentId, newPassword);
+        }
+    }
+
+    public String getStudentInfoWay(StudentView studentView, String way){
+        if (studentView.equals(this.studentView)){
+            return this.studentModel.studentInfoWay(way);
+        }else {
+            return null;
+        }
+    }
+
+    public int getAllCreditGetter(StudentView studentView, String studentID){
+        if (studentView.equals(this.studentView)){
+            return studentModel.AllCreditGetter(studentID);
+        }else {
+            return -1;
+        }
+    }
+
+    public double getPrintAverage(StudentView studentView, String studentID, String kind){
+        if (studentView.equals(this.studentView)){
+            return studentModel.printAverage(studentID, kind);
+        }else {
+            return -1;
+        }
+    }
+
+    public String getDeleteAccount(StudentView studentView, String studentId){
+        if (studentView.equals(this.studentView)){
+            return this.studentModel.deleteAccount(studentId);
+        }else {
+            return null;
         }
     }
 

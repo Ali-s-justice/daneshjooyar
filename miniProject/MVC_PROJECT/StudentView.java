@@ -66,6 +66,10 @@ public class StudentView implements Runnable{
             }
             String[] splitInputString = studentController.getObligationSplitter(this, inputString);
             String[] restString = studentController.getObligationRemover(this, splitInputString);
+            if (restString == null){
+                System.out.println(":}\n");
+                continue;
+            }
             String response = allObligation(splitInputString[0], restString);
             System.out.println(response);
         }
@@ -87,13 +91,50 @@ public class StudentView implements Runnable{
                 return chaneUsername(restString);
             case "changePassword":
                 return changePassword(restString);
+            case "userInfo":
+                String way = studentController.getStudentInfoWay(this, restString[0]);
+                if (!way.equals("ID")) {
+                    restString[0] = studentController.getStudentIdByUsername(this, restString[0]);
+                }
+                return userInfo(restString);
+            case "deleteAccount":
+                return deleteAccount(restString);
+            case "sara":
+                return sara(restString);
             case null:
                 return "error";
             default:
-                //??
-                break;
+                return "noObligation";
         }
-        return null;
+    }
+
+    private String sara(String[] restString){
+        
+    }
+
+    private String deleteAccount(String[] restString){
+        // restString: studentID
+        return studentController.getDeleteAccount(this, restString[0]);
+    }
+
+    private String userInfo(String[] restString){
+        //rest String : studentId
+        if (studentController.getNoStudentFoundById(this, restString[0])){
+            return "noStudentFoundInServer";
+        }
+        String username = studentController.getStudentUsernameByID(this, restString[0]);
+        String name = studentController.getReturnName(this, restString[0]);
+        String studentID = restString[0];
+        String termInfo = "بهار 1403-1402";
+        int creditNum = studentController.getAllCreditGetter(this, restString[0]);
+        if (creditNum == -1){
+            creditNum =0;
+        }
+        double allAverage = studentController.getPrintAverage(this, restString[0], "total");
+        if (allAverage == -1){
+            allAverage = 0.00;
+        }
+        return username + "//" + name +  "//" + studentID +  "//" + termInfo +  "//" + creditNum +  "//" + allAverage;
     }
 
     private String changePassword(String[] restString){

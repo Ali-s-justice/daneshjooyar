@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 
 public class StudentModel {
@@ -18,6 +19,9 @@ public class StudentModel {
 
     public String[] getObligationRemover(String[] splitInputString){
         ArrayList<String> temp = new ArrayList<>(List.of(splitInputString));
+        if (temp.size() == 1){
+            return null;
+        }
         temp.removeFirst();
         return temp.toArray(new String[0]);
     }
@@ -76,6 +80,55 @@ public class StudentModel {
             System.out.println(e.getMessage());
         }
         return null;
+    }
+
+    public String studentUsernameByID(String ID){
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/students.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[1].equals(ID)){
+                    return Info[2];
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public String deleteAccount(String studentId){
+        ArrayList<String> allOfFile = new ArrayList<>();
+        boolean successful = false;
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/students.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[1].equals(studentId)){
+                    Info[2] = "$";
+                    Info[3] = "$";
+                    String last = Info[0] + "//" + Info[1] + "//" + Info[2] + "//" + Info[3];
+                    allOfFile.add(last);
+                    successful = true;
+                }else {
+                    allOfFile.add(line);
+                }
+            }
+            writer(allOfFile, "daneshjooyar/informations/students.txt");
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (successful){
+            return "successful";
+        }else {
+            return "unSuccessful";
+        }
     }
 
     //Signup Student Username Validation --> return true if username is unavailable
@@ -158,6 +211,124 @@ public class StudentModel {
         return null;
     }
 
+    public int AllCreditGetter(String studentId) {
+        int courseCredit = 0;
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                int credit = getCourseCredit(Info[0]);
+                String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                HashMap<String, String> map = new HashMap<>();
+                String[] keyValuePairs = mapAsString.split(",");
+                for (String pair : keyValuePairs) {
+                    String[] entry = pair.split("=");
+                    map.put(entry[0], entry[1]);
+                }
+                if (map.containsKey(studentId)) {
+                    courseCredit += credit;
+                }
+            }
+            bufferedReader.close();
+            return courseCredit;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+    }
+
+    public double printAverage(String studentId, String kind) {
+        if (kind.equals("current")) {
+            double sum = 0.0;
+            int courseCredit = 0;
+            try {
+                FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    String[] Info = line.split("//");
+                    int credit = getCourseCredit(Info[0]);
+                    String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                    HashMap<String, String> map = new HashMap<>();
+                    String[] keyValuePairs = mapAsString.split(",");
+                    for (String pair : keyValuePairs) {
+                        String[] entry = pair.split("=");
+                        map.put(entry[0], entry[1]);
+                    }
+                    if (map.containsKey(studentId) && !map.get(studentId).equals("null")) {
+                        courseCredit += credit;
+                        String score = map.get(studentId);
+                        sum += (Double.parseDouble(score) * credit);
+                    }
+                }
+                bufferedReader.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            if (courseCredit == 0) {
+                return -1;
+            } else {
+                return (sum / courseCredit);
+            }
+        } else if (kind.equals("total")) {
+            double sum = 0.0;
+            int courseCredit = 0;
+            try {
+                FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    String[] Info = line.split("//");
+                    int credit = getCourseCredit(Info[0]);
+                    String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                    HashMap<String, String> map = new HashMap<>();
+                    String[] keyValuePairs = mapAsString.split(",");
+                    for (String pair : keyValuePairs) {
+                        String[] entry = pair.split("=");
+                        map.put(entry[0], entry[1]);
+                    }
+                    if (map.containsKey(studentId)) {
+                        courseCredit += credit;
+                        String score = map.get(studentId);
+                        if (!score.equals("null")) {
+                            sum += (Double.parseDouble(score) * credit);
+                        }
+                    }
+                }
+                bufferedReader.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            if (courseCredit == 0) {
+                return -1;
+            } else {
+                return (sum / courseCredit);
+            }
+        } else {
+            return -1;
+        }
+    }
+
+    public int getCourseCredit(String courseId) {
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[1].equals(courseId)) {
+                    return Integer.parseInt(Info[2]);
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
+
     public String hashPassword(String password) {//Password to hash
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -192,14 +363,22 @@ public class StudentModel {
     }
 
     public String studentLoginWay(String loginInput){
-        if (loginWithStudentId(loginInput)){
+        if (doWithID(loginInput)){
             return "loginWithID";
         }else {
             return "loginWithUsername";
         }
     }
 
-    public boolean loginWithStudentId(String loginInput){
+    public String studentInfoWay(String way){
+        if (doWithID(way)){
+            return "ID";
+        }else {
+            return "username";
+        }
+    }
+
+    public boolean doWithID(String loginInput){
         return loginInput.matches("\\d{9}");
     }
 
