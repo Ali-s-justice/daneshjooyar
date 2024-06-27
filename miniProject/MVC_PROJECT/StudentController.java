@@ -1,5 +1,7 @@
 package MVC_PROJECT;
 
+import java.util.ArrayList;
+
 public class StudentController {
 
     StudentView studentView;
@@ -153,6 +155,38 @@ public class StudentController {
             return this.studentModel.deleteAccount(studentId);
         }else {
             return null;
+        }
+    }
+
+    public ArrayList<String> getBestScoreAndCourse(StudentView studentView, String studentId){
+        if (studentView.equals(this.studentView)){
+            return this.studentModel.bestScoreAndCourse(studentId);
+        }else {
+            return null;
+        }
+    }
+
+    public ArrayList<String> getWorseScoreAndCourse(StudentView studentView, String studentId){
+        if (studentView.equals(this.studentView)){
+            return this.studentModel.worseScoreAndCourse(studentId);
+        }else {
+            return null;
+        }
+    }
+
+    public int getAllExamNum(StudentView studentView, String studentId){
+        if (studentView.equals(this.studentView)){
+            return this.studentModel.allExamNum(studentId);
+        }else {
+            return 0;
+        }
+    }
+
+    public int getAllAssignmentNum(StudentView studentView, String studentId){
+        if (studentView.equals(this.studentView)){
+            return this.studentModel.allAssignmentNum(studentId);
+        }else {
+            return 0;
         }
     }
 
