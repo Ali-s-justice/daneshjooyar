@@ -2,16 +2,9 @@ package MVC_PROJECT;
 
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class StudentView{
-
-    // private final Socket clientSocket;
     StudentController studentController;
-
-    public StudentView(Socket clientSocket) {
-        this.clientSocket = clientSocket;
-    }
 
     public void setStudentController(StudentController studentController){
         this.studentController = studentController;
@@ -47,14 +40,6 @@ public class StudentView{
 //    }
 
 
-
-
-    
-    public StudentView(){//Testing Project
-        this.clientSocket = null;
-    }
-
-
     // public void RUN(){
     //     while (true){
     //         System.out.println("Enter front message:\n[1]:BREAK!");
@@ -75,7 +60,7 @@ public class StudentView{
     // }
     //Testing Project
 
-    private String allObligation(String[] command){
+    String allObligation(String[] command){
 
         String obligation = command[0];
         String[] restString = studentController.getObligationRemover(this, command);

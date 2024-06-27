@@ -1,12 +1,13 @@
+package MVC_PROJECT;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import StudentView.java;
 
 public class Server {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println("Welcome to the Server!");
         ServerSocket serverSocket = new ServerSocket(8080);
         while (true) {
@@ -29,7 +30,7 @@ class ClientHandler extends Thread {
 
     }
 
-    public String listener() {
+    public String listener() throws IOException {
         System.out.println("listener is activated!");
         StringBuilder sb = new StringBuilder();
         int index = dis.read();
@@ -41,7 +42,7 @@ class ClientHandler extends Thread {
         return sb.toString();
     }
 
-    public void writer(String write) {
+    public void writer(String write) throws IOException {
         dos.writeBytes(write);
         dos.flush();
         dos.close();
@@ -66,6 +67,7 @@ class ClientHandler extends Thread {
             throw new RuntimeException(io);
         }
         String[] split = command.split("//");
-        String response = studentView.allObligation(command);
+        String response = studentView.allObligation(split);
+        System.out.println(response);
     }
 }
