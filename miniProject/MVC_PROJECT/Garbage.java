@@ -1,4 +1,4 @@
-package AmirhosseinObligationToFuckingMVCPrograming;
+package MVC_PROJECT;
 
 public class Garbage {
     //    private void getStudentName(){

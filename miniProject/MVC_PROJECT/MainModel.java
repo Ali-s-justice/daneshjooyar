@@ -1,4 +1,4 @@
-package AmirhosseinObligationToFuckingMVCPrograming;
+package MVC_PROJECT;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -14,7 +14,7 @@ public class MainModel {
             if (code==null){
                 try {
                     FileWriter writer = new FileWriter("daneshjooyar/informations/student_num.txt");
-                    writer.write("402243000");
+                    writer.write(" ");
                     writer.close();
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
