@@ -1,13 +1,8 @@
-import 'dart:io';
 import 'package:flutter_application_1/details/edit_informations.dart';
-import 'package:flutter_application_1/details/edit_password.dart';
+import 'package:flutter_application_1/details/sara.dart';
 import 'package:flutter_application_1/details/support.dart';
-
 import 'classes/student.dart';
-// import 'package:file_picker/file_picker.dart';
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/details/signup.dart';
 
 class Information extends StatefulWidget {
@@ -15,6 +10,11 @@ class Information extends StatefulWidget {
   const Information({super.key});
   static const alertDilogTextStyle = TextStyle(
     fontSize: 13.0,
+    fontFamily: 'vazir',
+  );
+  static const informationTextstyle = TextStyle(
+    fontSize: 25.0,
+    color: Colors.black,
     fontFamily: 'vazir',
   );
   static const infoStyle = TextStyle(
@@ -53,7 +53,11 @@ class _InformationState extends State<Information> {
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.home),
-              onPressed: () {},
+              onPressed: () {
+                //it isn't complete , must be editted
+                Navigator.pushNamed(context, Sara.routeName,
+                    arguments: newStudent);
+              },
               iconSize: 35,
               color: Colors.black,
             ),
@@ -76,28 +80,6 @@ class _InformationState extends State<Information> {
                       radius: 95.0,
                       backgroundImage: AssetImage('assets/images/mypic.jpg'),
                     ),
-                    // Positioned(
-                    //   bottom: 0,
-                    //   right: 0,
-                    //   child: Container(
-                    //     alignment: Alignment.center,
-                    //     width: 40,
-                    //     height: 40,
-                    //     decoration: const ShapeDecoration(
-                    //       color: Color(0xFF24201D),
-                    //       shape: OvalBorder(),
-                    //     ),
-                    //     child: Center(
-                    //       child: IconButton(
-                    //         onPressed: () {},
-                    //         icon: const Icon(
-                    //           Icons.camera_alt_rounded,
-                    //           color: Colors.white,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -349,41 +331,7 @@ class _InformationState extends State<Information> {
                     ),
                   ),
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: const Text(
-                            'آیا از حذف حساب کاربری خود اطمینان دارید ؟',
-                            textDirection: TextDirection.rtl,
-                            style: Information.alertDilogTextStyle,
-                            textAlign: TextAlign.justify,
-                          ),
-                          actions: <Widget>[
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text('خیر'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, Signup.routeName);
-                                    //ساز و کار حذف اطلاعات دانشجو در بک اند در این قسمت پیاده سازی شود
-                                  },
-                                  child: const Text('بله'),
-                                ),
-                              ],
-                            ),
-                          ],
-                        );
-                      },
-                    );
+                    alertDialog(context);
                   },
                   child: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
@@ -403,6 +351,43 @@ class _InformationState extends State<Information> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<dynamic> alertDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: const Text(
+            'آیا از حذف حساب کاربری خود اطمینان دارید ؟',
+            textDirection: TextDirection.rtl,
+            style: Information.alertDilogTextStyle,
+            textAlign: TextAlign.justify,
+          ),
+          actions: <Widget>[
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('خیر'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, Signup.routeName);
+                    //ساز و کار حذف اطلاعات دانشجو در بک اند در این قسمت پیاده سازی شود
+                  },
+                  child: const Text('بله'),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

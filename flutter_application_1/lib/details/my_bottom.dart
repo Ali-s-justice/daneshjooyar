@@ -3,14 +3,14 @@ import 'package:flutter_application_1/details/login.dart';
 import 'package:flutter_application_1/details/signup.dart';
 
 // ignore: must_be_immutable
-class MyBottom extends StatefulWidget {
-  const MyBottom({super.key});
+class SignUpLoginBottomBar extends StatefulWidget {
+  const SignUpLoginBottomBar({super.key});
 
   @override
-  State<MyBottom> createState() => _MyBottomState();
+  State<SignUpLoginBottomBar> createState() => _SignUpLoginBottomBarState();
 }
 
-class _MyBottomState extends State<MyBottom> {
+class _SignUpLoginBottomBarState extends State<SignUpLoginBottomBar> {
   int _selected = 0;
   final screens = [const Login(), const Signup()];
 
@@ -64,8 +64,8 @@ class _MyBottomState extends State<MyBottom> {
               () {
                 _selected = value;
                 value == 1
-                    ? Navigator.pushNamed(context, Signup.routeName)
-                    : Navigator.pushNamed(context, Login.routeName);
+                    ? Navigator.pushReplacementNamed(context, Signup.routeName)
+                    : Navigator.pushReplacementNamed(context, Login.routeName);
               },
             );
           },

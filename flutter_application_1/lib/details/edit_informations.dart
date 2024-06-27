@@ -1,10 +1,6 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/details/information.dart';
-import 'package:flutter_application_1/details/my_app_bar.dart';
 import 'classes/student.dart';
 
 class EditInformation extends StatefulWidget {
@@ -72,7 +68,14 @@ class _MyWidgetState extends State<EditInformation> {
                         ),
                         child: Container(
                           decoration: const BoxDecoration(
-                            color: Color.fromARGB(176, 255, 255, 255),
+                            gradient: LinearGradient(
+                              colors: [
+                                Color.fromARGB(255, 15, 187, 255),
+                                Color.fromARGB(255, 0, 81, 255),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(50),
                               topRight: Radius.circular(50),
@@ -550,13 +553,13 @@ class _MyWidgetState extends State<EditInformation> {
                     ],
                   ),
                   Positioned(
-                    right: 110,
+                    right: 130,
                     top: 0,
                     child: Stack(
                       children: [
                         const CircleAvatar(
                           backgroundColor: Colors.white,
-                          radius: 95,
+                          radius: 85,
                           backgroundImage:
                               AssetImage('assets/images/mypic.jpg'),
                         ),
