@@ -8,6 +8,12 @@
             "type": "java",
             "name": "MainMVC",
             "request": "launch",
+            "mainClass": "AmirhosseinObligationToFuckingMVCPrograming.MainMVC"
+        },
+        {
+            "type": "java",
+            "name": "MainMVC",
+            "request": "launch",
             "mainClass": "AmirhosseinObligationToFuckingMVCPrograming.MainMVC",
             "projectName": "daneshjooyar_4c9f17f6"
         },

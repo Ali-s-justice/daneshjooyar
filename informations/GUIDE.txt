@@ -1,0 +1,39 @@
+admins:
+Admin username // Admin hash password
+
+assignment:
+Assignment ID // Activity // Assignment Name // Deadline ( Date , Hour ) // Maker Code ( Admin: username, Teacher: teacher ID )
+
+assignment num:
+Last assignment ID
+
+course:
+Course name // Course ID // Credit // Teacher ID
+
+course assignment:
+Course ID//A set of assignments ID
+
+course num:
+Last course ID
+
+exam:
+Course ID // Date of exam //hour of exam
+
+student course score:
+Course ID // HashMap<Student ID, Score>
+
+student num:
+Last student ID
+
+students:
+Student name // Student ID // Student username // Hash password
+
+teacher num:
+Last teacher ID
+
+teachers:
+Teacher name // Teacher username // Hash password // Teacher ID
+
+caption:
+// Assignment ID //
+Text...

@@ -1,19 +1,22 @@
-import 'dart:io';
 import 'package:flutter_application_1/details/edit_informations.dart';
-import 'package:flutter_application_1/details/edit_password.dart';
+import 'package:flutter_application_1/details/sara.dart';
 import 'package:flutter_application_1/details/support.dart';
-
 import 'classes/student.dart';
-// import 'package:file_picker/file_picker.dart';
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/details/signup.dart';
 
 class Information extends StatefulWidget {
   static const String routeName = 'information';
   const Information({super.key});
-
+  static const alertDilogTextStyle = TextStyle(
+    fontSize: 13.0,
+    fontFamily: 'vazir',
+  );
+  static const informationTextstyle = TextStyle(
+    fontSize: 25.0,
+    color: Colors.black,
+    fontFamily: 'vazir',
+  );
   static const infoStyle = TextStyle(
       fontSize: 15.0,
       fontFamily: 'vazir',
@@ -25,17 +28,15 @@ class Information extends StatefulWidget {
 }
 
 class _InformationState extends State<Information> {
-  File? image;
-
   // Reusable gradient decoration
   BoxDecoration get gradientBackground => const BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color.fromARGB(255, 93, 0, 255),
-            Color.fromARGB(255, 131, 58, 180),
+            Color.fromARGB(212, 255, 255, 255),
+            Color.fromARGB(255, 15, 199, 255),
           ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
         ),
       );
   static const color = Color.fromRGBO(230, 230, 250, 1.0);
@@ -52,9 +53,16 @@ class _InformationState extends State<Information> {
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.home),
-              onPressed: () {},
+              onPressed: () {
+                //it isn't complete , must be editted
+                Navigator.pushNamed(context, Sara.routeName,
+                    arguments: newStudent);
+              },
               iconSize: 35,
-              color: Colors.white,
+              color: Colors.black,
+            ),
+            const SizedBox(
+              width: 15,
             ),
           ],
           automaticallyImplyLeading: false,
@@ -66,33 +74,11 @@ class _InformationState extends State<Information> {
             // Center the content horizontally
             child: Column(
               children: [
-                Stack(
+                const Stack(
                   children: [
-                    const CircleAvatar(
-                      radius: 75.0,
+                    CircleAvatar(
+                      radius: 95.0,
                       backgroundImage: AssetImage('assets/images/mypic.jpg'),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 40,
-                        height: 40,
-                        decoration: const ShapeDecoration(
-                          color: Color(0xFF24201D),
-                          shape: OvalBorder(),
-                        ),
-                        child: Center(
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.camera_alt_rounded,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
                     ),
                   ],
                 ),
@@ -101,17 +87,17 @@ class _InformationState extends State<Information> {
                   newStudent.username!,
                   style: const TextStyle(
                     fontSize: 25.0,
-                    color: Colors.white,
+                    color: Colors.black,
                     fontFamily: 'vazir',
                   ),
                 ),
-                const SizedBox(
-                  height: 10.0,
-                ),
+                // const SizedBox(
+                //   height: 10.0,
+                // ),
                 const Text(
                   'دانشجو',
                   style: TextStyle(
-                      fontSize: 25.0, color: Colors.white, fontFamily: 'vazir'),
+                      fontSize: 25.0, color: Colors.black, fontFamily: 'vazir'),
                 ),
                 const SizedBox(
                   height: 20.0,
@@ -267,7 +253,8 @@ class _InformationState extends State<Information> {
                                     width: 30,
                                     height: 30,
                                     decoration: ShapeDecoration(
-                                      color: const Color(0xFF553772),
+                                      color:
+                                          const Color.fromARGB(255, 62, 32, 91),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10),
                                       ),
@@ -290,8 +277,7 @@ class _InformationState extends State<Information> {
                         TextButton(
                           onPressed: () {
                             setState(() {
-                              Navigator.pushNamed(
-                                  context, Support.routeName,
+                              Navigator.pushNamed(context, Support.routeName,
                                   arguments: newStudent);
                             });
                           },
@@ -313,7 +299,8 @@ class _InformationState extends State<Information> {
                                     width: 30,
                                     height: 30,
                                     decoration: ShapeDecoration(
-                                      color: const Color(0xFF553772),
+                                      color:
+                                          const Color.fromARGB(255, 62, 32, 91),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10),
                                       ),
@@ -333,18 +320,18 @@ class _InformationState extends State<Information> {
                   ),
                 ),
                 const SizedBox(
-                  height: 70.0,
+                  height: 30.0,
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(340.0, 50),
+                    minimumSize: const Size(250.0, 40),
                     backgroundColor: Colors.red,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderRadius: BorderRadius.circular(50.0),
                     ),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, Signup.routeName);
+                    alertDialog(context);
                   },
                   child: const Padding(
                     padding: EdgeInsets.symmetric(vertical: 10.0),
@@ -364,6 +351,43 @@ class _InformationState extends State<Information> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<dynamic> alertDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: const Text(
+            'آیا از حذف حساب کاربری خود اطمینان دارید ؟',
+            textDirection: TextDirection.rtl,
+            style: Information.alertDilogTextStyle,
+            textAlign: TextAlign.justify,
+          ),
+          actions: <Widget>[
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('خیر'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, Signup.routeName);
+                    //ساز و کار حذف اطلاعات دانشجو در بک اند در این قسمت پیاده سازی شود
+                  },
+                  child: const Text('بله'),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
