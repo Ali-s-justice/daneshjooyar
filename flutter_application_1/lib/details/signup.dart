@@ -21,13 +21,31 @@ class _SignupState extends State<Signup> {
   final _keyform = GlobalKey<FormState>();
   bool visable = true;
   bool visable2 = true;
+  static const Color formColor = Color.fromARGB(255, 239, 227, 233);
+  static const bottomnDecoration = BoxDecoration(
+    gradient: LinearGradient(
+      colors: [
+        Color.fromARGB(255, 93, 0, 255),
+        Color.fromARGB(255, 15, 199, 255),
+      ],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+  );
+  static const TextStyle formTextStyle = TextStyle(
+    fontFamily: 'vazir',
+    fontWeight: FontWeight.w900,
+    fontSize: 22.0,
+  );
+
   Student newStudent = Student();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(),
-      bottomNavigationBar: const MyBottom(),
+      appBar: const SignUpLoginAppBar(),
+      bottomNavigationBar: const SignUpLoginBottomBar(),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -77,18 +95,14 @@ class _SignupState extends State<Signup> {
                           borderRadius: BorderRadius.circular(25),
                         ),
                         filled: true,
-                        fillColor: const Color.fromARGB(255, 239, 227, 233),
+                        fillColor: formColor,
                         label: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0),
                           alignment: Alignment.centerRight,
                           child: const Text(
                             'نام کاربری / یوزنیم',
                             textDirection: TextDirection.rtl,
-                            style: TextStyle(
-                              fontFamily: 'vazir',
-                              fontWeight: FontWeight.w900,
-                              fontSize: 22.0,
-                            ),
+                            style: formTextStyle,
                           ),
                         ),
                       ),
@@ -115,18 +129,14 @@ class _SignupState extends State<Signup> {
                           borderRadius: BorderRadius.circular(25),
                         ),
                         filled: true,
-                        fillColor: const Color.fromARGB(255, 239, 227, 233),
+                        fillColor: formColor,
                         label: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0),
                           alignment: Alignment.centerRight,
                           child: const Text(
                             'شماره دانشجویی',
                             textDirection: TextDirection.rtl,
-                            style: TextStyle(
-                              fontFamily: 'vazir',
-                              fontWeight: FontWeight.w900,
-                              fontSize: 22.0,
-                            ),
+                            style: formTextStyle,
                           ),
                         ),
                       ),
@@ -156,17 +166,13 @@ class _SignupState extends State<Signup> {
                               borderRadius: BorderRadius.circular(25),
                             ),
                             filled: true,
-                            fillColor: const Color.fromARGB(255, 239, 227, 233),
+                            fillColor: formColor,
                             label: Container(
                               padding: const EdgeInsets.only(right: 35.0),
                               alignment: Alignment.centerRight,
                               child: const Text(
                                 'رمز عبور',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontFamily: 'vazir',
-                                  fontSize: 22.0,
-                                ),
+                                style: formTextStyle,
                               ),
                             ),
                           ),
@@ -209,17 +215,13 @@ class _SignupState extends State<Signup> {
                               borderRadius: BorderRadius.circular(25),
                             ),
                             filled: true,
-                            fillColor: const Color.fromARGB(255, 239, 227, 233),
+                            fillColor: formColor,
                             label: Container(
                               padding: const EdgeInsets.only(right: 35.0),
                               alignment: Alignment.centerRight,
                               child: const Text(
                                 'تکرار رمز عبور',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  fontFamily: 'vazir',
-                                  fontSize: 22.0,
-                                ),
+                                style: formTextStyle,
                               ),
                             ),
                           ),
@@ -246,17 +248,7 @@ class _SignupState extends State<Signup> {
                       height: 50.0,
                     ),
                     Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color.fromARGB(255, 93, 0, 255),
-                            Color.fromARGB(255, 15, 199, 255),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                      ),
+                      decoration: bottomnDecoration,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(220, 50),
@@ -271,7 +263,10 @@ class _SignupState extends State<Signup> {
                           newStudent.studenCode = studentCodeController.text;
                           newStudent.password = passwordController.text;
                           if (_keyform.currentState!.validate()) {
-                            Navigator.pushNamed(context, Information.routeName,
+                            // Navigator.pushNamed(context, Information.routeName,
+                            //     arguments: newStudent);
+                            Navigator.pushReplacementNamed(
+                                context, Information.routeName,
                                 arguments: newStudent);
                           }
                         },
