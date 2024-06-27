@@ -213,7 +213,7 @@ class _LoginState extends State<Login> {
     await Socket.connect("172.20.121.111", 8080).then(
       (serverSocket) {
         serverSocket.write(
-            'login//${usernameOrStudentCodeController.text}//${passwordController.text}\\u000');
+            'login//${usernameOrStudentCodeController.text}//${passwordController.text}\u0000');
         serverSocket.flush();
         serverSocket.listen(
           (socketResponse) {
