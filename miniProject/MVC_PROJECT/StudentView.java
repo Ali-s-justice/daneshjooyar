@@ -1,6 +1,7 @@
 package MVC_PROJECT;
 
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class StudentView implements Runnable{
@@ -109,7 +110,16 @@ public class StudentView implements Runnable{
     }
 
     private String sara(String[] restString){
-        
+        //restString : studentId
+        ArrayList<String> bestScoreAndCourse = studentController.getBestScoreAndCourse(this, restString[0]);
+        String bestScore = bestScoreAndCourse.getFirst();
+        String bestCourse = bestScoreAndCourse.getLast();
+        ArrayList<String> worseScoreAndCourse = studentController.getWorseScoreAndCourse(this, restString[0]);
+        String worseScore = worseScoreAndCourse.getFirst();
+        String worseCourse = worseScoreAndCourse.getLast();
+        int examNum = studentController.getAllExamNum(this, restString[0]);
+        int assignmentNum = studentController.getAllAssignmentNum(this, restString[0]);
+        return bestScore + "//" + bestCourse + "//" + worseScore + "//" + worseCourse + "//" + examNum + "//" + assignmentNum;
     }
 
     private String deleteAccount(String[] restString){

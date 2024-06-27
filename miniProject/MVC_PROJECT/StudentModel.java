@@ -6,10 +6,9 @@ import java.io.FileWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class StudentModel {
 
@@ -129,6 +128,278 @@ public class StudentModel {
         }else {
             return "unSuccessful";
         }
+    }
+
+    public ArrayList<String> worseScoreAndCourse(String studentId){
+        HashMap<String, Double> studentCourseScore = new HashMap<>();
+        studentCourseScore.put(" ", 0.00);
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                HashMap<String, String> map = new HashMap<>();
+                String[] keyValuePairs = mapAsString.split(",");
+                for (String pair : keyValuePairs) {
+                    String[] entry = pair.split("=");
+                    map.put(entry[0], entry[1]);
+                }
+                if (map.containsKey(studentId) && !map.get(studentId).equals("null")) {
+                    studentCourseScore.put(Info[0], Double.parseDouble(map.get(studentId)));
+                }
+            }
+            bufferedReader.close();
+
+            double minValue = Integer.MAX_VALUE;
+            String minKey = null;
+
+            for (Map.Entry<String, Double> entry : studentCourseScore.entrySet()) {
+                if (entry.getValue() < minValue) {
+                    minValue = entry.getValue();
+                    minKey = entry.getKey();
+                }
+            }
+            ArrayList<String> returnValue = new ArrayList<>();
+            returnValue.add(String.valueOf(minValue));
+            if (Objects.equals(minKey, " ")){
+                returnValue.add(minKey);
+            }else {
+                returnValue.add(courseNameById(minKey));
+            }
+            return returnValue;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public ArrayList<String> bestScoreAndCourse(String studentId){
+        HashMap<String, Double> studentCourseScore = new HashMap<>();
+        studentCourseScore.put(" ", 0.00);
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                HashMap<String, String> map = new HashMap<>();
+                String[] keyValuePairs = mapAsString.split(",");
+                for (String pair : keyValuePairs) {
+                    String[] entry = pair.split("=");
+                    map.put(entry[0], entry[1]);
+                }
+                if (map.containsKey(studentId) && !map.get(studentId).equals("null")) {
+                    studentCourseScore.put(Info[0], Double.parseDouble(map.get(studentId)));
+                }
+            }
+            bufferedReader.close();
+
+            double maxValue = Integer.MIN_VALUE;
+            String maxKey = null;
+
+            for (Map.Entry<String, Double> entry : studentCourseScore.entrySet()) {
+                if (entry.getValue() > maxValue) {
+                    maxValue = entry.getValue();
+                    maxKey = entry.getKey();
+                }
+            }
+            ArrayList<String> returnValue = new ArrayList<>();
+            returnValue.add(String.valueOf(maxValue));
+            if (Objects.equals(maxKey, " ")){
+                returnValue.add(maxKey);
+            }else {
+                returnValue.add(courseNameById(maxKey));
+            }
+            return returnValue;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+
+
+    public String courseNameById(String courseId) {
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/course.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[1].equals(courseId)) {
+                    return Info[0];
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+        return null;
+    }
+
+    public int allExamNum(String studentId) {//use same for exam num
+        int examNum = 0;
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                HashMap<String, String> map = new HashMap<>();
+                String[] keyValuePairs = mapAsString.split(",");
+                for (String pair : keyValuePairs) {
+                    String[] entry = pair.split("=");
+                    map.put(entry[0], entry[1]);
+                }
+                if (map.containsKey(studentId)) {
+                    String examDateAndTime = getCourseExamDateAndTime(Info[0]);
+                    if (dateSituation(examDateAndTime) == 1){
+                        examNum++;
+                    }
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return examNum;
+    }
+
+    public int allAssignmentNum(String studentId) {//use same for exam num
+        int assignmentNum = 0;
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                HashMap<String, String> map = new HashMap<>();
+                String[] keyValuePairs = mapAsString.split(",");
+                for (String pair : keyValuePairs) {
+                    String[] entry = pair.split("=");
+                    map.put(entry[0], entry[1]);
+                }
+                if (map.containsKey(studentId)) {
+                    Set<String> allCourseAssignmentId = allCourseAssignmentId(Info[0]);
+                    ArrayList<String> assignmentId = new ArrayList<>(allCourseAssignmentId);
+                    ArrayList<String> trueAssignment = new ArrayList<>();
+                    for (String s : assignmentId) {
+                        if (assignmentIsTrue(s)) {
+                            trueAssignment.add(s);
+                        }
+                    }
+                    for (String s : trueAssignment) {
+                        String assignmentDeadline = assignmentDeadlineGetter(s);
+                        if (dateSituation(assignmentDeadline) == 1) {
+                            assignmentNum++;
+                        }
+                    }
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return assignmentNum;
+    }
+
+    public int dateSituation(String dateAndTime){//1: date is in future 0: date is now -1: date is before
+        String dateTimePattern = "yyyy/MM/dd,HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(dateTimePattern);
+        try {
+            Date dateTime = sdf.parse(dateAndTime);
+            Date currentDateTime = new Date();
+            // Compare the parsed date and time with the current date and time
+            if (dateTime.after(currentDateTime)) {
+                return 1;
+            } else if (dateTime.before(currentDateTime)) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } catch (ParseException e) {
+            System.out.println("Error parsing the date and time: " + e.getMessage());
+        }
+        return -2;
+    }
+
+    public String assignmentDeadlineGetter(String assignmentId){
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/assignment.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(assignmentId)){
+                    return Info[3];
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return "0000/00/00,00:00";
+    }
+
+    public boolean assignmentIsTrue(String assignmentId){
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/assignment.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(assignmentId)){
+                    return Boolean.parseBoolean(Info[1]);
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public Set<String> allCourseAssignmentId(String courseId) {
+        Set<String> set = new HashSet<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/course_assignment.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(courseId)) {
+                    String[] elements = Info[1].substring(1, Info[1].length() - 1).split(", ");
+                    Collections.addAll(set, elements);
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return set;
+    }
+
+    public String getCourseExamDateAndTime(String courseId){
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/exam.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(courseId)) {
+                    return Info[1] + "," + Info[2];
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return "0000/00/00";
     }
 
     //Signup Student Username Validation --> return true if username is unavailable
