@@ -7,7 +7,7 @@ public class StudentController {
     StudentView studentView;
     StudentModel studentModel;
 
-    StudentController(StudentView studentView, StudentModel studentModel){
+    public StudentController(StudentView studentView, StudentModel studentModel){
         this.studentView = studentView;
         this.studentModel = studentModel;
     }

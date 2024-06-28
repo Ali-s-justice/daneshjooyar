@@ -1,5 +1,4 @@
 package MVC_PROJECT;
-
 import java.util.Scanner;
 
 public class TeacherView {

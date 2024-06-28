@@ -1,7 +1,7 @@
-com.example.flutter_application_1.app-core-1.6.0-0 C:\Users\amirhossein\.gradle\caches\transforms-3\4e7f9690383d26d26133e30bd361248d\transformed\core-1.6.0\res
-com.example.flutter_application_1.app-jetified-annotation-experimental-1.1.0-1 C:\Users\amirhossein\.gradle\caches\transforms-3\b254233267117af52d581b7c80ed66bc\transformed\jetified-annotation-experimental-1.1.0\res
-com.example.flutter_application_1.app-jetified-window-java-1.0.0-beta04-2 C:\Users\amirhossein\.gradle\caches\transforms-3\be2948cf2bff100be2490aa4076c5d1b\transformed\jetified-window-java-1.0.0-beta04\res
-com.example.flutter_application_1.app-jetified-window-1.0.0-beta04-3 C:\Users\amirhossein\.gradle\caches\transforms-3\cbb49f9ca74a2f3fd16bcd77660912cf\transformed\jetified-window-1.0.0-beta04\res
+com.example.flutter_application_1.app-core-1.6.0-0 C:\Users\amirhossein\.gradle\caches\transforms-3\26a1370e2e3ee4484871e887912ac65c\transformed\core-1.6.0\res
+com.example.flutter_application_1.app-jetified-annotation-experimental-1.1.0-1 C:\Users\amirhossein\.gradle\caches\transforms-3\61f0d9cd5163c85aca9f9610c1190703\transformed\jetified-annotation-experimental-1.1.0\res
+com.example.flutter_application_1.app-jetified-window-java-1.0.0-beta04-2 C:\Users\amirhossein\.gradle\caches\transforms-3\63d93cc176de6e33e3e3d05b8f165b64\transformed\jetified-window-java-1.0.0-beta04\res
+com.example.flutter_application_1.app-jetified-window-1.0.0-beta04-3 C:\Users\amirhossein\.gradle\caches\transforms-3\e60c7207e64f7de078c98aab65d167ba\transformed\jetified-window-1.0.0-beta04\res
 com.example.flutter_application_1.app-debug-4 C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\android\app\src\debug\res
 com.example.flutter_application_1.app-main-5 C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\android\app\src\main\res
 com.example.flutter_application_1.app-pngs-6 C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\app\generated\res\pngs\debug

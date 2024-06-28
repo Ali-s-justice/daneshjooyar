@@ -175,7 +175,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         onPressed: () {
-                          if (!_keyform.currentState!.validate()) {
+                          if (_keyform.currentState!.validate()) {
                             //send information to backend
                             login();
                             bool backendValidation = true; //must be edit
@@ -212,7 +212,7 @@ class _LoginState extends State<Login> {
 
   //connect to server
   Future<String> login() async {
-    await Socket.connect("172.20.121.111", 8080).then(
+    await Socket.connect("172.20.123.207", 8080).then(
       (serverSocket) {
         serverSocket.write(
             'login//${usernameOrStudentCodeController.text}//${passwordController.text}\u0000');

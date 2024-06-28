@@ -1,3 +1,4 @@
+
 import MVC_PROJECT.*;
 
 import java.io.DataInputStream;
@@ -13,6 +14,7 @@ public class Server {
         while (true) {
             System.out.println("waiting for client...");
             new ClientHandler(serverSocket.accept()).start();
+            
         }
     }
 }
@@ -67,7 +69,7 @@ class ClientHandler extends Thread {
         StudentController studentController = new StudentController(studentView, studentModel);
         studentView.setStudentController(studentController);
         String[] split = command.split("//");
-        String response = allObligation(split);
+        String response = studentView.allObligation(split);
         System.out.println(response);
     }
 }
