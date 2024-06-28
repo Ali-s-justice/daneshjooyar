@@ -1,4 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'sara_appbar.dart';
+import 'sara_bottombar.dart';
 
 class Sara extends StatefulWidget {
   static const String routeName = 'sara';
@@ -11,6 +15,12 @@ class Sara extends StatefulWidget {
 class _SaraState extends State<Sara> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: const SaraAppBar(),
+      body: Container(
+        color: Colors.white,
+      ),
+      bottomNavigationBar: const SaraBottomBar(),
+    );
   }
 }

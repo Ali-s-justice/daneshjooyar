@@ -94,6 +94,10 @@ flutter:
     - family: phone
       fonts:
         - asset: assets/fonts/bahnschrift.ttf
+    - family: vapetla
+      fonts:
+        - asset: assets/fonts/Vapetla.ttf
+    
 
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
