@@ -3,6 +3,7 @@ package MVC_PROJECT;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -12,6 +13,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StudentModel {
 
@@ -943,6 +946,195 @@ public class StudentModel {
             System.out.println(e.getMessage());
         }
         return studentCourseId;
+
+    }
+
+    public void jobIdSetter(){
+        try (BufferedReader reader = new BufferedReader(new FileReader("daneshjooyar/informations/job_num.txt"))) {
+            String code;
+            code = reader.readLine();
+            if (code==null){
+                try {
+                    FileWriter writer = new FileWriter("daneshjooyar/informations/job_num.txt");
+                    writer.write("2000");
+                    writer.close();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public Map<String, String> studentSaraJobGetter(String studentId){
+        Map<String, String> returnValue = studentJobGetter(studentId);
+        if (returnValue.size() >= 4) {
+            int count = 0;
+            Iterator<Map.Entry<String, String>> iterator = returnValue.entrySet().iterator();
+            while (iterator.hasNext()) {
+                if (count >= 3) {
+                    iterator.next();
+                    iterator.remove();
+                } else {
+                    count++;
+                }
+            }
+        }
+        return returnValue;
+    }
+
+    public Map<String, String> studentJobGetter(String studentId){
+        Set<String> allJobId = studentJobSetMaker(studentId);
+        Set<String> notDoneJob = notDoneJobFinder(allJobId);
+        ArrayList<String> notDoneJobList = new ArrayList<>(notDoneJob);
+        return jobCaptionGetter(notDoneJobList);
+    }
+
+    public Map<String, String> jobCaptionGetter(ArrayList<String> allJobId){
+        Map<String, String> returnValue = new HashMap<>();
+        ArrayList<String> allOfFile = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/job_caption.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                allOfFile.add(line);
+            }
+            bufferedReader.close();
+        }catch (Exception e){
+            return null;
+        }
+        for (String s : allJobId) {
+            try {
+                if (allOfFile.contains("//" + s + "//")) {
+                    for (int j = 0; j < allOfFile.size(); j++) {
+                        if (allOfFile.get(j).equals("//" + s + "//")) {
+                            ArrayList<String> caption = new ArrayList<>();
+                            j++;
+                            while (j < allOfFile.size() && captionJobIdPatternChecker(allOfFile.get(j))) {
+                                caption.add(allOfFile.get(j));
+                                j++;
+                            }
+                            String title = caption.getFirst();
+                            StringBuilder total = new StringBuilder();
+                            for (int k = 1; k < caption.size(); k++) {
+                                total.append(caption.get(k));
+                                total.append("$");
+                            }
+                            String description = total.substring(0, total.length() - 1);
+                            returnValue.put(title, description);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return returnValue;
+    }
+
+    public Set<String> notDoneJobFinder(Set<String> allJobId){
+        Set<String> notDoneJob = new HashSet<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/job.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (allJobId.contains(Info[0])) {
+                    if (Info[1].equals("false")){
+                        notDoneJob.add(Info[0]);
+                    }
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return notDoneJob;
+    }
+
+    public boolean captionJobIdPatternChecker(String input) {
+
+        String pattern = "//\\d{4}//";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(input);
+        return !m.find();
+
+    }
+
+    public Set<String> studentJobSetMaker(String studentId){
+        Set<String> returnValue = new HashSet<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/student_job.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(studentId)) {
+                    Set<String> set = new HashSet<>();
+                    String[] elements = Info[1].substring(1, Info[1].length() - 1).split(", ");
+                    Collections.addAll(set, elements);
+                    returnValue = set;
+                    break;
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return returnValue;
+    }
+
+    public ArrayList<String> doneAssignmentNameGetter(String studentId){
+        Set<String> doneAssignmentIdSet = doneAssignmentSetMaker(studentId);
+        ArrayList<String> doneAssignmentIdArray = new ArrayList<>(doneAssignmentIdSet);
+        ArrayList<String> returnValue = new ArrayList<>();
+        for (String s : doneAssignmentIdArray) {
+            returnValue.add(assignmentNameGetter(s));
+        }
+        return returnValue;
+    }
+
+    public String assignmentNameGetter(String assignmentId){
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/assignment.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(assignmentId)){
+                    return Info[2];
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public Set<String> doneAssignmentSetMaker(String studentId){
+        Set<String> returnValue = new HashSet<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/done_assignment.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(studentId)) {
+                    Set<String> set = new HashSet<>();
+                    String[] elements = Info[1].substring(1, Info[1].length() - 1).split(", ");
+                    Collections.addAll(set, elements);
+                    returnValue = set;
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return returnValue;
     }
 
 }

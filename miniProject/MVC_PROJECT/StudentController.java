@@ -1,7 +1,7 @@
 package MVC_PROJECT;
 
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.Map;
 
 public class StudentController {
 
@@ -213,5 +213,24 @@ public class StudentController {
         }
     }
 
+    public Map<String, String> getStudentSaraJobGetter(StudentView studentView, String studentId) {
+        if (studentView.equals(this.studentView)){
+            return this.studentModel.studentSaraJobGetter(studentId);
+        }else {
+            return null;
+        }
+    }
 
+    public ArrayList<String> getDoneAssignmentNameGetter(StudentView studentView, String studentId) {
+        if (studentView.equals(this.studentView)){
+            return this.studentModel.doneAssignmentNameGetter(studentId);
+        }else {
+            return null;
+        }
+    }
+
+
+    public void necessaryThing(StudentView studentView) {
+        this.studentModel.jobIdSetter();
+    }
 }
