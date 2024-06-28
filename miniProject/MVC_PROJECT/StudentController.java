@@ -1,6 +1,7 @@
 package MVC_PROJECT;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class StudentController {
 
@@ -187,6 +188,28 @@ public class StudentController {
             return this.studentModel.allAssignmentNum(studentId);
         }else {
             return 0;
+        }
+    }
+
+    public void getSetAssignmentDone(StudentView studentView, String assignmentId, String studentId){
+        if (studentView.equals(this.studentView)){
+            this.studentModel.setAssignmentDone(assignmentId, studentId);
+        }
+    }
+
+    public int getDoneAssignmentNum(StudentView studentView, String studentId){
+        if (studentView.equals(this.studentView)){
+            return this.studentModel.doneAssignmentNum(studentId);
+        }else {
+            return 0;
+        }
+    }
+
+    public ArrayList<Long> getDateOfEndGetter(StudentView studentView, String studentId){
+        if (studentView.equals(this.studentView)){
+            return this.studentModel.dateOfEndGetter(studentId);
+        }else {
+            return null;
         }
     }
 

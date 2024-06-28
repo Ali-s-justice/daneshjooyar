@@ -2,6 +2,7 @@ package MVC_PROJECT;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class StudentView{
     StudentController studentController;
@@ -40,30 +41,28 @@ public class StudentView{
 //    }
 
 
-    // public void RUN(){
-    //     while (true){
-    //         System.out.println("Enter front message:\n[1]:BREAK!");
-    //         Scanner input = new Scanner(System.in);
-    //         String inputString = input.next();
-    //         if (inputString.equals("1")){
-    //             break;
-    //         }
-    //         String[] splitInputString = studentController.getObligationSplitter(this, inputString);
-    //         String[] restString = studentController.getObligationRemover(this, splitInputString);
-    //         if (restString == null){
-    //             System.out.println(":}\n");
-    //             continue;
-    //         }
-    //         String response = allObligation(splitInputString[0], restString);
-    //         System.out.println(response);
-    //     }
-    // }
+     public void RUN(){
+         while (true){
+             System.out.println("Enter front message:\n[1]:BREAK!");
+             Scanner input = new Scanner(System.in);
+             String inputString = input.next();
+             if (inputString.equals("1")){
+                 break;
+             }
+             String[] splitInputString = studentController.getObligationSplitter(this, inputString);
+             String response = allObligation(splitInputString);
+             System.out.println(response);
+         }
+     }
     //Testing Project
 
     String allObligation(String[] command){
 
         String obligation = command[0];
         String[] restString = studentController.getObligationRemover(this, command);
+        if (restString == null){
+            return ":}\n";
+        }
         switch (obligation){
             case "signup"://signup student
                 return signup(restString);
@@ -105,7 +104,12 @@ public class StudentView{
         String worseCourse = worseScoreAndCourse.getLast();
         int examNum = studentController.getAllExamNum(this, restString[0]);
         int assignmentNum = studentController.getAllAssignmentNum(this, restString[0]);
-        return bestScore + "//" + bestCourse + "//" + worseScore + "//" + worseCourse + "//" + examNum + "//" + assignmentNum;
+        int doneAssignmentNum = studentController.getDoneAssignmentNum(this, restString[0]);
+        ArrayList<Long> dateOfEnd = studentController.getDateOfEndGetter(this, restString[0]);
+        long day = dateOfEnd.getFirst();
+        long hour = dateOfEnd.get(1);
+        long minute = dateOfEnd.getLast();
+        return bestScore + "//" + bestCourse + "//" + worseScore + "//" + worseCourse + "//" + examNum + "//" + assignmentNum + "//" + doneAssignmentNum + "//" + day + "//" + hour + "//" + minute;
     }
 
     private String deleteAccount(String[] restString){
