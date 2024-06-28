@@ -430,14 +430,14 @@ public class AdminModel {
     }
 
     public boolean dateHasValidPattern(String date) {
-        String pattern = "^(\\d{4})/(0?[1-9]|1[0-2])/(0?[1-9]|[12][0-9]|3[01])$"; // Pattern for yyyy/mm/dd format
+        String pattern = "^(\\d{4})/(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])$"; // Pattern for yyyy/mm/dd format
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(date);
         return m.find();
     }
 
     public boolean hourHasValidPattern(String hour) {
-        String pattern = "^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"; // Pattern for hh:mm format
+        String pattern = "^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$"; // Pattern for hh:mm format
         Pattern r = Pattern.compile(pattern);
         Matcher m = r.matcher(hour);
         return m.find();

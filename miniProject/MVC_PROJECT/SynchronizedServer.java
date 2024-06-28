@@ -14,7 +14,7 @@ public class SynchronizedServer {
         StudentModel studentModel = new StudentModel();
         StudentController studentController = new StudentController(studentView, studentModel);
         studentView.setStudentController(studentController);
-//        studentView.RUN();
+        studentView.RUN();
         //Testing project
 
 

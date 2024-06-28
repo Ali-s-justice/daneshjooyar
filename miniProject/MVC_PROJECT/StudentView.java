@@ -2,6 +2,7 @@ package MVC_PROJECT;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class StudentView {
     StudentController studentController;
@@ -43,6 +44,7 @@ public class StudentView {
     // }
     // }
 
+<<<<<<< HEAD
     // public void RUN(){
     // while (true){
     // System.out.println("Enter front message:\n[1]:BREAK!");
@@ -64,13 +66,37 @@ public class StudentView {
     // }
     // }
     // Testing Project
+=======
+     public void RUN(){
+         while (true){
+             System.out.println("Enter front message:\n[1]:BREAK!");
+             Scanner input = new Scanner(System.in);
+             String inputString = input.next();
+             if (inputString.equals("1")){
+                 break;
+             }
+             String[] splitInputString = studentController.getObligationSplitter(this, inputString);
+             String response = allObligation(splitInputString);
+             System.out.println(response);
+         }
+     }
+    //Testing Project
+>>>>>>> 0132fa913c7f2c92617fe8c5f0368b724e5fb637
 
     public String allObligation(String[] command) {
 
         String obligation = command[0];
         String[] restString = studentController.getObligationRemover(this, command);
+<<<<<<< HEAD
         switch (obligation) {
             case "signup":// signup student
+=======
+        if (restString == null){
+            return ":}\n";
+        }
+        switch (obligation){
+            case "signup"://signup student
+>>>>>>> 0132fa913c7f2c92617fe8c5f0368b724e5fb637
                 return signup(restString);
             case "login":
                 String loginWay = studentController.getStudentLoginWay(this, restString[0]);
@@ -110,8 +136,17 @@ public class StudentView {
         String worseCourse = worseScoreAndCourse.getLast();
         int examNum = studentController.getAllExamNum(this, restString[0]);
         int assignmentNum = studentController.getAllAssignmentNum(this, restString[0]);
+<<<<<<< HEAD
         return bestScore + "//" + bestCourse + "//" + worseScore + "//" + worseCourse + "//" + examNum + "//"
                 + assignmentNum;
+=======
+        int doneAssignmentNum = studentController.getDoneAssignmentNum(this, restString[0]);
+        ArrayList<Long> dateOfEnd = studentController.getDateOfEndGetter(this, restString[0]);
+        long day = dateOfEnd.getFirst();
+        long hour = dateOfEnd.get(1);
+        long minute = dateOfEnd.getLast();
+        return bestScore + "//" + bestCourse + "//" + worseScore + "//" + worseCourse + "//" + examNum + "//" + assignmentNum + "//" + doneAssignmentNum + "//" + day + "//" + hour + "//" + minute;
+>>>>>>> 0132fa913c7f2c92617fe8c5f0368b724e5fb637
     }
 
     private String deleteAccount(String[] restString) {
