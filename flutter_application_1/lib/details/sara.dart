@@ -17,7 +17,9 @@ class _SaraState extends State<Sara> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: SaraAppBar(),
+      appBar: SaraAppBar(
+        title: 'Sara',
+      ),
       body: BodyOfSara(),
       bottomNavigationBar: SaraBottomBar(),
     );

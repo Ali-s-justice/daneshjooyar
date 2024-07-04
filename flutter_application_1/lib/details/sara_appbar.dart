@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SaraAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const SaraAppBar({super.key});
+  final String title;
+
+  const SaraAppBar({super.key, required this.title});
 
   static const gradientOfAppBar = LinearGradient(
     colors: [
@@ -36,9 +38,9 @@ class SaraAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: EdgeInsets.only(
               top: heightOfScreen * 0.05, left: widthOfScreen * 0.08),
           alignment: Alignment.bottomCenter,
-          child: const Text(
-            'Sara',
-            style: TextStyle(
+          child: Text(
+            title,
+            style: const TextStyle(
               color: Color(0xFFFCFFFF),
               fontSize: 53.75,
               fontFamily: 'vapetla',

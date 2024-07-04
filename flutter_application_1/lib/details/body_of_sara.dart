@@ -35,6 +35,15 @@ class _BodyOfSaraState extends State<BodyOfSara> {
   String houreOfEnd = "12";
   String minOfEnd = "20";
 
+  final Map<String, String> topics = {
+    'حل تمرین فیزیک':
+        ' اگر می‌خواهید خواننده متن فارسی‌تان را کنار نگذارد و آن را تا انتها بخواهند، از ویرایش و بازخوانی متن غافل نشوید. سرویس ویرایش و بازخوانی متون فارسی شبکه مترجمین ایران این‌جا است تا متون فارسی‌تان را خوانش‌پذیر کند.',
+    'حل تمرین ریاضی':
+        ' اگر می‌خواهید خواننده متن فارسی‌تان را کنار نگذارد و آن را تا انتها بخواهند، از ویرایش و بازخوانی متن غافل نشوید. سرویس ویرایش و بازخوانی متون فارسی شبکه مترجمین ایران این‌جا است تا متون فارسی‌تان را خوانش‌پذیر کند.',
+    'حل تمرین گسسته':
+        ' اگر می‌خواهید خواننده متن فارسی‌تان را کنار نگذارد و آن را تا انتها بخواهند، از ویرایش و بازخوانی متن غافل نشوید. سرویس ویرایش و بازخوانی متون فارسی شبکه مترجمین ایران این‌جا است تا متون فارسی‌تان را خوانش‌پذیر کند.',
+  };
+
   @override
   Widget build(BuildContext context) {
     final double widthOfScreen = MediaQuery.of(context).size.width;
@@ -58,6 +67,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
     final double titleFromeLeft4 = widthOfContainer * 0.69;
     final double contentFromeTop4 = heightOfContainer * 0.45;
     final double contentFromeLeft4 = widthOfContainer * 0.1;
+    final double heightOfassignmentContainer = heightOfContainer * 1.8;
 
     return SingleChildScrollView(
       child: Column(
@@ -335,7 +345,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
             height: widthOfScreen * 0.03,
           ),
           SizedBox(
-            height: heightOfContainer * 2,
+            height: heightOfassignmentContainer * 1.5,
             child: Column(
               // crossAxisAlignment: CrossAxisAlignment.start,
               // textDirection: TextDirection.rtl,
@@ -367,9 +377,130 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: widthOfScreen * 0.03,
+                ),
+                SizedBox(
+                  height: heightOfassignmentContainer, // ارتفاع کانتینرها
+                  child: ListView.builder(
+                    reverse: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: topics.length,
+                    itemBuilder: (context, index) {
+                      String key = topics.keys.elementAt(index);
+                      String value = topics[key]!;
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        textDirection: TextDirection.rtl,
+                        children: [
+                          betweenItem(widthOfScreen),
+                          Container(
+                            width: widthOfContainer,
+                            height: heightOfassignmentContainer,
+                            decoration: ShapeDecoration(
+                              gradient: LinearGradient(
+                                begin: const Alignment(1.00, 0.07),
+                                end: const Alignment(-1, -0.07),
+                                colors: (index % 2 == 0)
+                                    ? [
+                                        const Color(0xFF1523AF),
+                                        const Color(0xFF00A1D3),
+                                      ]
+                                    : [
+                                        const Color(0xFF1523AF),
+                                        const Color(0xFF6C00D8),
+                                      ],
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(23),
+                              ),
+                            ),
+                            padding: EdgeInsets.only(
+                                top: 0,
+                                bottom: heightOfassignmentContainer * 0,
+                                right: widthOfContainer * 0.08,
+                                left: widthOfContainer * 0.08),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    textAlign: TextAlign.justify,
+                                    textDirection: TextDirection.rtl,
+                                    key,
+                                    style: TextStyle(
+                                      color: const Color.fromARGB(
+                                          255, 255, 228, 74),
+                                      fontSize: titleContainerFont * 0.55,
+                                      fontFamily: 'vazir',
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 8.0),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    textAlign: TextAlign.justify,
+                                    textDirection: TextDirection.rtl,
+                                    value,
+                                    maxLines:
+                                        3, // تعداد خطوطی که می‌خواهید نمایش داده شود
+                                    overflow: TextOverflow
+                                        .ellipsis, // اضافه کردن سه نقطه در انتهای متن
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontFamily: 'vazir',
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.done_outline_rounded,
+                                            size: widthOfContainer * 0.1,
+                                            color: const Color.fromARGB(
+                                                255, 0, 255, 8),
+                                          )),
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.delete,
+                                            size: widthOfContainer * 0.1,
+                                            // ignore: prefer_const_constructors
+                                            color:
+                                                // ignore: prefer_const_constructors
+                                                Color.fromARGB(255, 255, 0, 0),
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          betweenItem(widthOfScreen),
+                        ],
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
-          )
+          ),
+          SizedBox(
+            height: widthOfScreen * 0.03,
+          ),
+          faseleyeAmoodi(heightOfScreen, widthOfScreen),
+          SizedBox(
+            height: widthOfScreen * 0.03,
+          ),
         ],
       ),
     );
