@@ -1,5 +1,5 @@
+package MVC_PROJECT;
 
-import MVC_PROJECT.*;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -40,7 +40,7 @@ class ClientHandler extends Thread {
             sb.append((char) index);
             index = dis.read();
         }
-        System.out.println("read command succussfully!");
+        System.out.println("read command successfully!");
         return sb.toString();
     }
 
@@ -71,5 +71,10 @@ class ClientHandler extends Thread {
         String[] split = command.split("//");
         String response = studentView.allObligation(split);
         System.out.println(response);
+        try {
+            writer(response);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

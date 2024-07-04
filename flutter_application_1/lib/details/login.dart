@@ -177,13 +177,7 @@ class _LoginState extends State<Login> {
                         onPressed: () {
                           if (_keyform.currentState!.validate()) {
                             //send information to backend
-                            login();
-                            bool backendValidation = true; //must be edit
-                            setState(() {
-                              if (backendValidation) {
-                                //Navigator.pushNamed(context, routeName);
-                              }
-                            });
+                            // Future<String> message = login();
                           }
                         },
                         child: const Padding(
