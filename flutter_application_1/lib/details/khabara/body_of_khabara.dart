@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// Import for iOS features.
 
 class BodyOfKhabara extends StatefulWidget {
   const BodyOfKhabara({super.key});
@@ -10,7 +11,6 @@ class BodyOfKhabara extends StatefulWidget {
 class _BodyOfKhabaraState extends State<BodyOfKhabara> {
   Widget selectedItem = Birthdays();
   int selected = 1;
-
   @override
   Widget build(BuildContext context) {
     final double widthOfScreen = MediaQuery.of(context).size.width;
@@ -36,7 +36,6 @@ class _BodyOfKhabaraState extends State<BodyOfKhabara> {
               ),
               constraints: BoxConstraints(minHeight: heightOfScreen),
               padding: EdgeInsets.only(top: heightOfScreen * 0.05),
-              child: selectedItem,
             ),
           ),
           Positioned(
@@ -59,10 +58,10 @@ class _BodyOfKhabaraState extends State<BodyOfKhabara> {
                     child: Text(
                       'برای شما',
                       style: TextStyle(
-                        fontFamily: 'vazir',
-                        fontSize: heightOfScreen * 0.02,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontFamily: 'vazir',
+                          fontSize: heightOfScreen * 0.02,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ),
                   onTap: () {},
@@ -85,10 +84,10 @@ class _BodyOfKhabaraState extends State<BodyOfKhabara> {
                     child: Text(
                       'رویدادها',
                       style: TextStyle(
-                        fontFamily: 'vazir',
-                        fontSize: heightOfScreen * 0.02,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontFamily: 'vazir',
+                          fontSize: heightOfScreen * 0.02,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ),
                   onTap: () {},
@@ -111,10 +110,10 @@ class _BodyOfKhabaraState extends State<BodyOfKhabara> {
                     child: Text(
                       'تولدها',
                       style: TextStyle(
-                        fontFamily: 'vazir',
-                        fontSize: heightOfScreen * 0.02,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontFamily: 'vazir',
+                          fontSize: heightOfScreen * 0.02,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ),
                   onTap: () {},
@@ -130,6 +129,7 @@ class _BodyOfKhabaraState extends State<BodyOfKhabara> {
 
 class Birthdays extends StatelessWidget {
   Birthdays({super.key});
+
   final List<String> birthdayNames = <String>[
     'سید امیرحسین اشرفیان',
     'سید حمیدرضا میرزاپور',

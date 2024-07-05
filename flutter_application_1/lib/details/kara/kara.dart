@@ -18,6 +18,7 @@ class _KaraState extends State<Kara> {
       appBar: KaraAppBar(),
       body: BodyOfKara(),
       bottomNavigationBar: KaraBottomBar(),
+      // ignore: prefer_const_constructors
     );
   }
 }

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/details/kara/kara.dart';
+import 'package:flutter_application_1/details/khabara/khabara.dart';
+import 'package:flutter_application_1/details/tamrina/tamrina.dart';
+
+import '../klasa/klasa.dart';
 
 class BodyOfSara extends StatefulWidget {
   const BodyOfSara({super.key});
@@ -118,7 +122,9 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                       titleContainerFont,
                       contentFromeLeft3,
                       contentFromeTop3),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, Khabara.routeName);
+                  },
                 ),
                 betweenItem(widthOfScreen),
                 InkWell(
@@ -134,7 +140,9 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                       titleContainerFont,
                       contentFromeLeft2,
                       contentFromeTop2),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, Klasa.routeName);
+                  },
                 ),
                 betweenItem(widthOfScreen),
                 InkWell(
@@ -150,7 +158,9 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                       titleContainerFont,
                       contentFromeLeft1,
                       contentFromeTop1),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, Tamrina.routeName);
+                  },
                 ),
                 betweenItem(widthOfScreen),
               ],
