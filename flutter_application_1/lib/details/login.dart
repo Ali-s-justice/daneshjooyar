@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/details/sara.dart';
+import 'package:flutter_application_1/details/sara/sara.dart';
 import 'my_app_bar.dart';
 import 'my_bottom.dart';
 

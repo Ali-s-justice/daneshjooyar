@@ -1,5 +1,5 @@
 import 'package:flutter_application_1/details/edit_informations.dart';
-import 'package:flutter_application_1/details/sara.dart';
+import 'package:flutter_application_1/details/sara/sara.dart';
 import 'package:flutter_application_1/details/support.dart';
 import 'classes/student.dart';
 import 'package:flutter/material.dart';
