@@ -165,12 +165,19 @@ class _BodyOfKaraState extends State<BodyOfKara> {
       BuildContext context, double widthOfScreen, double heightOfScreen) {
     final TextEditingController titleController = TextEditingController();
     final TextEditingController descriptionController = TextEditingController();
+    final TextEditingController dayController = TextEditingController();
+    final TextEditingController monthController = TextEditingController();
+    final TextEditingController yearController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Color.fromARGB(255, 80, 6, 132),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+            side: const BorderSide(color: Colors.black, width: 3),
+          ),
+          backgroundColor: const Color.fromRGBO(25, 0, 126, 1),
           title: const Align(
             alignment: Alignment.centerRight,
             child: Text(
@@ -246,32 +253,139 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                       fillColor: Colors.white,
                     ),
                     textDirection: TextDirection.rtl,
-                    maxLines:
-                        null, // اجازه می‌دهد تا به تعداد خطوط بیشتری تبدیل شود
-                    minLines:
-                        6, // حداقل تعداد خطوط که باعث افزایش ارتفاع می‌شود
+                    maxLines: null,
+                    minLines: 6,
                   ),
+                ),
+                SizedBox(
+                  height: heightOfScreen * 0.02,
+                ),
+                Row(
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    SizedBox(
+                      width: widthOfScreen * 0.020,
+                    ),
+                    Text(
+                      ':تاریخ',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: heightOfScreen * 0.035),
+                    ),
+                    SizedBox(
+                      width: widthOfScreen * 0.010,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: SizedBox(
+                        height: heightOfScreen * 0.05,
+                        width: widthOfScreen * 0.15,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            // label: Text(
+                            //   'DD',
+                            //   style: TextStyle(
+                            //     fontSize: heightOfScreen * 0.013,
+                            //   ),
+                            // ),
+                            hintText: 'DD',
+                          ),
+                          controller: dayController,
+                          textDirection: TextDirection.rtl,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: widthOfScreen * 0.010,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: SizedBox(
+                        height: heightOfScreen * 0.05,
+                        width: widthOfScreen * 0.15,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'MM',
+                          ),
+                          controller: monthController,
+                          textDirection: TextDirection.rtl,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: widthOfScreen * 0.010,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: SizedBox(
+                        height: heightOfScreen * 0.05,
+                        width: widthOfScreen * 0.15,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'YY',
+                          ),
+                          controller: yearController,
+                          textDirection: TextDirection.rtl,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
           actions: [
             ElevatedButton(
+              style: TextButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 165, 27, 27),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('لغو'),
+              child: const Text(
+                'لغو',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'vazir',
+                ),
+              ),
             ),
             ElevatedButton(
+              style: TextButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 34, 147, 30),
+              ),
               onPressed: () {
                 // Handle save action
                 String title = titleController.text;
                 String description = descriptionController.text;
                 // Add your save logic here
-                print('Title: $title, Description: $description');
+                //print('Title: $title, Description: $description');
                 Navigator.of(context).pop();
               },
-              child: const Text('افزودن'),
+              child: const Text(
+                'افزودن',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'vazir',
+                ),
+              ),
             ),
           ],
         );
