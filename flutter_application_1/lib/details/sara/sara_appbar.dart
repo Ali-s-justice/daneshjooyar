@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/details/information.dart';
 
 import '../login.dart';
 
@@ -52,9 +53,11 @@ class SaraAppBar extends StatelessWidget implements PreferredSizeWidget {
         actions: [
           Container(
             padding: EdgeInsets.only(right: widthOfScreen * 0.085),
-            child: Icon(
-              Icons.settings,
-              size: widthOfScreen * 0.11,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, Information.routeName);
+              },
+              icon: Icon(Icons.settings, size: widthOfScreen * 0.11),
               color: Colors.white,
             ),
           ),

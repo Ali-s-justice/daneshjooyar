@@ -30,8 +30,8 @@ class _MyWidgetState extends State<EditInformation> {
   BoxDecoration get gradientBackground => const BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color.fromARGB(212, 255, 255, 255),
-            Color.fromARGB(255, 15, 199, 255),
+            Color.fromRGBO(0, 113, 212, 1),
+            Color.fromRGBO(25, 0, 126, 1),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -70,8 +70,8 @@ class _MyWidgetState extends State<EditInformation> {
                           decoration: const BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                Color.fromARGB(255, 15, 187, 255),
-                                Color.fromARGB(255, 0, 81, 255),
+                                Color(0xFF1523AF),
+                                Color(0xFF6C00D8),
                               ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
@@ -112,9 +112,9 @@ class _MyWidgetState extends State<EditInformation> {
                                               child: Text(
                                                 'تغییر نام کاربری',
                                                 style: TextStyle(
-                                                  fontWeight: FontWeight.w900,
-                                                  fontSize: 20.0,
-                                                ),
+                                                    fontWeight: FontWeight.w900,
+                                                    fontSize: 20.0,
+                                                    color: Colors.white),
                                               ),
                                             ),
                                             const SizedBox(
@@ -123,8 +123,9 @@ class _MyWidgetState extends State<EditInformation> {
                                             Container(
                                               width: double.infinity,
                                               height: 1,
-                                              color:
-                                                  Colors.black.withOpacity(0.1),
+                                              color: const Color.fromARGB(
+                                                      255, 255, 255, 255)
+                                                  .withOpacity(0.1),
                                             ),
                                             const SizedBox(
                                               height: 20,
@@ -151,10 +152,10 @@ class _MyWidgetState extends State<EditInformation> {
                                                   label: const Align(
                                                     alignment:
                                                         Alignment(0.9, 0),
-                                                    child: Text(
-                                                      'نام کاربری جدید',
-                                                      style: textFormStyle,
-                                                    ),
+                                                    // child: Text(
+                                                    //   'نام کاربری جدید',
+                                                    //   style: textFormStyle,
+                                                    // ),
                                                   ),
                                                   border: OutlineInputBorder(
                                                     borderRadius:
@@ -240,10 +241,11 @@ class _MyWidgetState extends State<EditInformation> {
                                                   'ثبت',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
-                                                    fontFamily: 'pinar',
-                                                    color: Colors.white,
-                                                    fontSize: 20,
-                                                  ),
+                                                      fontFamily: 'vazir',
+                                                      color: Colors.white,
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                               ),
                                             ),
@@ -261,6 +263,7 @@ class _MyWidgetState extends State<EditInformation> {
                                                     child: Text(
                                                       'تغییر رمز عبور',
                                                       style: TextStyle(
+                                                        color: Colors.white,
                                                         fontWeight:
                                                             FontWeight.w900,
                                                         fontSize: 20.0,
@@ -273,7 +276,8 @@ class _MyWidgetState extends State<EditInformation> {
                                                   Container(
                                                     width: double.infinity,
                                                     height: 1,
-                                                    color: Colors.black
+                                                    color: const Color.fromARGB(
+                                                            255, 255, 255, 255)
                                                         .withOpacity(0.1),
                                                   ),
                                                   const SizedBox(
@@ -529,10 +533,12 @@ class _MyWidgetState extends State<EditInformation> {
                                                         textAlign:
                                                             TextAlign.center,
                                                         style: TextStyle(
-                                                          fontFamily: 'pinar',
-                                                          color: Colors.white,
-                                                          fontSize: 20,
-                                                        ),
+                                                            fontFamily: 'vazir',
+                                                            color: Colors.white,
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
                                                     ),
                                                   ),

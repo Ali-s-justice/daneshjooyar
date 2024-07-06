@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../information.dart';
+import '../sara/sara.dart';
+
 class KlasaAppBar extends StatelessWidget implements PreferredSizeWidget {
   const KlasaAppBar({super.key});
 
@@ -50,9 +53,11 @@ class KlasaAppBar extends StatelessWidget implements PreferredSizeWidget {
         actions: [
           Container(
             padding: EdgeInsets.only(right: widthOfScreen * 0.085),
-            child: Icon(
-              Icons.settings,
-              size: widthOfScreen * 0.11,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, Information.routeName);
+              },
+              icon: Icon(Icons.settings, size: widthOfScreen * 0.11),
               color: Colors.white,
             ),
           ),
@@ -60,8 +65,10 @@ class KlasaAppBar extends StatelessWidget implements PreferredSizeWidget {
         leading: Container(
           padding: EdgeInsets.only(left: widthOfScreen * 0.085),
           child: IconButton(
-            icon: const Icon(Icons.paste_outlined),
-            onPressed: () {},
+            icon: const Icon(Icons.home_outlined),
+            onPressed: () {
+               Navigator.pushNamed(context, Sara.routeName);
+            },
             style: ButtonStyle(
               iconSize: MaterialStateProperty.all<double>(widthOfScreen * 0.11),
               iconColor: MaterialStateProperty.all<Color?>(Colors.white),
