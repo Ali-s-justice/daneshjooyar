@@ -19,7 +19,7 @@ class _MyWidgetState extends State<EditInformation> {
   bool visable2 = true;
   File? image;
 
-  static const textFormFieldColor = Color.fromARGB(142, 255, 255, 255);
+  static const textFormFieldColor = Color.fromARGB(188, 255, 255, 255);
   static const textFormStyle = TextStyle(
     fontWeight: FontWeight.w900,
     fontFamily: 'vazir',
@@ -67,8 +67,8 @@ class _MyWidgetState extends State<EditInformation> {
                           top: 0,
                         ),
                         child: Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
                               colors: [
                                 Color(0xFF1523AF),
                                 Color(0xFF6C00D8),
@@ -76,9 +76,13 @@ class _MyWidgetState extends State<EditInformation> {
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(50),
                               topRight: Radius.circular(50),
+                            ),
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 2.0,
                             ),
                           ),
                           height: 690,
@@ -455,24 +459,29 @@ class _MyWidgetState extends State<EditInformation> {
                                                       }
                                                     },
                                                     decoration: InputDecoration(
-                                                        label: const Align(
-                                                          alignment:
-                                                              Alignment(0.9, 0),
-                                                          child: Text(
-                                                            ' رمز عبور فعلی',
-                                                            style:
-                                                                textFormStyle,
-                                                          ),
+                                                      label: const Align(
+                                                        alignment:
+                                                            Alignment(0.9, 0),
+                                                        child: Text(
+                                                          ' رمز عبور فعلی',
+                                                          style: textFormStyle,
                                                         ),
-                                                        border:
-                                                            OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(25),
+                                                      ),
+                                                      border:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(25),
+                                                        borderSide:
+                                                            const BorderSide(
+                                                          color: Colors.blue,
+                                                          width: 2.0,
                                                         ),
-                                                        filled: true,
-                                                        fillColor:
-                                                            textFormFieldColor),
+                                                      ),
+                                                      filled: true,
+                                                      fillColor:
+                                                          textFormFieldColor,
+                                                    ),
                                                   ),
 
                                                   //*** */
@@ -563,11 +572,20 @@ class _MyWidgetState extends State<EditInformation> {
                     top: 0,
                     child: Stack(
                       children: [
-                        const CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 85,
-                          backgroundImage:
-                              AssetImage('assets/images/mypic.jpg'),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(95),
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 3.5,
+                            ),
+                          ),
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 85,
+                            backgroundImage:
+                                AssetImage('assets/images/mypic.jpg'),
+                          ),
                         ),
                         Positioned(
                           bottom: 5,
@@ -576,10 +594,13 @@ class _MyWidgetState extends State<EditInformation> {
                             alignment: Alignment.center,
                             width: 50,
                             height: 50,
-                            decoration: const ShapeDecoration(
-                              color: Color.fromARGB(255, 127, 217, 225),
-                              shape: OvalBorder(),
-                            ),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 2.5,
+                                ),
+                                borderRadius: BorderRadius.circular(85),
+                                color: const Color.fromARGB(255, 196, 86, 2)),
                             child: Center(
                               child: IconButton(
                                 onPressed: () {},

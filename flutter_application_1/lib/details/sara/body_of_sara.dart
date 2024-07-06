@@ -3,10 +3,12 @@ import 'package:flutter_application_1/details/kara/kara.dart';
 import 'package:flutter_application_1/details/khabara/khabara.dart';
 import 'package:flutter_application_1/details/tamrina/tamrina.dart';
 
+import '../classes/student.dart';
 import '../klasa/klasa.dart';
 
 class BodyOfSara extends StatefulWidget {
-  const BodyOfSara({super.key});
+  final Student student; 
+  const BodyOfSara({super.key,required this.student});
 
   @override
   State<BodyOfSara> createState() => _BodyOfSaraState();

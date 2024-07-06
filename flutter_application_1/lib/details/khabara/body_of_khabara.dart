@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../services/notification.dart';
 
 class BodyOfKhabara extends StatefulWidget {
   const BodyOfKhabara({super.key});
@@ -10,6 +13,14 @@ class BodyOfKhabara extends StatefulWidget {
 class _BodyOfKhabaraState extends State<BodyOfKhabara> {
   Widget selectedItem = const ForYou();
   int selected = 1;
+  // late NotificationService notificationService;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   notificationService = NotificationService();
+  //   notificationService.initNotification();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +79,10 @@ class _BodyOfKhabaraState extends State<BodyOfKhabara> {
                       ),
                     ),
                     onTap: () {
+                      NotificationService().showNotification(
+                        title: 'test',
+                        body: 'test',
+                      );
                       setState(() {
                         if (selected != 1) {
                           selected = 1;
@@ -249,7 +264,9 @@ class _ForYouState extends State<ForYou> {
   List<bool> isExpanded2 = List<bool>.generate(4, (_) => false);
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final double widthOfScreen = MediaQuery.of(context).size.width;
+    // ignore: unused_local_variable
     final double heightOfScreen = MediaQuery.of(context).size.height;
     return ListView(
       shrinkWrap: true,
@@ -273,7 +290,7 @@ class _ForYouState extends State<ForYou> {
                   end: const Alignment(-1, -0.07),
                   colors: isExpanded[index]
                       ? [
-                          Color.fromARGB(255, 129, 30, 138),
+                          const Color.fromARGB(255, 129, 30, 138),
                           const Color.fromARGB(255, 146, 0, 132),
                           const Color.fromARGB(255, 189, 3, 3),
                         ]
@@ -382,11 +399,120 @@ class _ForYouState extends State<ForYou> {
   }
 }
 
-class Event extends StatelessWidget {
+class Event extends StatefulWidget {
   const Event({super.key});
 
   @override
+  State<Event> createState() => _EventState();
+}
+
+class _EventState extends State<Event> {
+  Map<String, String> events = {
+    'دانشجویدانشجوییی  انتخابات انتخابات انتخابات انتخابات انتخابات انتخابات انتخاباتانتخابات انجمن های دانشجویی':
+        'https://www.sbu.ac.ir/fa/web/news/w/international-4?redirect=%2F',
+    'ایران قدرتمندانه مسیر هسته‌ای را دنبال می‌کند':
+        'https://www.sbu.ac.ir/fa/web/news/w/international-4?redirect=%2F',
+    'انتخابات انجمن های هیئت علمی':
+        'https://www.sbu.ac.ir/fa/web/news/w/international-4?redirect=%2F',
+    'انتخابات انجمن های هیئت غیر علمی':
+        'https://www.sbu.ac.ir/fa/web/news/w/international-4?redirect=%2F',
+  };
+
+  List<bool> expanded = List<bool>.generate(
+      4, (_) => false); // for storing the expansion state of each item
+
+  @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final double widthOfScreen = MediaQuery.of(context).size.width;
+    final double heightOfScreen = MediaQuery.of(context).size.height;
+    return SizedBox(
+      height: heightOfScreen,
+      child: ListView.builder(
+        itemCount: events.length,
+        itemBuilder: (BuildContext context, int index) {
+          String title = events.keys.elementAt(index);
+          String link = events[title]!;
+          bool isExpanded = expanded[index];
+          return Column(
+            children: <Widget>[
+              SizedBox(height: heightOfScreen * 0.01),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    expanded[index] = !expanded[index];
+                  });
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  padding: EdgeInsets.only(
+                      left: widthOfScreen * 0.03,
+                      right: widthOfScreen * 0.03,
+                      top: widthOfScreen * 0.03),
+                  width: widthOfScreen * 0.75,
+                  height: isExpanded
+                      ? heightOfScreen * 0.15
+                      : heightOfScreen * 0.12,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 2.0,
+                    ),
+                    borderRadius: BorderRadius.circular(25),
+                    gradient: LinearGradient(
+                      begin: const Alignment(1.00, 0.07),
+                      end: const Alignment(-1, -0.07),
+                      colors: (expanded[index])
+                          ? [
+                              const Color(0xFF008805),
+                              const Color(0xFF00BD07),
+                            ]
+                          : [const Color(0xFF00C7D3), const Color(0xFF1523AF)],
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: SizedBox(
+                          child: Text(
+                            title,
+                            textAlign: TextAlign.justify,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: heightOfScreen * 0.015,
+                              fontFamily: 'vazir',
+                              fontWeight: FontWeight.w900,
+                            ),
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ),
+                      ),
+                      if (isExpanded)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: IconButton(
+                            onPressed: () async {
+                              final linkToOpen = Uri.parse(link);
+                              await launchUrl(linkToOpen);
+                            },
+                            icon: Icon(
+                              Icons.search,
+                              size: heightOfScreen * 0.03,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: heightOfScreen * 0.01),
+            ],
+          );
+        },
+      ),
+    );
   }
 }

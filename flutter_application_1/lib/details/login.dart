@@ -1,8 +1,11 @@
 import 'dart:io';
+import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/details/classes/student.dart';
 import 'package:flutter_application_1/details/sara/sara.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'my_app_bar.dart';
 import 'my_bottom.dart';
 
@@ -177,9 +180,27 @@ class _LoginState extends State<Login> {
                         ),
                         onPressed: () {
                           if (!_keyform.currentState!.validate()) {
+                            String input = usernameOrStudentCodeController.text;
+                            Student student = Student();
+                            if (RegExp(r'^\d+$').hasMatch(input)) {
+                              student.studenCode = input;
+                            } else {
+                              student.username = input;
+                            }
                             //send information to backend
                             // Future<String> message = login();
-                            Navigator.pushNamed(context, Sara.routeName);
+                            String message = 'notSignedUp';
+                            if (message == 'successful') {
+                              Navigator.pushNamed(context, Sara.routeName,
+                                  arguments: student);
+                            } else if (message == 'notSignedUp') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('notSignedUp')));
+                            }
+                            // else if (message == 'passwordIsWrong'){
+                            //   ScaffoldMessenger.of(context)
+                            //       .showSnackBar(LoginSnackBar());
+                            // }
                           }
                         },
                         child: const Padding(
@@ -222,6 +243,7 @@ class _LoginState extends State<Login> {
             );
           },
         );
+        serverSocket.destroy();
       },
     );
     print('--------------------->   server response is : ${response}');

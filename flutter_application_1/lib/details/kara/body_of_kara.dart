@@ -70,7 +70,7 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                   setState(() {
                     if (selected == 2) {
                       selected = 1;
-                      selectedWidget = const Done();
+                      selectedWidget = const Dont();
                     }
                   });
                 },
@@ -102,7 +102,7 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                   setState(() {
                     if (selected == 1) {
                       selected = 2;
-                      selectedWidget = const Dont();
+                      selectedWidget = const Done();
                     }
                   });
                 },
@@ -394,14 +394,14 @@ class _BodyOfKaraState extends State<BodyOfKara> {
   }
 }
 
-class Done extends StatefulWidget {
-  const Done({super.key});
+class Dont extends StatefulWidget {
+  const Dont({super.key});
 
   @override
-  State<Done> createState() => _DoneState();
+  State<Dont> createState() => _DontState();
 }
 
-class _DoneState extends State<Done> {
+class _DontState extends State<Dont> {
   final List<List<String>> listOfList = [
     [
       'حل تمرین فیزیک',
@@ -588,14 +588,14 @@ class _DoneState extends State<Done> {
   }
 }
 
-class Dont extends StatefulWidget {
-  const Dont({super.key});
+class Done extends StatefulWidget {
+  const Done({super.key});
 
   @override
-  State<Dont> createState() => _DontState();
+  State<Done> createState() => _DoneState();
 }
 
-class _DontState extends State<Dont> {
+class _DoneState extends State<Done> {
   final List<List<String>> listOfList = [
     [
       'حل تمرین فیزیک',

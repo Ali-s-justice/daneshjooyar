@@ -12,11 +12,7 @@ class Information extends StatefulWidget {
     fontSize: 13.0,
     fontFamily: 'vazir',
   );
-  static const informationTextstyle = TextStyle(
-    fontSize: 25.0,
-    color: Colors.black,
-    fontFamily: 'vazir',
-  );
+
   static const infoStyle = TextStyle(
       fontSize: 15.0,
       fontFamily: 'vazir',
@@ -32,13 +28,18 @@ class _InformationState extends State<Information> {
   BoxDecoration get gradientBackground => const BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color.fromARGB(212, 255, 255, 255),
-            Color.fromARGB(255, 15, 199, 255),
+            Color.fromRGBO(0, 113, 212, 1),
+            Color.fromRGBO(25, 0, 126, 1),
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
       );
+  static const informationTextstyle = TextStyle(
+    fontSize: 25.0,
+    color: Color.fromARGB(255, 255, 255, 255),
+    fontFamily: 'phone',
+  );
   static const color = Color.fromRGBO(230, 230, 250, 1.0);
 
   String userName = 'amirhossein';
@@ -78,30 +79,34 @@ class _InformationState extends State<Information> {
             // Center the content horizontally
             child: Column(
               children: [
-                const Stack(
+                Stack(
                   children: [
-                    CircleAvatar(
-                      radius: 95.0,
-                      backgroundImage: AssetImage('assets/images/mypic.jpg'),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 5,
+                        ),
+                      ),
+                      child: const CircleAvatar(
+                        radius: 95.0,
+                        backgroundImage: AssetImage('assets/images/mypic.jpg'),
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 20),
                 Text(
                   userName,
-                  style: const TextStyle(
-                    fontSize: 25.0,
-                    color: Colors.black,
-                    fontFamily: 'vazir',
-                  ),
+                  style: informationTextstyle,
                 ),
                 // const SizedBox(
                 //   height: 10.0,
                 // ),
                 const Text(
                   'دانشجو',
-                  style: TextStyle(
-                      fontSize: 25.0, color: Colors.black, fontFamily: 'vazir'),
+                  style: informationTextstyle,
                 ),
                 const SizedBox(
                   height: 20.0,

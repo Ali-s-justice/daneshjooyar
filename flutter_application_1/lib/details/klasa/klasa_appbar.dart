@@ -38,12 +38,12 @@ class KlasaAppBar extends StatelessWidget implements PreferredSizeWidget {
         title: Container(
           padding: EdgeInsets.only(
               top: heightOfScreen * 0.05, left: widthOfScreen * 0.08),
-          alignment: Alignment.bottomCenter,
+          alignment: Alignment.center,
           child: const Text(
             'klasa',
             style: TextStyle(
               color: Color(0xFFFCFFFF),
-              fontSize: 53.75,
+              fontSize: 45.75,
               fontFamily: 'vapetla',
               fontWeight: FontWeight.w400,
               height: 0,
@@ -67,7 +67,7 @@ class KlasaAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: IconButton(
             icon: const Icon(Icons.home_outlined),
             onPressed: () {
-               Navigator.pushNamed(context, Sara.routeName);
+              Navigator.pushNamed(context, Sara.routeName);
             },
             style: ButtonStyle(
               iconSize: MaterialStateProperty.all<double>(widthOfScreen * 0.11),
