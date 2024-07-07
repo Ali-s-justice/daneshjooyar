@@ -1,5 +1,8 @@
 package MVC_PROJECT;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class AdminController {
 
     private final AdminModel adminModel;
@@ -42,9 +45,11 @@ public class AdminController {
         }
     }
 
-    public void getStudentSignUp(AdminView adminView, String StudentName, String Username, String Password) {
+    public String getStudentSignUp(AdminView adminView, String StudentName, String Username, String Password) {
         if (adminView.equals(this.adminView)) {
-            this.adminModel.SignUpStudent(StudentName, Username, Password);
+            return this.adminModel.SignUpStudent(StudentName, Username, Password);
+        }else {
+            return null;
         }
     }
 
@@ -108,9 +113,11 @@ public class AdminController {
         }
     }
 
-    public void getAddCourse(AdminView adminView, String courseName, int credit) {
+    public String getAddCourse(AdminView adminView, String courseName, int credit) {
         if (adminView.equals(this.adminView)) {
-            this.adminModel.addCourse(courseName, credit);
+            return this.adminModel.addCourse(courseName, credit);
+        }else {
+            return null;
         }
     }
 
@@ -216,9 +223,11 @@ public class AdminController {
         }
     }
 
-    public void getAddAssignment(AdminView adminView, String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline, String maker) {
+    public String getAddAssignment(AdminView adminView, String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline, String maker) {
         if (adminView.equals(this.adminView)) {
-            this.adminModel.addAssignment(assignmentName, isActive, dateOfDeadline, hourOfDeadline, maker);
+            return this.adminModel.addAssignment(assignmentName, isActive, dateOfDeadline, hourOfDeadline, maker);
+        }else {
+            return null;
         }
     }
 
@@ -273,6 +282,32 @@ public class AdminController {
            return this.adminModel.removeAssignmentFromCourse(assignmentId, courseId);
         }else {
             return false;
+        }
+    }
+
+    public void getSaveStudentBirthday(AdminView adminView, String birthday, String studentId){
+        if (adminView.equals(this.adminView)) {
+            this.adminModel.saveStudentBirthday(birthday, studentId);
+        }
+    }
+
+    public boolean getCourseDatePatternChecker(AdminView adminView, String input) {
+        if (adminView.equals(this.adminView)) {
+            return this.adminModel.courseDatePatternChecker(input);
+        }else {
+            return false;
+        }
+    }
+
+    public void getSetDateForCourse(AdminView adminView, String courseId, ArrayList<ArrayList<String>> arrayList){
+        if (adminView.equals(this.adminView)) {
+            this.adminModel.setDateForCourse(courseId, arrayList);
+        }
+    }
+
+    public void getEstimateTimeSetter(AdminView adminView, String assignmentId, String id, double estimateTime){
+        if (adminView.equals(this.adminView)) {
+            this.adminModel.estimateTimeSetter(assignmentId, id, estimateTime);
         }
     }
 

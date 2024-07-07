@@ -40,3 +40,32 @@ Text...
 
 done assignment:
 student ID // a set of done assignment
+
+job num:
+last job id
+
+student job:
+student id // set of job id
+
+job caption:
+// job ID //
+Text...
+
+job:
+job id // done situation // deadline ( date , hour )
+
+student birthday:
+student Id // birthday 
+
+assignment change deadline:
+assignmentId
+
+course date:
+course ID // ArrayList of Arraylist ( one of ( "sh", "y", "d", "se", "c", "p", "j" ) ) and HH:MM
+
+estimate time:
+assignmentId // HashMap of < id = estimateTime >
+
+student caption:
+// Assignment ID - studentId //
+Text...

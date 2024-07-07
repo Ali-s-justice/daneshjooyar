@@ -1,5 +1,7 @@
 package MVC_PROJECT;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -44,19 +46,19 @@ public class StudentView {
     // }
 
 
-     public void RUN(){
-         while (true){
-             System.out.println("Enter front message:\n[1]:BREAK!");
-             Scanner input = new Scanner(System.in);
-             String inputString = input.next();
-             if (inputString.equals("1")){
-                 break;
-             }
-             String[] splitInputString = studentController.getObligationSplitter(this, inputString);
-             String response = allObligation(splitInputString);
-             System.out.println(response);
-         }
-     }
+    public void RUN() {
+        while (true) {
+            System.out.println("Enter front message:\n[1]:BREAK!");
+            Scanner input = new Scanner(System.in);
+            String inputString = input.nextLine();
+            if (inputString.equals("1")) {
+                break;
+            }
+            String[] splitInputString = studentController.getObligationSplitter(this, inputString);
+            String response = allObligation(splitInputString);
+            System.out.println(response);
+        }
+    }
     //Testing Project
 
     public String allObligation(String[] command) {
@@ -65,10 +67,10 @@ public class StudentView {
 
         String obligation = command[0];
         String[] restString = studentController.getObligationRemover(this, command);
-        if (restString == null){
+        if (restString == null) {
             return ":}\n";
         }
-        switch (obligation){
+        switch (obligation) {
             case "signup"://signup student
                 return signup(restString);
             case "login":
@@ -92,11 +94,113 @@ public class StudentView {
                 return deleteAccount(restString);
             case "sara":
                 return sara(restString);
+            case "newsForYou":
+                return newsForYou(restString);
+            case "newsHappen":
+                return newsHappen();
+            case "newsBirthday":
+                return newsBirthday();
+            case "jobNotDone":
+                return jobNotDone(restString);
+            case "addJob":
+                return addJob(restString);
+            case "setJobDone":
+                return setJobDone(restString);
+            case "deleteJob":
+                return deleteJob(restString);
+            case "editJob":
+                return editJob(restString);
+            case "doneJob":
+                return doneJob(restString);
+            case "classes":
+                return classes(restString);
+            case "addCourse":
+                return addCourse(restString);
+            case "deleteCourse":
+                return deleteCourse(restString);
+            case "weekPlanner":
+                return weekPlanner(restString);
+            case "assignmentToday":
+                return assignmentToday(restString);
             case null:
                 return "error";
             default:
                 return "noObligation";
         }
+    }
+
+    private String assignmentToday(String[] restString){
+        //restString = studentId - todayDate(2025/12/04)
+        return studentController.getNotDoneAssignmentPage(this, restString[0], restString[1]).toString();
+    }
+
+    private String weekPlanner(String[] restString){
+        //restString = studentId
+        return studentController.getWeekPlanner(this, restString[0]).toString();
+    }
+
+    private String deleteCourse(String[] restString){
+        //restString = studentId - courseId
+        return studentController.getDeleteCourse(this, restString[0], restString[1]);
+    }
+
+    private String addCourse(String[] restString){
+        //restString = studentId - courseId
+        if (studentController.getNoCourseFoundById(this, restString[1])){
+            return "noCourseFound";
+        }
+        if (studentController.getStudentHasCourse(this, restString[0], restString[1])) {
+            return "alreadySignedUp";
+        }
+        studentController.getAddCourse(this, restString[0], restString[1]);
+        return "successful";
+    }
+
+    private String classes(String[] restString){
+        // restString = studentId
+        return studentController.getClasses(this, restString[0]).toString();
+    }
+
+    private String doneJob(String[] restString) {
+        //restString : studentId
+        return studentController.getDoneJob(this, restString[0]).toString();
+    }
+
+    private String editJob(String[] restString) {
+        //rest String: Deadline(YYYY/MM/DD,HH:MM)/ title / caption / jobId
+        return studentController.getEditJob(this, restString[0], restString[1], restString[2], restString[3]);
+    }
+
+    private String deleteJob(String[] restString) {
+        //restString = studentId // jobId
+        return studentController.getDeleteJob(this, restString[0], restString[1]);
+    }
+
+    private String setJobDone(String[] restString) {
+        //restString = jobId
+        return studentController.getSetJobDone(this, restString[0]);
+    }
+
+    private String addJob(String[] restString) {
+        //rest String: Deadline(YYYY/MM/DD,HH:MM)/ studentId / title / caption
+        return studentController.getAddJob(this, restString[0], restString[1], restString[2], restString[3]);
+    }
+
+    private String jobNotDone(String[] restString) {
+        //restString = studentId
+        return studentController.getJobNotDonePage(this, restString[0]).toString();
+    }
+
+    private String newsBirthday() {
+        return studentController.getNewsBirthdayGetter(this).toString();
+    }
+
+    private String newsHappen() {
+        return studentController.newsHappenLinkGetter(this).toString();
+    }
+
+    private String newsForYou(String[] restString) {
+        return studentController.getNewsForYouAssignmentNameGetter(this, restString[0]).toString() + "//" + studentController.getStudentChangedAssignmentDeadlineNameGetter(this, restString[0]).toString();
     }
 
     private String sara(String[] restString) {
@@ -130,7 +234,7 @@ public class StudentView {
             return "noStudentFoundInServer";
         }
         String username = studentController.getStudentUsernameByID(this, restString[0]);
-        String name = studentController.getReturnName(this, restString[0]);
+        String name = studentController.getStudentNameById(this, restString[0]);
         String studentID = restString[0];
         String termInfo = "بهار 1403-1402";
         int creditNum = studentController.getAllCreditGetter(this, restString[0]);
@@ -183,7 +287,7 @@ public class StudentView {
         if (studentController.getPasswordIsWrongForId(this, restString[0], restString[1])) {
             return "passwordIsWrong";
         }
-        String studentName = studentController.getReturnName(this, restString[0]);
+        String studentName = studentController.getStudentNameById(this, restString[0]);
         return "successful//" + studentName;
     }
 
@@ -208,7 +312,7 @@ public class StudentView {
             return "usernameExist";
         }
         studentController.getSignupStudent(this, restString[0], restString[1], restString[2]);
-        String studentName = studentController.getReturnName(this, restString[0]);
+        String studentName = studentController.getStudentNameById(this, restString[0]);
         return "successful//" + studentName;
     }
 

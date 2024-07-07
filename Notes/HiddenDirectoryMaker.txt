@@ -1,0 +1,40 @@
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+public class MainTest {
+
+    public static void main(String[] args) {
+        try {
+            // Get the directory of the running Java code
+            String currentDir = new File(MainTest.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
+
+            // Define the hidden directory name based on the OS
+            String hiddenDirName;
+            if (System.getProperty("os.name").toLowerCase().contains("win")) {
+                hiddenDirName = "hiddenDirectory"; // On Windows, we will set the hidden attribute
+            } else {
+                hiddenDirName = ".hiddenDirectory"; // On Unix-like systems, a dot at the start makes it hidden
+            }
+
+            // Create a File object for the hidden directory
+            File hiddenDir = new File(currentDir, hiddenDirName);
+
+            // Create the hidden directory
+            if (hiddenDir.mkdir()) {
+                System.out.println("Hidden directory created: " + hiddenDir.getAbsolutePath());
+
+                // Set the directory to hidden on Windows
+                if (System.getProperty("os.name").toLowerCase().contains("win")) {
+                    Path hiddenDirPath = hiddenDir.toPath();
+                    Files.setAttribute(hiddenDirPath, "dos:hidden", true);
+                    System.out.println("Directory is set to hidden on Windows.");
+                }
+            } else {
+                System.out.println("Failed to create hidden directory.");
+            }
+        } catch (Exception e) {
+            System.out.println("Exception");
+        }
+    }
+}

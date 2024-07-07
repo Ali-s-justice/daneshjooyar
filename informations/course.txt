@@ -3,3 +3,5 @@ moadelat//1002//3//1001
 farsi//1004//2//null
 ap//1005//3//1003
 ریاضی//1007//3//null
+sience//1010//3//null
+sience//1011//3//null
