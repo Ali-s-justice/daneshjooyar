@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../classes/student.dart';
+
 class BodyOfKlasa extends StatefulWidget {
   const BodyOfKlasa({super.key});
 
@@ -249,6 +251,18 @@ class _BodyOfKlasaState extends State<BodyOfKlasa> {
 
 class Table extends StatelessWidget {
   const Table({super.key});
+  static const tableTextStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 10,
+    fontFamily: 'vazir',
+    fontWeight: FontWeight.bold,
+  );
+  static const titleTableTextStyle = TextStyle(
+    color: Colors.black,
+    fontSize: 12,
+    fontFamily: 'vazir',
+    fontWeight: FontWeight.bold,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -291,57 +305,156 @@ class Table extends StatelessWidget {
           left: widthOfScreen * 0.05,
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              color: Colors.white,
-            ),
+                borderRadius: BorderRadius.circular(25),
+                color: const Color.fromARGB(206, 255, 145, 0)),
             width: widthOfScreen * 0.8,
             height: heightOfScreen * 0.4,
             child: Center(
-              child: DataTable(
-                columns: const [
-                  DataColumn(label: Text('روز هفته')),
-                  DataColumn(label: Text('درس')),
-                  DataColumn(label: Text('زمان')),
-                ],
-                rows: const [
-                  DataRow(
-                    cells: [
-                      DataCell(Text('شنبه')),
-                      DataCell(Text('ریاضی')),
-                      DataCell(Text('08:00 - 10:00')),
-                    ],
-                  ),
-                  DataRow(
-                    cells: [
-                      DataCell(Text('یکشنبه')),
-                      DataCell(Text('فیزیک')),
-                      DataCell(Text('10:00 - 12:00')),
-                    ],
-                  ),
-                  DataRow(
-                    cells: [
-                      DataCell(Text('شنبه')),
-                      DataCell(Text('ریاضی')),
-                      DataCell(Text('08:00 - 10:00')),
-                    ],
-                  ),
-                  DataRow(
-                    cells: [
-                      DataCell(Text('یکشنبه')),
-                      DataCell(Text('فیزیک')),
-                      DataCell(Text('10:00 - 12:00')),
-                    ],
-                  ),
-                  DataRow(
-                    cells: [
-                      DataCell(Text('شنبه')),
-                      DataCell(Text('ریاضی')),
-                      DataCell(Text('08:00 - 10:00')),
-                    ],
-                  ),
+              child: SingleChildScrollView(
+                child: DataTable(
+                  // border: TableBorder(
+                  //     horizontalInside: BorderSide(
+                  //   color: Colors.white,
+                  //   width: heightOfScreen * 0.001,
+                  // )),
+                  headingRowHeight: heightOfScreen * 0.08,
+                  columns: const [
+                    DataColumn(
+                      label: Text(
+                        'روز هفته',
+                        style: titleTableTextStyle,
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'درس',
+                        style: titleTableTextStyle,
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'زمان',
+                        style: titleTableTextStyle,
+                      ),
+                    ),
+                  ],
+                  rows: const [
+                    DataRow(
+                      cells: [
+                        DataCell(Text(
+                          'شنبه',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          'ریاضی',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          '08:00 - 10:00',
+                          style: tableTextStyle,
+                        )),
+                      ],
+                    ),
+                    DataRow(
+                      cells: [
+                        DataCell(Text(
+                          'یکشنبه',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          'فیزیک',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          '10:00 - 12:00',
+                          style: tableTextStyle,
+                        )),
+                      ],
+                    ),
+                    DataRow(
+                      cells: [
+                        DataCell(Text(
+                          'شنبه',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          'ریاضی',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          '08:00 - 10:00',
+                          style: tableTextStyle,
+                        )),
+                      ],
+                    ),
+                    DataRow(
+                      cells: [
+                        DataCell(Text(
+                          'یکشنبه',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          'فیزیک',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          '10:00 - 12:00',
+                          style: tableTextStyle,
+                        )),
+                      ],
+                    ),
+                    DataRow(
+                      cells: [
+                        DataCell(Text(
+                          'شنبه',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          'ریاضی',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          '08:00 - 10:00',
+                          style: tableTextStyle,
+                        )),
+                      ],
+                    ),
+                    DataRow(
+                      cells: [
+                        DataCell(Text(
+                          'شنبه',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          'ریاضی',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          '08:00 - 10:00',
+                          style: tableTextStyle,
+                        )),
+                      ],
+                    ),
+                    DataRow(
+                      cells: [
+                        DataCell(Text(
+                          'شنبه',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          'ریاضی',
+                          style: tableTextStyle,
+                        )),
+                        DataCell(Text(
+                          '08:00 - 10:00',
+                          style: tableTextStyle,
+                        )),
+                      ],
+                    ),
 
-                  // ردیف‌های بیشتری اضافه کنید
-                ],
+                    // ردیف‌های بیشتری اضافه کنید
+                  ],
+                ),
               ),
             ),
           ),

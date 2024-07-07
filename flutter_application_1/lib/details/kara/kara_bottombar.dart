@@ -4,6 +4,8 @@ import 'package:flutter_application_1/details/klasa/klasa.dart';
 import 'package:flutter_application_1/details/sara/sara.dart';
 import 'package:flutter_application_1/details/tamrina/tamrina.dart';
 
+import 'kara.dart';
+
 // ignore: must_be_immutable
 class KaraBottomBar extends StatefulWidget {
   const KaraBottomBar({super.key});

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../classes/student.dart';
 import 'klasa_appbar.dart';
 import 'klasa_bottombar.dart';
 import 'body_of_klasa.dart';
@@ -14,9 +15,12 @@ class Klasa extends StatefulWidget {
 class _KlasaState extends State<Klasa> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+
+    return  const Scaffold(
       appBar: KlasaAppBar(),
-      body: BodyOfKlasa(),
+      body: BodyOfKlasa(
+  
+      ),
       bottomNavigationBar: KlasaBottomBar(),
     );
   }

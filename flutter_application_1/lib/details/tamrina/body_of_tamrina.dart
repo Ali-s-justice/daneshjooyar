@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../classes/student.dart';
+
 class BodyOfTamrina extends StatefulWidget {
   const BodyOfTamrina({super.key});
 
@@ -8,7 +10,7 @@ class BodyOfTamrina extends StatefulWidget {
 }
 
 class _BodyOfTamrinaState extends State<BodyOfTamrina> {
-  Widget selectedItem = Birthdays();
+  Widget selectedItem = const ActivesPr();
   int selected = 1;
   int selected2 = 1;
 
@@ -77,7 +79,14 @@ class _BodyOfTamrinaState extends State<BodyOfTamrina> {
                           color: Colors.white),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    if (selected != 1) {
+                      setState(() {
+                        selected = 1;
+                        //selectedItem =
+                      });
+                    }
+                  },
                 ),
                 SizedBox(
                   width: widthOfScreen * 0.01,
@@ -89,7 +98,7 @@ class _BodyOfTamrinaState extends State<BodyOfTamrina> {
                     width: widthOfScreen * 0.35,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: (selected == 3)
+                      color: (selected == 2)
                           ? const Color(0xFFE4014E)
                           : const Color.fromARGB(255, 123, 123, 123),
                       border: Border.all(),
@@ -104,7 +113,14 @@ class _BodyOfTamrinaState extends State<BodyOfTamrina> {
                       ),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    if (selected != 2) {
+                      setState(() {
+                        selected = 2;
+                        //selectedItem =
+                      });
+                    }
+                  },
                 ),
               ],
             ),
@@ -138,7 +154,14 @@ class _BodyOfTamrinaState extends State<BodyOfTamrina> {
                       ),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    if (selected2 != 1) {
+                      setState(() {
+                        selected2 = 1;
+                        //selectedItem =
+                      });
+                    }
+                  },
                 ),
                 SizedBox(
                   width: widthOfScreen * 0.01,
@@ -150,8 +173,8 @@ class _BodyOfTamrinaState extends State<BodyOfTamrina> {
                     width: widthOfScreen * 0.25,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      color: (selected2 == 3)
-                          ? const Color(0xFFE4014E)
+                      color: (selected2 == 2)
+                          ? const Color(0xFF2DD634)
                           : const Color.fromARGB(255, 123, 123, 123),
                       border: Border.all(),
                     ),
@@ -164,7 +187,14 @@ class _BodyOfTamrinaState extends State<BodyOfTamrina> {
                           color: Colors.white),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    if (selected2 != 2) {
+                      setState(() {
+                        selected2 = 2;
+                        //selectedItem =
+                      });
+                    }
+                  },
                 ),
               ],
             ),
@@ -175,66 +205,30 @@ class _BodyOfTamrinaState extends State<BodyOfTamrina> {
   }
 }
 
-class Birthdays extends StatelessWidget {
-  Birthdays({super.key});
-  final List<String> birthdayNames = <String>[
-    'سید امیرحسین اشرفیان',
-    'سید حمیدرضا میرزاپور',
-    'محمد تقی زاده',
-    'علی نصرالله پور'
-  ];
+class ActivesPr extends StatefulWidget {
+  const ActivesPr({super.key});
 
   @override
+  State<ActivesPr> createState() => _ActivesPrState();
+}
+
+class _ActivesPrState extends State<ActivesPr> {
+  @override
   Widget build(BuildContext context) {
-    final double widthOfScreen = MediaQuery.of(context).size.width;
-    final double heightOfScreen = MediaQuery.of(context).size.height;
-    return SizedBox(
-      height: heightOfScreen, // برای جلوگیری از تداخل با SingleChildScrollView
-      child: ListView.builder(
-        itemCount: birthdayNames.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Column(
-            children: <Widget>[
-              SizedBox(
-                height: heightOfScreen * 0.01,
-              ),
-              Container(
-                width: widthOfScreen * 0.7,
-                height: heightOfScreen * 0.07,
-                decoration: ShapeDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment(1.00, 0.07),
-                    end: Alignment(-1, -0.07),
-                    colors: [
-                      Color(0xFF3415AF),
-                      Color(0xFF7A00B3),
-                      Color(0xFFD7009B),
-                    ],
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    birthdayNames[index],
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontFamily: 'Vazir',
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: heightOfScreen * 0.01,
-              ),
-            ],
-          );
-        },
-      ),
-    );
+    return const Placeholder();
+  }
+}
+
+class InActivesPr extends StatefulWidget {
+  const InActivesPr({super.key});
+
+  @override
+  State<InActivesPr> createState() => _InActivesPrState();
+}
+
+class _InActivesPrState extends State<InActivesPr> {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }

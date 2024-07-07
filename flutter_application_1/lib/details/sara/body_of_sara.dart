@@ -1,20 +1,44 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/details/kara/kara.dart';
 import 'package:flutter_application_1/details/khabara/khabara.dart';
 import 'package:flutter_application_1/details/tamrina/tamrina.dart';
+import 'package:flutter_application_1/details/user_data.dart';
 
-import '../classes/student.dart';
 import '../klasa/klasa.dart';
 
 class BodyOfSara extends StatefulWidget {
-  final Student student; 
-  const BodyOfSara({super.key,required this.student});
+  const BodyOfSara({super.key});
 
   @override
   State<BodyOfSara> createState() => _BodyOfSaraState();
 }
 
 class _BodyOfSaraState extends State<BodyOfSara> {
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    String response = await fetchDataOfSara(UserData.studentCode!);
+    List<String> fetchedData = response.split('//');
+    bestScore = fetchedData[0];
+    bestCourse = fetchedData[1];
+    worthScore = fetchedData[2];
+    worthCourse = fetchedData[3];
+    examNum = fetchedData[4];
+    assignNum = fetchedData[5];
+    doneAssignmentNum = fetchedData[6];
+    dayOfEnd = fetchedData[7];
+    houreOfEnd = fetchedData[8];
+    minOfEnd = fetchedData[9];
+
+    //مپ و اری لیست باقی ماند
+  }
+
   static const styleOfContainerText = TextStyle(
     fontFamily: 'vazir',
     fontSize: 11,
@@ -183,7 +207,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                     Container(
                       width: 172,
                       height: 46,
-                      decoration: ShapeDecoration(
+                      decoration: BoxDecoration(
                         gradient: const RadialGradient(
                           center: Alignment(0.0, 1.0), // مرکز گرادیان
                           radius: 1.5, // شعاع گرادیان
@@ -194,9 +218,8 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                           ],
                           stops: [0.1, 0.5, 2.0], // توقف‌های گرادیان
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        border: Border.all(color: Colors.black, width: 1.5),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       alignment: Alignment.center,
                       child: Text(
@@ -210,12 +233,10 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                       alignment: Alignment.center,
                       width: widthOfScreen * 0.3,
                       height: heightOfScreen * 0.12,
-                      decoration: ShapeDecoration(
-                        color: const Color(0xFFE4004D),
-                        shape: RoundedRectangleBorder(
+                      decoration: BoxDecoration(
+                          color: const Color(0xFFE4004D),
                           borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
+                          border: Border.all(color: Colors.black, width: 1.5)),
                       child: const Text(
                         '(: بدترین نمره شما',
                         style: styleOfContainerText,
@@ -225,7 +246,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                     Container(
                       width: 172,
                       height: 46,
-                      decoration: ShapeDecoration(
+                      decoration: BoxDecoration(
                         gradient: const RadialGradient(
                           center: Alignment(0.0, 1.0), // مرکز گرادیان
                           radius: 1.5, // شعاع گرادیان
@@ -236,9 +257,8 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                           ],
                           stops: [0.1, 0.5, 2.0], // توقف‌های گرادیان
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        border: Border.all(color: Colors.black, width: 1.5),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       alignment: Alignment.center,
                       child: Text(
@@ -252,15 +272,14 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                       alignment: Alignment.center,
                       width: widthOfScreen * 0.3,
                       height: heightOfScreen * 0.12,
-                      decoration: ShapeDecoration(
+                      decoration: BoxDecoration(
                         gradient: const LinearGradient(
                           begin: Alignment(0.00, -1.00),
                           end: Alignment(0, 1),
                           colors: [Color(0xFF9E00FF), Color(0xFF345099)],
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        border: Border.all(color: Colors.black, width: 1.5),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Text(
                         '(: بالاترین نمره شما',
@@ -418,7 +437,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                           Container(
                             width: widthOfContainer,
                             height: heightOfassignmentContainer,
-                            decoration: ShapeDecoration(
+                            decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: const Alignment(1.00, 0.07),
                                 end: const Alignment(-1, -0.07),
@@ -432,9 +451,9 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                                         const Color(0xFF6C00D8),
                                       ],
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(23),
-                              ),
+                              border:
+                                  Border.all(color: Colors.black, width: 1.5),
+                              borderRadius: BorderRadius.circular(23),
                             ),
                             padding: EdgeInsets.only(
                                 top: 0,
@@ -575,7 +594,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                           Container(
                             width: widthOfContainer,
                             height: heightOfassignmentContainer,
-                            decoration: ShapeDecoration(
+                            decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: const Alignment(1.00, 0.07),
                                 end: const Alignment(-1, -0.07),
@@ -589,9 +608,9 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                                         const Color(0xFF6C00D8),
                                       ],
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(23),
-                              ),
+                              border:
+                                  Border.all(color: Colors.black, width: 1.5),
+                              borderRadius: BorderRadius.circular(23),
                             ),
                             padding: EdgeInsets.only(
                                 top: 0,
@@ -640,7 +659,10 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                                   child: Row(
                                     children: [
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                              context, Tamrina.routeName);
+                                        },
                                         icon: Icon(
                                           Icons.edit_document,
                                           size: widthOfContainer * 0.1,
@@ -677,11 +699,15 @@ class _BodyOfSaraState extends State<BodyOfSara> {
       width: widthOfScreen * 0.185,
       height: 78,
       padding: const EdgeInsets.only(left: 3, right: 3, bottom: 5),
-      decoration: ShapeDecoration(
+      decoration: BoxDecoration(
         color: (type == 1 || type == 2)
             ? const Color(0xFFFFE610)
             : const Color.fromARGB(255, 0, 255, 21),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+        borderRadius: BorderRadius.circular(9),
+        border: Border.all(
+          color: Colors.black,
+          width: 1.1,
+        ),
       ),
       child: Stack(
         children: [
@@ -701,7 +727,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
             ),
           ),
           Positioned(
-            top: heightOfScreen * 0.12,
+            top: heightOfScreen * 0.11,
             left: (type == 1)
                 ? widthOfScreen * 0.022
                 : (type == 2)
@@ -724,12 +750,30 @@ class _BodyOfSaraState extends State<BodyOfSara> {
     );
   }
 
-  Divider faseleyeAmoodi(double heightOfScreen, double widthOfScreen) {
-    return Divider(
-      color: Colors.black,
-      height: heightOfScreen * 0.01,
-      indent: widthOfScreen * 0.06,
-      endIndent: widthOfScreen * 0.06,
+  Row faseleyeAmoodi(double heightOfScreen, double widthOfScreen) {
+    return Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: widthOfScreen * 0.05),
+          child: CustomPaint(
+            size: const Size(6, 6),
+            painter: CirclePainter(),
+          ),
+        ),
+        const Expanded(
+          child: Divider(
+            color: Colors.black,
+            thickness: 2,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(right: widthOfScreen * 0.05),
+          child: CustomPaint(
+            size: const Size(6, 6),
+            painter: CirclePainter(),
+          ),
+        ),
+      ],
     );
   }
 
@@ -748,14 +792,16 @@ class _BodyOfSaraState extends State<BodyOfSara> {
     return Container(
       width: widthOfContainer,
       height: heightOfContainer,
-      decoration: ShapeDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: const Alignment(1.00, 0.07),
           end: const Alignment(-1, -0.07),
           colors: [color1, color2],
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(23),
+        borderRadius: BorderRadius.circular(23),
+        border: Border.all(
+          color: Colors.black,
+          width: 1.5,
         ),
       ),
       child: Stack(
@@ -796,5 +842,44 @@ class _BodyOfSaraState extends State<BodyOfSara> {
     return SizedBox(
       width: widthOfScreen * 0.02,
     );
+  }
+
+  Future<String> fetchDataOfSara(String studentCode) async {
+    String response = '';
+    await Socket.connect("172.20.123.207", 8080).then(
+      (serverSocket) {
+        serverSocket.write('sara//$studentCode\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(
+              () {
+                response = String.fromCharCodes(socketResponse);
+              },
+            );
+          },
+        );
+        serverSocket.destroy();
+      },
+    );
+    print('--------------------->   server response is : ${response}');
+    return response;
+  }
+}
+
+class CirclePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final Paint paint = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.fill;
+
+    canvas.drawCircle(
+        Offset(size.width / 2, size.height / 2), size.width / 2, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }

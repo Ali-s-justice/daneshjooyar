@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../services/notification.dart';
+import '../classes/student.dart';
 
 class BodyOfKhabara extends StatefulWidget {
   const BodyOfKhabara({super.key});
@@ -190,7 +191,7 @@ class Birthdays extends StatelessWidget {
               Container(
                 width: widthOfScreen * 0.7,
                 height: heightOfScreen * 0.07,
-                decoration: ShapeDecoration(
+                decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     begin: Alignment(1.00, 0.07),
                     end: Alignment(-1, -0.07),
@@ -200,9 +201,8 @@ class Birthdays extends StatelessWidget {
                       Color(0xFFD7009B),
                     ],
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
+                  border: Border.all(color: Colors.black, width: 2),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Center(
                   child: Text(
@@ -281,10 +281,10 @@ class _ForYouState extends State<ForYou> {
               });
             },
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 350),
+              duration: const Duration(milliseconds: 400),
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(10),
-              decoration: ShapeDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: const Alignment(1.00, 0.07),
                   end: const Alignment(-1, -0.07),
@@ -300,9 +300,8 @@ class _ForYouState extends State<ForYou> {
                           const Color.fromARGB(255, 129, 30, 138),
                         ],
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
+                border: Border.all(color: Colors.black, width: 2),
+                borderRadius: BorderRadius.circular(15),
               ),
               child: Column(
                 children: [
@@ -345,25 +344,19 @@ class _ForYouState extends State<ForYou> {
               duration: const Duration(milliseconds: 350),
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(10),
-              decoration: ShapeDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: const Alignment(1.00, 0.07),
                   end: const Alignment(-1, -0.07),
                   colors: isExpanded2[index]
                       ? [
-                          const Color.fromARGB(255, 129, 30, 138),
-                          const Color.fromARGB(255, 146, 0, 132),
-                          const Color.fromARGB(255, 189, 3, 3),
+                          const Color(0xFF008805),
+                          const Color(0xFF00BD07),
                         ]
-                      : [
-                          const Color.fromARGB(255, 129, 30, 138),
-                          const Color.fromARGB(255, 129, 30, 138),
-                          const Color.fromARGB(255, 129, 30, 138),
-                        ],
+                      : [const Color(0xFF00BD07), const Color(0xFF008805)],
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: Colors.black, width: 2),
               ),
               child: Column(
                 children: [

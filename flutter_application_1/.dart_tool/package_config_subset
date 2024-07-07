@@ -30,6 +30,10 @@ collection
 2.18
 file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/collection-1.18.0/
 file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/collection-1.18.0/lib/
+cross_file
+3.3
+file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.4+1/
+file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.4+1/lib/
 crypto
 2.19
 file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/crypto-3.0.3/
@@ -54,6 +58,10 @@ ffi
 3.3
 file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/ffi-2.1.2/
 file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/ffi-2.1.2/lib/
+file_picker
+2.19
+file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/file_picker-8.0.5/
+file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/file_picker-8.0.5/lib/
 flutter_lints
 3.0
 file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-3.0.1/
@@ -74,6 +82,10 @@ flutter_native_splash
 3.0
 file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_native_splash-2.4.0/
 file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_native_splash-2.4.0/lib/
+flutter_plugin_android_lifecycle
+3.2
+file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.19/
+file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.19/lib/
 html
 2.19
 file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/html-0.15.4/
@@ -210,6 +222,10 @@ webview_flutter_web
 3.1
 file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/webview_flutter_web-0.2.2+4/
 file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/webview_flutter_web-0.2.2+4/lib/
+win32
+3.3
+file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.5.0/
+file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/win32-5.5.0/lib/
 xdg_directories
 3.0
 file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/xdg_directories-1.0.4/

@@ -1,11 +1,9 @@
 import 'dart:io';
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/details/classes/student.dart';
 import 'package:flutter_application_1/details/sara/sara.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'my_app_bar.dart';
 import 'my_bottom.dart';
 
@@ -47,6 +45,8 @@ class _LoginState extends State<Login> {
   String response = '';
   @override
   Widget build(BuildContext context) {
+    final double widthOfScreen = MediaQuery.of(context).size.width;
+    final double heightOfScreen = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: const SignUpLoginAppBar(),
       bottomNavigationBar: const SignUpLoginBottomBar(),
@@ -189,18 +189,57 @@ class _LoginState extends State<Login> {
                             }
                             //send information to backend
                             // Future<String> message = login();
-                            String message = 'notSignedUp';
+                            String message = 'successful';
                             if (message == 'successful') {
                               Navigator.pushNamed(context, Sara.routeName,
                                   arguments: student);
                             } else if (message == 'notSignedUp') {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('notSignedUp')));
+                                SnackBar(
+                                  elevation: 20,
+                                  width: widthOfScreen * 0.8,
+                                  backgroundColor: Colors.red,
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  content: Center(
+                                    child: Text(
+                                      '.دانشجو با این مشخصات ثبت نشده است',
+                                      textDirection: TextDirection.ltr,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: heightOfScreen * 0.018,
+                                          fontFamily: 'vazir',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else if (message == 'passwordIsWrong') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  elevation: 40,
+                                  width: widthOfScreen * 0.8,
+                                  backgroundColor: Colors.red,
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  content: Center(
+                                    child: Text(
+                                      '.رمزعبور وارد شده اشتباه است',
+                                      textDirection: TextDirection.ltr,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: heightOfScreen * 0.018,
+                                          fontFamily: 'vazir',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ),
+                              );
                             }
-                            // else if (message == 'passwordIsWrong'){
-                            //   ScaffoldMessenger.of(context)
-                            //       .showSnackBar(LoginSnackBar());
-                            // }
                           }
                         },
                         child: const Padding(

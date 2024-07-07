@@ -15,14 +15,13 @@ class Sara extends StatefulWidget {
 class _SaraState extends State<Sara> {
   @override
   Widget build(BuildContext context) {
-    final Student student =
-        ModalRoute.of(context)!.settings.arguments as Student;
-    return Scaffold(
-      appBar: const SaraAppBar(),
+   
+    return const Scaffold(
+      appBar: SaraAppBar(),
       body: BodyOfSara(
-        student: student,
+     
       ),
-      bottomNavigationBar: const SaraBottomBar(),
+      bottomNavigationBar: SaraBottomBar(),
     );
   }
 }

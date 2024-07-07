@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/details/information.dart';
 import 'classes/student.dart';
@@ -37,6 +38,7 @@ class _MyWidgetState extends State<EditInformation> {
           end: Alignment.bottomRight,
         ),
       );
+
   @override
   Widget build(BuildContext context) {
     final Student currentStudent =
@@ -580,12 +582,13 @@ class _MyWidgetState extends State<EditInformation> {
                               width: 3.5,
                             ),
                           ),
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 85,
-                            backgroundImage:
-                                AssetImage('assets/images/mypic.jpg'),
-                          ),
+                          child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 85,
+                              backgroundImage: (image == null)
+                                  ? const AssetImage('assets/images/mypic.jpg')
+                                      as ImageProvider
+                                  : FileImage(image!)),
                         ),
                         Positioned(
                           bottom: 5,
@@ -603,7 +606,20 @@ class _MyWidgetState extends State<EditInformation> {
                                 color: const Color.fromARGB(255, 196, 86, 2)),
                             child: Center(
                               child: IconButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  FilePickerResult? result = await FilePicker
+                                      .platform
+                                      .pickFiles(type: FileType.image);
+
+                                  if (result != null) {
+                                    File file = File(result.files.single.path!);
+                                    setState(() {
+                                      image = file;
+                                    });
+                                  } else {
+                                    // User canceled the picker
+                                  }
+                                },
                                 icon: const Icon(
                                   Icons.camera_alt_rounded,
                                   color: Color.fromARGB(255, 0, 0, 0),

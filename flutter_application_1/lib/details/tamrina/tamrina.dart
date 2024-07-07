@@ -14,9 +14,12 @@ class Tamrina extends StatefulWidget {
 class _TamrinaState extends State<Tamrina> {
   @override
   Widget build(BuildContext context) {
+
     return const Scaffold(
       appBar: TamrinaAppBar(),
-      body: BodyOfTamrina(),
+      body: BodyOfTamrina(
+       
+      ),
       bottomNavigationBar: TamrinaBottomBar(),
     );
   }

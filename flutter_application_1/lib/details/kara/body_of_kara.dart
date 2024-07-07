@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
+import '../classes/student.dart';
 
 class BodyOfKara extends StatefulWidget {
+  
   const BodyOfKara({super.key});
 
   @override

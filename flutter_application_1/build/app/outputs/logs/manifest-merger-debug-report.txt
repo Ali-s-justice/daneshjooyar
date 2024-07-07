@@ -19,6 +19,8 @@ INJECTED from C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_appli
 INJECTED from C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:1:1-45:12
 INJECTED from C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:1:1-45:12
 MERGED from C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:1:1-45:12
+MERGED from [:file_picker] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-21:12
+MERGED from [:flutter_plugin_android_lifecycle] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:flutter_local_notifications] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-12:12
 MERGED from [:url_launcher_android] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-16:12
 MERGED from [:flutter_native_splash] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\flutter_native_splash\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
@@ -61,6 +63,8 @@ INJECTED from C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_appli
 		ADDED from C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:1:11-69
 queries
 ADDED from C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:39:5-44:15
+MERGED from [:file_picker] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:13:5-19:15
+MERGED from [:file_picker] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:13:5-19:15
 intent#action:name:android.intent.action.PROCESS_TEXT+data:mimeType:text/plain
 ADDED from C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml:40:9-43:18
 action#android.intent.action.PROCESS_TEXT
@@ -75,6 +79,10 @@ uses-sdk
 INJECTED from C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml
 INJECTED from C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\android\app\src\main\AndroidManifest.xml
+MERGED from [:file_picker] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:file_picker] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_plugin_android_lifecycle] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_plugin_android_lifecycle] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:flutter_local_notifications] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:flutter_local_notifications] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:url_launcher_android] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
@@ -133,6 +141,18 @@ uses-permission#android.permission.INTERNET
 ADDED from C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\android\app\src\debug\AndroidManifest.xml:6:5-66
 	android:name
 		ADDED from C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\android\app\src\debug\AndroidManifest.xml:6:22-64
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from [:file_picker] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-11:38
+	android:maxSdkVersion
+		ADDED from [:file_picker] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:11:9-35
+	android:name
+		ADDED from [:file_picker] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-64
+intent#action:name:android.intent.action.GET_CONTENT+data:mimeType:*/*
+ADDED from [:file_picker] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:14:9-18:18
+action#android.intent.action.GET_CONTENT
+ADDED from [:file_picker] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-72
+	android:name
+		ADDED from [:file_picker] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:15:21-69
 uses-permission#android.permission.VIBRATE
 ADDED from [:flutter_local_notifications] C:\Users\amirhossein\Desktop\Ap-Project\daneshjooyar\flutter_application_1\build\flutter_local_notifications\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-66
 	android:name
