@@ -12,7 +12,26 @@ GET USER INFORMATION: userInfo//studentId or studentUsername --> OUTPUT: usernam
 
 DELETEING ACCOUNT: deleteAccount//studentId --> OUTPUT: successful or null
 
+SARA: sara//studentId --> OUTPUT: best score // course best name // worse score // worse course name // exam num // assignment num // done assignment num // day of end // hour of end // miniute of end // map <titel, description> // array of done assignment name
 
+NEWS:	newsForYou//studentId --> OUTPUT: Arraylist of assignment name that has under 24 hour time // ArrayList of changed deadline assignmentname
+	newsHappen//studentId --> OUTPUT: HashMap of <title, link>
+	birthday//studentId --> OUTPUT: ArrayList of names
+
+JOBS:	jobNotdone//studentId --> OUTPUT: Arraylist of Arraylist ( title, description, days remain // hour remain // miniute remain, job Id)
+	addJob//Deadline(date, hour)//Student Id// title// description --> OUTPUT: "successful"
+	setJobDone//jobId --> OUTPUT: "successful"
+	deleteJob//studentId//jobId --> OUTPUT: "successful"
+	editJob//Deadline(date, hour)// title// description// jobId --> OUTPUT: "successful"
+	doneJob//syudentId --> OUTPUT: Arraylist of Arraylist ( title, description )
+
+CLASSES:	classes//studentId --> OUTPUT: Arraylist of Arraylist < courseName, teacherName, credit, examDate, currentScore, activeAssignmentNum, courseTimeInWeek, courseId >
+		addCourse//studentId//CourseId --> OUTPUT: OK: "successful"
+							   ERROR: "noCourseFound"
+						           ERROR: "alreadySignedUp"
+		deleteCourse//studentId//courseId --> OUTPUT: "successful"
+		weekPlanner//studentId --> OUTPUT: ArrayList of ArrayList < day of week, course name, time >
+	
 
 
 OUTPUTS:

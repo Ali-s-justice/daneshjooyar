@@ -144,9 +144,11 @@ public class TeacherController {
         }
     }
 
-    public void getAddAssignment(TeacherView teacherView, String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline, String maker) {
+    public String getAddAssignment(TeacherView teacherView, String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline, String maker) {
         if (teacherView.equals(this.teacherView)) {
-            this.teacherModel.addAssignment(assignmentName, isActive, dateOfDeadline, hourOfDeadline, maker);
+            return this.teacherModel.addAssignment(assignmentName, isActive, dateOfDeadline, hourOfDeadline, maker);
+        }else {
+            return null;
         }
     }
 
@@ -215,6 +217,12 @@ public class TeacherController {
     public void getSetCaptionForAssignment(TeacherView teacherView, String assignmentId, String caption) {
         if (teacherView.equals(this.teacherView)) {
             this.teacherModel.setCaptionForAssignment(assignmentId, caption);
+        }
+    }
+
+    public void getEstimateTimeSetter(TeacherView teacherView, String assignmentId, String id, double estimateTime){
+        if (teacherView.equals(this.teacherView)) {
+            this.teacherModel.estimateTimeSetter(assignmentId, id, estimateTime);
         }
     }
 

@@ -115,7 +115,7 @@ public class AdminModel {
         }
     }
 
-    public void SignUpStudent(String StudentName, String Username, String Password) {
+    public String SignUpStudent(String StudentName, String Username, String Password) {
         String student_code = "";
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/student_num.txt");
@@ -142,6 +142,7 @@ public class AdminModel {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return student_code;
     }
 
     public boolean noStudentFound(String studentName) {
@@ -443,7 +444,7 @@ public class AdminModel {
         return m.find();
     }
 
-    public void addAssignment(String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline, String maker) {
+    public String addAssignment(String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline, String maker) {
         String assignmentId = "";
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/assignment_num.txt");
@@ -478,6 +479,7 @@ public class AdminModel {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return assignmentId;
     }
 
     public boolean noAssignmentFoundById(String assignmentId) {
@@ -544,6 +546,7 @@ public class AdminModel {
                     Info[3] = dateOfDeadline + "," + hourOfDeadline;
                     String last = Info[0] + "//" + Info[1] + "//" + Info[2] + "//" + Info[3];
                     allOfFile.add(last);
+                    assignmentChangedDeadlineIdSetter(assignmentId);
                 } else {
                     allOfFile.add(line);
                 }
@@ -553,6 +556,24 @@ public class AdminModel {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void assignmentChangedDeadlineIdSetter(String assignmentId){
+        Set<String> allAssignmentId = new HashSet<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/assignment_change_deadline.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                allAssignmentId.add(line);
+            }
+            bufferedReader.close();
+            allAssignmentId.add(assignmentId);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        ArrayList<String> allOfFile = new ArrayList<>(allAssignmentId);
+        writer(allOfFile, "daneshjooyar/informations/assignment_change_deadline.txt");
     }
 
     public void setAssignmentActivity(String assignmentId, String obligation) {
@@ -852,7 +873,7 @@ public class AdminModel {
         }
     }
 
-    public void addCourse(String courseName, int credit) {
+    public String addCourse(String courseName, int credit) {
         String courseId = "";
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/course_num.txt");
@@ -879,6 +900,7 @@ public class AdminModel {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return courseId;
     }
 
     public void setCourseTeacher(String courseId, String teacherId) {
@@ -1200,6 +1222,87 @@ public class AdminModel {
 
         writer(allOfFile, "daneshjooyar/informations/course_assignment.txt");
         return hasAssignment;
+    }
+
+    public void saveStudentBirthday(String birthday, String studentId){
+        ArrayList<String> allOfFile = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/student_birthday.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                allOfFile.add(line);
+            }
+            allOfFile.add(studentId + "//" + birthday);
+            bufferedReader.close();
+            writer(allOfFile, "daneshjooyar/informations/student_birthday.txt");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public boolean courseDatePatternChecker(String input){
+        String pattern = "^(sh|y|d|se|c|p|j)=(0?[1-9]|1[0-2]):([0-5][0-9])$";
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(input);
+        return matcher.matches();
+    }
+
+    public void setDateForCourse(String courseId, ArrayList<ArrayList<String>> arrayList){
+        ArrayList<String> allOfFile = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/course_date.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                allOfFile.add(line);
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        allOfFile.add(courseId + "//" + arrayList.toString());
+        writer(allOfFile, "daneshjooyar/informations/course_date.txt");
+    }
+
+    public void estimateTimeSetter(String assignmentId, String id, double estimateTime){
+        ArrayList<String> allOfFile = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/estimate_time.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            boolean isSet = false;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(assignmentId)) {
+                    String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                    HashMap<String, String> map = new HashMap<>();
+                    String[] keyValuePairs = mapAsString.split(",");
+                    for (String pair : keyValuePairs) {
+                        String[] entry = pair.split("=");
+                        map.put(entry[0], entry[1]);
+                    }
+                    map.put(id, String.valueOf(estimateTime));
+                    Info[1] = map.toString();
+                    String last = Info[0] + "//" + Info[1];
+                    allOfFile.add(last);
+                    isSet = true;
+                } else {
+                    allOfFile.add(line);
+                }
+            }
+            bufferedReader.close();
+            if (isSet) {
+                writer(allOfFile, "daneshjooyar/informations/estimate_time.txt");
+            } else {
+                HashMap<String, String> hashMap = new HashMap<>();
+                hashMap.put(id, String.valueOf(estimateTime));
+                allOfFile.add(assignmentId + "//" + hashMap);
+                writer(allOfFile, "daneshjooyar/informations/estimate_time.txt");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }

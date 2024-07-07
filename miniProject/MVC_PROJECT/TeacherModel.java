@@ -397,7 +397,7 @@ public class TeacherModel {
         }
     }
 
-    public void addAssignment(String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline, String maker) {
+    public String addAssignment(String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline, String maker) {
         String assignmentId = "";
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/assignment_num.txt");
@@ -432,6 +432,7 @@ public class TeacherModel {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return assignmentId;
     }
 
     public boolean assignmentIsNotForTeacher(String assignmentId, String teacherId){
@@ -733,6 +734,46 @@ public class TeacherModel {
                 newAllOfFile.add(caption);
             }
             writer(newAllOfFile, "daneshjooyar/informations/caption.txt");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void estimateTimeSetter(String assignmentId, String id, double estimateTime){
+        ArrayList<String> allOfFile = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/estimate_time.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            boolean isSet = false;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(assignmentId)) {
+                    String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                    HashMap<String, String> map = new HashMap<>();
+                    String[] keyValuePairs = mapAsString.split(",");
+                    for (String pair : keyValuePairs) {
+                        String[] entry = pair.split("=");
+                        map.put(entry[0], entry[1]);
+                    }
+                    map.put(id, String.valueOf(estimateTime));
+                    Info[1] = map.toString();
+                    String last = Info[0] + "//" + Info[1];
+                    allOfFile.add(last);
+                    isSet = true;
+                } else {
+                    allOfFile.add(line);
+                }
+            }
+            bufferedReader.close();
+            if (isSet) {
+                writer(allOfFile, "daneshjooyar/informations/estimate_time.txt");
+            } else {
+                HashMap<String, String> hashMap = new HashMap<>();
+                hashMap.put(id, String.valueOf(estimateTime));
+                allOfFile.add(assignmentId + "//" + hashMap);
+                writer(allOfFile, "daneshjooyar/informations/estimate_time.txt");
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

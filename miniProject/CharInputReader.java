@@ -1,21 +1,21 @@
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 public class CharInputReader {
-
     public static void main(String[] args) {
-
-        String[] splitInputString = new String[4];
-        splitInputString[0] = "signup";
-        splitInputString[1] = "studentId";
-        splitInputString[2] = "username";
-        splitInputString[3] = "password";
-        ArrayList<String> temp = new ArrayList<>(List.of(splitInputString));
-        temp.removeFirst();
-        String[] strings = temp.toArray(new String[0]);
-        System.out.println(strings[0]);
+        String nestedArrayListAsString = "[[g, moadelat, 10:00], [g, moadelat, 11:00]";
+        ArrayList<ArrayList<String>> arrayList = stringToArrayOfArrayList(nestedArrayListAsString);
+        System.out.println(arrayList.getFirst());
+        System.out.println(arrayList.getLast());
     }
-
+    public static ArrayList<ArrayList<String>> stringToArrayOfArrayList(String string){
+        ArrayList<ArrayList<String>> returnArraylist = new ArrayList<>();
+        for (String innerListString : string.substring(1, string.length() - 1).split("], ")) {
+            String[] elements = innerListString.substring(1).split(", ");
+            ArrayList<String> innerList = new ArrayList<>(Arrays.asList(elements));
+            returnArraylist.add(innerList);
+        }
+        return returnArraylist;
+    }
 }

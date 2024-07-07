@@ -1,5 +1,6 @@
 package MVC_PROJECT;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class AdminView {
@@ -407,7 +408,7 @@ public class AdminView {
         while (true) {
             System.out.println("Enter assignment name\n[1]:Go back");
             Scanner input = new Scanner(System.in);
-            String assignmentName = input.next();
+            String assignmentName = input.nextLine();
             if (assignmentName.equals("1")) {
                 break;
             } else {
@@ -467,12 +468,39 @@ public class AdminView {
                 return false;
             }
             if (adminController.getHourHasValidPattern(this, hourOfDeadline)) {
-                adminController.getAddAssignment(this, assignmentName, isActive, dateOfDeadline, hourOfDeadline, thisAdminUsername);
-                System.out.println("Assignment add successfully!\n");
-                return true;
+                if (estimateTimeGetter(assignmentName, isActive, dateOfDeadline, hourOfDeadline)){
+                    return true;
+                }else {
+                    continue;
+                }
             } else {
                 System.out.println("The hour doesn't have correct pattern!\n");
             }
+        }
+    }
+
+    private boolean estimateTimeGetter(String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline){
+        while (true){
+            System.out.println("Enter a double for estimate time\n[-1]:Go back");
+            Scanner input = new Scanner(System.in);
+            double estimateTime = 0;
+            try {
+                estimateTime = input.nextDouble();
+            }catch (Exception e){
+                System.out.println("Invalid input!\n");
+                continue;
+            }
+            if (estimateTime == -1){
+                return false;
+            }
+            if (estimateTime < 0){
+                System.out.println("Invalid input!\n");
+                continue;
+            }
+            String assignmentId = adminController.getAddAssignment(this, assignmentName, isActive, dateOfDeadline, hourOfDeadline, thisAdminUsername);
+            adminController.getEstimateTimeSetter(this, assignmentId, this.thisAdminUsername, estimateTime);
+            System.out.println("Assignment add successfully!\n");
+            return true;
         }
     }
 
@@ -793,9 +821,59 @@ public class AdminView {
             if (creditNum == -1) {
                 return false;
             }
-            adminController.getAddCourse(this, courseName, creditNum);
+            String courseId = adminController.getAddCourse(this, courseName, creditNum);
+            if (!getDaysNumForCourse(courseId)){
+                adminController.getRemoveCourse(this, courseId);
+                continue;
+            }
             return true;
         }
+    }
+
+    public boolean getDaysNumForCourse(String courseId){
+        while (true){
+            System.out.println("Enter an integer for how many classes are going to happen in a week\n[0]:Go back");
+            Scanner input = new Scanner(System.in);
+            String dayNum = input.next();
+            if (dayNum.equals("0")){
+                return false;
+            }
+            int num;
+            try {
+                num = Integer.parseInt(dayNum);
+            }catch (Exception e){
+                System.out.println("Invalid input!\n");
+                continue;
+            }
+            if (getTimeOfCourse(num, courseId)){
+                return true;
+            }
+        }
+    }
+
+    public boolean getTimeOfCourse(int num, String courseId){
+        ArrayList<ArrayList<String>> arrayList = new ArrayList<>();
+        int i = 0;
+        while (i < num){
+            System.out.println("Enter " + (i+1) + " time of class:\nPattern must be like: TEXT=HH:MM\nTEXT is one of ( \"sh\", \"y\", \"d\", \"se\", \"c\", \"p\", \"j\" ) for every day of week\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String courseTime = input.next();
+            if (courseTime.equals("1")){
+                return false;
+            }
+            if (!adminController.getCourseDatePatternChecker(this, courseTime)){
+                System.out.println("Invalid input!\n");
+                continue;
+            }
+            String[] Info = courseTime.split("=");
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add(Info[0]);
+            temp.add(Info[1]);
+            arrayList.add(temp);
+            i++;
+        }
+        adminController.getSetDateForCourse(this, courseId, arrayList);
+        return true;
     }
 
     private void adminLoginUsernameGetter() {
@@ -995,8 +1073,31 @@ public class AdminView {
     }
 
     private void signUpStudent(String StudentName) {
-        this.adminController.getStudentSignUp(this, StudentName, "$", "$");
+        String birthday = studentBirthdayGetter();
+        if (birthday.equals("exit")){
+            System.out.println("no student generate!\n");
+            return;
+        }
+        String studentId = this.adminController.getStudentSignUp(this, StudentName, "$", "$");
+        adminController.getSaveStudentBirthday(this, birthday, studentId);
         System.out.println("Student named: " + StudentName + " successfully signed up!\n");
+    }
+
+    private String studentBirthdayGetter(){
+        while (true){
+            System.out.println("Enter student birthday in pattern like (YYYY/MM/DD)\n[1]:Go back");
+            Scanner input = new Scanner(System.in);
+            String birthday = input.next();
+            if (birthday.equals("1")){
+                return "exit";
+            }
+            if (adminController.getDateHasValidPattern(this, birthday)){
+                return birthday;
+            }else {
+                System.out.println("date " + birthday + " doesn't have true pattern!");
+//                continue;
+            }
+        }
     }
 
     private void adminSignupProcess() {

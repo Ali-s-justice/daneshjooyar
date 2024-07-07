@@ -516,12 +516,39 @@ public class TeacherView {
                 return false;
             }
             if (teacherController.getHourHasValidPattern(this, hourOfDeadline)) {
-                teacherController.getAddAssignment(this, assignmentName, isActive, dateOfDeadline, hourOfDeadline, thisTeacherId);
-                System.out.println("Assignment add successfully!\n");
-                return true;
+                if (estimateTimeGetter(assignmentName, isActive, dateOfDeadline, hourOfDeadline)){
+                    return true;
+                }else {
+                    continue;
+                }
             } else {
                 System.out.println("The hour doesn't have correct pattern!\n");
             }
+        }
+    }
+
+    private boolean estimateTimeGetter(String assignmentName, String isActive, String dateOfDeadline, String hourOfDeadline){
+        while (true){
+            System.out.println("Enter a double for estimate time\n[-1]:Go back");
+            Scanner input = new Scanner(System.in);
+            double estimateTime = 0;
+            try {
+                estimateTime = input.nextDouble();
+            }catch (Exception e){
+                System.out.println("Invalid input!\n");
+                continue;
+            }
+            if (estimateTime == -1){
+                return false;
+            }
+            if (estimateTime < 0){
+                System.out.println("Invalid input!\n");
+                continue;
+            }
+            String assignmentId = teacherController.getAddAssignment(this, assignmentName, isActive, dateOfDeadline, hourOfDeadline, thisTeacherId);
+            teacherController.getEstimateTimeSetter(this, assignmentId, thisTeacherId, estimateTime);
+            System.out.println("Assignment add successfully!\n");
+            return true;
         }
     }
 
