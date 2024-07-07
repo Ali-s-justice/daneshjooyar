@@ -1,7 +1,7 @@
+import 'package:flutter_application_1/details/classes/student.dart';
 import 'package:flutter_application_1/details/edit_informations.dart';
-import 'package:flutter_application_1/details/sara.dart';
+import 'package:flutter_application_1/details/sara/sara.dart';
 import 'package:flutter_application_1/details/support.dart';
-import 'classes/student.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/details/signup.dart';
 
@@ -12,11 +12,7 @@ class Information extends StatefulWidget {
     fontSize: 13.0,
     fontFamily: 'vazir',
   );
-  static const informationTextstyle = TextStyle(
-    fontSize: 25.0,
-    color: Colors.black,
-    fontFamily: 'vazir',
-  );
+
   static const infoStyle = TextStyle(
       fontSize: 15.0,
       fontFamily: 'vazir',
@@ -32,19 +28,29 @@ class _InformationState extends State<Information> {
   BoxDecoration get gradientBackground => const BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color.fromARGB(212, 255, 255, 255),
-            Color.fromARGB(255, 15, 199, 255),
+            Color.fromRGBO(0, 113, 212, 1),
+            Color.fromRGBO(25, 0, 126, 1),
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
       );
+  static const informationTextstyle = TextStyle(
+    fontSize: 25.0,
+    color: Color.fromARGB(255, 255, 255, 255),
+    fontFamily: 'phone',
+  );
   static const color = Color.fromRGBO(230, 230, 250, 1.0);
+
+  String userName = 'amirhossein';
+  String name = 'سید امیرحسین اشرفیان';
+  String id = 'amirhossein';
+  String termInfo = 'بهار 1403_1402';
+  String creditNum = '16';
+  String allAverage = '19.99';
 
   @override
   Widget build(BuildContext context) {
-    final Student newStudent =
-        ModalRoute.of(context)!.settings.arguments as Student;
     return Container(
       decoration: gradientBackground,
       child: Scaffold(
@@ -55,8 +61,7 @@ class _InformationState extends State<Information> {
               icon: const Icon(Icons.home),
               onPressed: () {
                 //it isn't complete , must be editted
-                Navigator.pushNamed(context, Sara.routeName,
-                    arguments: newStudent);
+                Navigator.pushNamed(context, Sara.routeName);
               },
               iconSize: 35,
               color: Colors.black,
@@ -74,30 +79,34 @@ class _InformationState extends State<Information> {
             // Center the content horizontally
             child: Column(
               children: [
-                const Stack(
+                Stack(
                   children: [
-                    CircleAvatar(
-                      radius: 95.0,
-                      backgroundImage: AssetImage('assets/images/mypic.jpg'),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 5,
+                        ),
+                      ),
+                      child: const CircleAvatar(
+                        radius: 95.0,
+                        backgroundImage: AssetImage('assets/images/mypic.jpg'),
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  newStudent.username!,
-                  style: const TextStyle(
-                    fontSize: 25.0,
-                    color: Colors.black,
-                    fontFamily: 'vazir',
-                  ),
+                  userName,
+                  style: informationTextstyle,
                 ),
                 // const SizedBox(
                 //   height: 10.0,
                 // ),
                 const Text(
                   'دانشجو',
-                  style: TextStyle(
-                      fontSize: 25.0, color: Colors.black, fontFamily: 'vazir'),
+                  style: informationTextstyle,
                 ),
                 const SizedBox(
                   height: 20.0,
@@ -121,7 +130,7 @@ class _InformationState extends State<Information> {
                               style: Information.infoStyle,
                             ),
                             Text(
-                              newStudent.name!,
+                              name,
                               style: Information.infoStyle,
                             ),
                           ],
@@ -142,7 +151,7 @@ class _InformationState extends State<Information> {
                               style: Information.infoStyle,
                             ),
                             Text(
-                              newStudent.studenCode!,
+                              id,
                               style: Information.infoStyle,
                             ),
                           ],
@@ -184,7 +193,7 @@ class _InformationState extends State<Information> {
                               style: Information.infoStyle,
                             ),
                             Text(
-                              newStudent.numberOfCourseUnit.toString(),
+                              creditNum,
                               style: Information.infoStyle,
                             ),
                           ],
@@ -205,7 +214,7 @@ class _InformationState extends State<Information> {
                               style: Information.infoStyle,
                             ),
                             Text(
-                              newStudent.totalAverage.toString(),
+                              allAverage,
                               style: Information.infoStyle,
                             ),
                           ],
@@ -227,13 +236,19 @@ class _InformationState extends State<Information> {
                       children: <Widget>[
                         TextButton(
                           onPressed: () {
-                            setState(() {
-                              Navigator.pushNamed(
-                                context,
-                                EditInformation.routeName,
-                                arguments: newStudent,
-                              );
-                            });
+                            final Student currentStudent = Student();
+                            currentStudent.username = userName;
+                            currentStudent.name = name;
+                            currentStudent.studenCode = id;
+                            currentStudent.numberOfCourseUnit =
+                                int.tryParse(creditNum);
+                            currentStudent.totalAverage =
+                                double.tryParse(allAverage);
+                            Navigator.pushNamed(
+                              context,
+                              EditInformation.routeName,
+                              arguments: currentStudent,
+                            );
                           },
                           style: TextButton.styleFrom(
                             alignment: Alignment.centerRight,
@@ -277,8 +292,7 @@ class _InformationState extends State<Information> {
                         TextButton(
                           onPressed: () {
                             setState(() {
-                              Navigator.pushNamed(context, Support.routeName,
-                                  arguments: newStudent);
+                              Navigator.pushNamed(context, Support.routeName);
                             });
                           },
                           style: TextButton.styleFrom(

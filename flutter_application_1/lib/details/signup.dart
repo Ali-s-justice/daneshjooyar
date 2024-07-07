@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_application_1/details/information.dart';
 import 'my_app_bar.dart';
 import 'my_bottom.dart';
-import 'classes/student.dart';
+
 
 class Signup extends StatefulWidget {
   static const routeName = 'signup';
@@ -39,7 +39,7 @@ class _SignupState extends State<Signup> {
     fontSize: 22.0,
   );
 
-  Student newStudent = Student();
+
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +153,7 @@ class _SignupState extends State<Signup> {
                                     "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}\$")
                                 .hasMatch(value!)) {
                               return "!حداقل 8 حرف شامل حروف کوچک و بزرگ و اعداد";
-                            } else if (value.contains(newStudent.username!)) {
+                            } else if (value.contains(usernameController.text)) {
                               return ".رمز عبور نباید شامل نام کاربری باشد";
                             } else {
                               return null;
@@ -259,15 +259,16 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                         onPressed: () {
-                          newStudent.username = usernameController.text;
-                          newStudent.studenCode = studentCodeController.text;
-                          newStudent.password = passwordController.text;
+                          // newStudent.username = usernameController.text;
+                          // newStudent.studenCode = studentCodeController.text;
+                          // newStudent.password = passwordController.text;
                           if (_keyform.currentState!.validate()) {
                             // Navigator.pushNamed(context, Information.routeName,
                             //     arguments: newStudent);
                             Navigator.pushReplacementNamed(
-                                context, Information.routeName,
-                                arguments: newStudent);
+                              context,
+                              Information.routeName,
+                            );
                           }
                         },
                         child: const Padding(
