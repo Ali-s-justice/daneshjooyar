@@ -189,7 +189,7 @@ class _LoginState extends State<Login> {
                             }
                             //send information to backend
                             // Future<String> message = login();
-                            String message = 'successful';
+                            String message = 'notSignedUp';
                             if (message == 'successful') {
                               Navigator.pushNamed(context, Sara.routeName,
                                   arguments: student);
