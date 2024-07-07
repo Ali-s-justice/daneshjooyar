@@ -122,11 +122,18 @@ public class StudentView {
                 return weekPlanner(restString);
             case "assignmentToday":
                 return assignmentToday(restString);
+            case "assignmentDate":
+                return assignmentDate(restString);
             case null:
                 return "error";
             default:
                 return "noObligation";
         }
+    }
+
+    private String assignmentDate(String[] restString){
+        //restString = studentId - todayDate(2025/12/04)
+        return studentController.getNotDoneAssignmentPage(this, restString[0], restString[1]).toString();
     }
 
     private String assignmentToday(String[] restString){
