@@ -111,7 +111,7 @@
     },
     {
       "name": "flutter_local_notifications",
-      "rootUri": "file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_local_notifications-17.2.1",
+      "rootUri": "file:///C:/Users/amirhossein/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_local_notifications-17.2.1+1",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
@@ -392,7 +392,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-07-07T01:52:11.454549Z",
+  "generated": "2024-07-08T14:37:19.456122Z",
   "generator": "pub",
   "generatorVersion": "3.3.4"
 }

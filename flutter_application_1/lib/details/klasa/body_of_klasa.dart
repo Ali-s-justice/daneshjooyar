@@ -1,7 +1,13 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../classes/student.dart';
+import '../functions.dart';
+import '../user_data.dart';
 
 class BodyOfKlasa extends StatefulWidget {
   const BodyOfKlasa({super.key});
@@ -11,11 +17,7 @@ class BodyOfKlasa extends StatefulWidget {
 }
 
 class _BodyOfKlasaState extends State<BodyOfKlasa> {
-  @override
-  void initState() {
-    // String response = fetchSaraData();
-    super.initState();
-  }
+  String responseAddNewCoursre = '-';
 
   bool showTable = false;
   @override
@@ -138,7 +140,7 @@ class _BodyOfKlasaState extends State<BodyOfKlasa> {
           Positioned(
             top: heightOfScreen * 0.16,
             right: widthOfScreen * 0.05,
-            child: (showTable) ? const Table() : Container(),
+            child: (showTable) ? const TableWidget() : Container(),
           )
         ],
       ),
@@ -227,11 +229,11 @@ class _BodyOfKlasaState extends State<BodyOfKlasa> {
                 backgroundColor: const Color.fromARGB(255, 34, 147, 30),
               ),
               onPressed: () {
-                // Handle save action
-                //String courseIs = courseIdController.text;
-                // Add your save logic here
-                //print('Title: $title, Description: $description');
-                Navigator.of(context).pop();
+                if (courseIdController.text.isNotEmpty) {
+                  addNewClass(courseIdController.text);
+                  // Handle save action
+                  Navigator.of(context).pop();
+                }
               },
               child: const Text(
                 'ثبت نام',
@@ -247,15 +249,49 @@ class _BodyOfKlasaState extends State<BodyOfKlasa> {
       },
     );
   }
+
+  Future<String> addNewClass(String courseId) async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket
+            .write('addNewJob//${UserData.studentCode}//$courseId\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseAddNewCoursre = utf8.decode(socketResponse);
+            });
+            completer.complete(responseAddNewCoursre);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
 }
 
-class Table extends StatelessWidget {
-  const Table({super.key});
+class TableWidget extends StatefulWidget {
+  const TableWidget({super.key});
   static const tableTextStyle = TextStyle(
     color: Colors.black,
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: 'vazir',
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w500,
   );
   static const titleTableTextStyle = TextStyle(
     color: Colors.black,
@@ -263,6 +299,24 @@ class Table extends StatelessWidget {
     fontFamily: 'vazir',
     fontWeight: FontWeight.bold,
   );
+
+  @override
+  State<TableWidget> createState() => _TableWidgetState();
+}
+
+class _TableWidgetState extends State<TableWidget> {
+  String responseTable = '-';
+  List<List<String>> table = [];
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    String message = await fetchTable();
+    table = HelperFunctions.stringToListOfList(message.trim());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -306,154 +360,49 @@ class Table extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
-                color: const Color.fromARGB(206, 255, 145, 0)),
+                color: Color.fromARGB(206, 205, 243, 255)),
             width: widthOfScreen * 0.8,
             height: heightOfScreen * 0.4,
             child: Center(
               child: SingleChildScrollView(
                 child: DataTable(
-                  // border: TableBorder(
-                  //     horizontalInside: BorderSide(
-                  //   color: Colors.white,
-                  //   width: heightOfScreen * 0.001,
-                  // )),
+                  border: TableBorder(
+                    horizontalInside: BorderSide(
+                      color: const Color.fromARGB(255, 0, 0, 0),
+                      width: heightOfScreen * 0.001,
+                    ),
+                  ),
                   headingRowHeight: heightOfScreen * 0.08,
                   columns: const [
                     DataColumn(
                       label: Text(
                         'روز هفته',
-                        style: titleTableTextStyle,
+                        style: TableWidget.titleTableTextStyle,
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'درس',
-                        style: titleTableTextStyle,
+                        style: TableWidget.titleTableTextStyle,
                       ),
                     ),
                     DataColumn(
                       label: Text(
                         'زمان',
-                        style: titleTableTextStyle,
+                        style: TableWidget.titleTableTextStyle,
                       ),
                     ),
                   ],
-                  rows: const [
-                    DataRow(
-                      cells: [
-                        DataCell(Text(
-                          'شنبه',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          'ریاضی',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          '08:00 - 10:00',
-                          style: tableTextStyle,
-                        )),
-                      ],
-                    ),
-                    DataRow(
-                      cells: [
-                        DataCell(Text(
-                          'یکشنبه',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          'فیزیک',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          '10:00 - 12:00',
-                          style: tableTextStyle,
-                        )),
-                      ],
-                    ),
-                    DataRow(
-                      cells: [
-                        DataCell(Text(
-                          'شنبه',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          'ریاضی',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          '08:00 - 10:00',
-                          style: tableTextStyle,
-                        )),
-                      ],
-                    ),
-                    DataRow(
-                      cells: [
-                        DataCell(Text(
-                          'یکشنبه',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          'فیزیک',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          '10:00 - 12:00',
-                          style: tableTextStyle,
-                        )),
-                      ],
-                    ),
-                    DataRow(
-                      cells: [
-                        DataCell(Text(
-                          'شنبه',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          'ریاضی',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          '08:00 - 10:00',
-                          style: tableTextStyle,
-                        )),
-                      ],
-                    ),
-                    DataRow(
-                      cells: [
-                        DataCell(Text(
-                          'شنبه',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          'ریاضی',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          '08:00 - 10:00',
-                          style: tableTextStyle,
-                        )),
-                      ],
-                    ),
-                    DataRow(
-                      cells: [
-                        DataCell(Text(
-                          'شنبه',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          'ریاضی',
-                          style: tableTextStyle,
-                        )),
-                        DataCell(Text(
-                          '08:00 - 10:00',
-                          style: tableTextStyle,
-                        )),
-                      ],
-                    ),
-
-                    // ردیف‌های بیشتری اضافه کنید
-                  ],
+                  rows: table
+                      .map((row) => DataRow(
+                            cells: row
+                                .map((cell) => DataCell(Text(
+                                      cell,
+                                      style: TableWidget.tableTextStyle,
+                                    )))
+                                .toList(),
+                          ))
+                      .toList(),
                 ),
               ),
             ),
@@ -461,6 +410,39 @@ class Table extends StatelessWidget {
         ),
       ]),
     );
+  }
+
+  Future<String> fetchTable() async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseTable = utf8.decode(socketResponse);
+            });
+            completer.complete(responseTable);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
   }
 }
 
@@ -472,35 +454,51 @@ class Classes extends StatefulWidget {
 }
 
 class _ClassesState extends State<Classes> {
-  List<List<String>> classes = [
-    ['فیزیک', 'زیبایی', '3', '1403/04/14', '19', '5', 'شنبه', 'courseId'],
-    ['ریاضی', 'زیبایی', '3', '1403/04/14', '19', '3', 'شنبه', 'courseId'],
-    ['مدار', 'زیبایی', '3', '1403/04/14', '19', '8', 'شنبه', 'courseId'],
-    ['دیفرانسیل', 'زیبایی', '3', '1403/04/14', '19', '5', 'شنبه', 'courseId'],
-    [
-      'برنامه نویسی پیشرفته',
-      'زیبایی',
-      '3',
-      '1403/04/14',
-      '19.00',
-      '9',
-      'شنبه',
-      'courseId'
-    ],
-    [
-      'برنامه نویسی پسرفته',
-      'زیبایی',
-      '3',
-      '1403/04/14',
-      '19',
-      '11',
-      'شنبه',
-      'courseId'
-    ],
-    ['ورزش', 'زیبایی', '3', '1403/04/14', '19', '16', 'شنبه', 'courseId'],
-  ];
+  List<List<String>> classes = [];
+  List<bool> isExpanded = [];
+  String responseClasses = '-';
 
-  List<bool> isExpanded = List<bool>.generate(7, (_) => false);
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    String message = await fetchDontAssignment();
+    classes = HelperFunctions.stringToListOfList(message.trim());
+     isExpanded = List<bool>.generate(classes.length, (_) => false);
+  }
+
+  // List<List<String>> classes = [
+  //   ['فیزیک', 'زیبایی', '3', '1403/04/14', '19', '5', 'شنبه', 'courseId'],
+  //   ['ریاضی', 'زیبایی', '3', '1403/04/14', '19', '3', 'شنبه', 'courseId'],
+  //   ['مدار', 'زیبایی', '3', '1403/04/14', '19', '8', 'شنبه', 'courseId'],
+  //   ['دیفرانسیل', 'زیبایی', '3', '1403/04/14', '19', '5', 'شنبه', 'courseId'],
+  //   [
+  //     'برنامه نویسی پیشرفته',
+  //     'زیبایی',
+  //     '3',
+  //     '1403/04/14',
+  //     '19.00',
+  //     '9',
+  //     'شنبه',
+  //     'courseId'
+  //   ],
+  //   [
+  //     'برنامه نویسی پسرفته',
+  //     'زیبایی',
+  //     '3',
+  //     '1403/04/14',
+  //     '19',
+  //     '11',
+  //     'شنبه',
+  //     'courseId'
+  //   ],
+  //   ['ورزش', 'زیبایی', '3', '1403/04/14', '19', '16', 'شنبه', 'courseId'],
+  // ];
+
+
 
   static const descriptionStyle = TextStyle(
       fontSize: 16,
@@ -640,7 +638,8 @@ class _ClassesState extends State<Classes> {
                         showDialog(
                             context: context,
                             builder: (context) {
-                              return const DeleteClassDialog();
+                              return DeleteClassDialog(
+                                  courseId: classes[index][7]);
                             });
                       },
                       icon: Icon(
@@ -657,10 +656,51 @@ class _ClassesState extends State<Classes> {
       ),
     );
   }
+
+  Future<String> fetchDontAssignment() async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseClasses = utf8.decode(socketResponse);
+            });
+            completer.complete(responseClasses);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
 }
 
-class DeleteClassDialog extends StatelessWidget {
-  const DeleteClassDialog({super.key});
+class DeleteClassDialog extends StatefulWidget {
+  final String courseId;
+  const DeleteClassDialog({super.key, required this.courseId});
+
+  @override
+  State<DeleteClassDialog> createState() => _DeleteClassDialogState();
+}
+
+class _DeleteClassDialogState extends State<DeleteClassDialog> {
+  String responseDeleteCourse = '-';
 
   @override
   Widget build(BuildContext context) {
@@ -709,6 +749,7 @@ class DeleteClassDialog extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
+                    deleteClass(widget.courseId);
                     Navigator.of(context).pop();
                   },
                   style: TextButton.styleFrom(
@@ -750,5 +791,39 @@ class DeleteClassDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<String> deleteClass(String courseId) async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket
+            .write('addNewJob//${UserData.studentCode}//$courseId\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseDeleteCourse = utf8.decode(socketResponse);
+            });
+            completer.complete(responseDeleteCourse);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
   }
 }

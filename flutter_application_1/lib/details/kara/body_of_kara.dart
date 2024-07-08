@@ -1,9 +1,15 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_application_1/details/functions.dart';
 
 import '../classes/student.dart';
+import '../user_data.dart';
 
 class BodyOfKara extends StatefulWidget {
-  
   const BodyOfKara({super.key});
 
   @override
@@ -13,7 +19,7 @@ class BodyOfKara extends StatefulWidget {
 class _BodyOfKaraState extends State<BodyOfKara> {
   int selected = 1;
   Widget selectedWidget = const Done();
-
+  String responseAddNewJob = '-';
   @override
   Widget build(BuildContext context) {
     final double widthOfScreen = MediaQuery.of(context).size.width;
@@ -167,6 +173,8 @@ class _BodyOfKaraState extends State<BodyOfKara> {
     final TextEditingController titleController = TextEditingController();
     final TextEditingController descriptionController = TextEditingController();
     final TextEditingController dayController = TextEditingController();
+    final TextEditingController hourController = TextEditingController();
+    final TextEditingController minController = TextEditingController();
     final TextEditingController monthController = TextEditingController();
     final TextEditingController yearController = TextEditingController();
 
@@ -226,7 +234,7 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                   ),
                 ),
                 SizedBox(
-                  height: heightOfScreen * 0.02,
+                  height: heightOfScreen * 0.015,
                 ),
                 Row(
                   textDirection: TextDirection.rtl,
@@ -255,12 +263,12 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                     ),
                     textDirection: TextDirection.rtl,
                     maxLines: null,
-                    minLines: 6,
+                    minLines: 3,
                   ),
                 ),
-                SizedBox(
-                  height: heightOfScreen * 0.02,
-                ),
+                // SizedBox(
+                //   height: heightOfScreen * 0.02,
+                // ),
                 Row(
                   textDirection: TextDirection.rtl,
                   children: [
@@ -268,10 +276,42 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                       width: widthOfScreen * 0.020,
                     ),
                     Text(
-                      ':تاریخ',
+                      ':ساعت',
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: heightOfScreen * 0.035),
+                    ),
+                    SizedBox(
+                      width: widthOfScreen * 0.005,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: SizedBox(
+                        height: heightOfScreen * 0.05,
+                        width: widthOfScreen * 0.15,
+                        child: TextField(
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(2),
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            // label: Text(
+                            //   'DD',
+                            //   style: TextStyle(
+                            //     fontSize: heightOfScreen * 0.013,
+                            //   ),
+                            // ),
+                            hintText: 'mm',
+                          ),
+                          controller: minController,
+                          textDirection: TextDirection.rtl,
+                        ),
+                      ),
                     ),
                     SizedBox(
                       width: widthOfScreen * 0.010,
@@ -282,6 +322,53 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                         height: heightOfScreen * 0.05,
                         width: widthOfScreen * 0.15,
                         child: TextField(
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(2),
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'hh',
+                          ),
+                          controller: hourController,
+                          textDirection: TextDirection.rtl,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: widthOfScreen * 0.010,
+                    ),
+                  ],
+                ),
+                Row(
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    SizedBox(
+                      width: widthOfScreen * 0.020,
+                    ),
+                    Text(
+                      ': تاریخ',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: heightOfScreen * 0.035),
+                    ),
+                    SizedBox(
+                      width: widthOfScreen * 0.01,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: SizedBox(
+                        height: heightOfScreen * 0.05,
+                        width: widthOfScreen * 0.15,
+                        child: TextField(
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(2),
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25),
@@ -310,6 +397,10 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                         height: heightOfScreen * 0.05,
                         width: widthOfScreen * 0.15,
                         child: TextField(
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(2),
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25),
@@ -332,6 +423,10 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                         height: heightOfScreen * 0.05,
                         width: widthOfScreen * 0.15,
                         child: TextField(
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(2),
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25),
@@ -375,6 +470,18 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                 // Handle save action
                 String title = titleController.text;
                 String description = descriptionController.text;
+
+                String day =
+                    HelperFunctions.padLeftWithZero(dayController.text);
+                String month =
+                    HelperFunctions.padLeftWithZero(monthController.text);
+                String year =
+                    HelperFunctions.padLeftWithZero(yearController.text);
+                String hour =
+                    HelperFunctions.padLeftWithZero(hourController.text);
+                String minute =
+                    HelperFunctions.padLeftWithZero(minController.text);
+                addNewJob(title, description, day, month, year, hour, minute);
                 // Add your save logic here
                 //print('Title: $title, Description: $description');
                 Navigator.of(context).pop();
@@ -393,6 +500,41 @@ class _BodyOfKaraState extends State<BodyOfKara> {
       },
     );
   }
+
+  Future<String> addNewJob(String title, String description, String day,
+      String month, String year, String hour, String minute) async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write(
+            'addNewJob//14$year/$month/$day,$hour:$minute//${UserData.studentCode}//$title//$description\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseAddNewJob = utf8.decode(socketResponse);
+            });
+            completer.complete(responseAddNewJob);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
 }
 
 class Dont extends StatefulWidget {
@@ -403,65 +545,80 @@ class Dont extends StatefulWidget {
 }
 
 class _DontState extends State<Dont> {
-  final List<List<String>> listOfList = [
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-  ];
-  List<bool> isExpanded = List<bool>.generate(7, (_) => false);
+  List<List<String>> listOfList = [];
+  List<bool> isExpanded = [];
+  String responseDontAssignment = '-';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    String message = await fetchDontAssignment();
+    listOfList = HelperFunctions.stringToListOfList(message.trim());
+    isExpanded = List<bool>.generate(listOfList.length, (_) => false);
+  }
+
+  // final List<List<String>> listOfList = [
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  // ];
 
   static const styleOfdescription = TextStyle(
     fontFamily: 'vazir',
@@ -493,24 +650,22 @@ class _DontState extends State<Dont> {
             duration: const Duration(milliseconds: 350),
             margin: const EdgeInsets.all(10),
             padding: const EdgeInsets.all(10),
-            decoration: ShapeDecoration(
-              gradient: LinearGradient(
-                  begin: const Alignment(1.00, 0.07),
-                  end: const Alignment(-1, -0.07),
-                  colors: isExpanded[index]
-                      ? [
-                          // ignore: prefer_const_constructors
-                          Color.fromARGB(255, 129, 30, 138),
-                          const Color.fromARGB(255, 132, 126, 197),
-                        ]
-                      : [
-                          const Color(0xFF1523AF),
-                          const Color(0xFF00A1D3),
-                        ]),
-              shape: RoundedRectangleBorder(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: const Alignment(1.00, 0.07),
+                    end: const Alignment(-1, -0.07),
+                    colors: isExpanded[index]
+                        ? [
+                            // ignore: prefer_const_constructors
+                            Color.fromARGB(255, 129, 30, 138),
+                            const Color.fromARGB(255, 132, 126, 197),
+                          ]
+                        : [
+                            const Color(0xFF1523AF),
+                            const Color(0xFF00A1D3),
+                          ]),
                 borderRadius: BorderRadius.circular(23),
-              ),
-            ),
+                border: Border.all(color: Colors.black, width: 2.0)),
             height: isExpanded[index] ? 200 : 50,
             child: SingleChildScrollView(
               child: Column(
@@ -537,6 +692,8 @@ class _DontState extends State<Dont> {
                           textDirection: TextDirection.rtl,
                           style: styleOfdescription,
                           textAlign: TextAlign.justify,
+                          maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(
                           height: heightOfScreen * 0.01,
@@ -587,6 +744,39 @@ class _DontState extends State<Dont> {
       },
     );
   }
+
+  Future<String> fetchDontAssignment() async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseDontAssignment = utf8.decode(socketResponse);
+            });
+            completer.complete(responseDontAssignment);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
 }
 
 class Done extends StatefulWidget {
@@ -597,65 +787,81 @@ class Done extends StatefulWidget {
 }
 
 class _DoneState extends State<Done> {
-  final List<List<String>> listOfList = [
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-    [
-      'حل تمرین فیزیک',
-      'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
-      '2',
-      '12',
-      '40',
-      '1'
-    ],
-  ];
-  List<bool> isExpanded = List<bool>.generate(7, (_) => false);
+  List<List<String>> listOfList = [];
+  List<bool> isExpanded = [];
+
+  String responseDoneAssignment = '-';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    String message = await fetchDoneAssignment();
+    listOfList = HelperFunctions.stringToListOfList(message.trim());
+    isExpanded = List<bool>.generate(listOfList.length, (_) => false);
+  }
+
+  // final List<List<String>> listOfList = [
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  //   [
+  //     'حل تمرین فیزیک',
+  //     'امروز باید همه تمرین های فیزیک رو حل کنم.\nتعداد سوال 20 تاست که فکر کنم به مدت 2 ساعت طول بکشه .\nفایل نهایی باید در کورس ور آپلود بشه',
+  //     '2',
+  //     '12',
+  //     '40',
+  //     '1'
+  //   ],
+  // ];
 
   static const styleOfdescription = TextStyle(
     fontFamily: 'vazir',
@@ -687,25 +893,23 @@ class _DoneState extends State<Done> {
             duration: const Duration(milliseconds: 350),
             margin: const EdgeInsets.all(10),
             padding: const EdgeInsets.all(10),
-            decoration: ShapeDecoration(
-              gradient: LinearGradient(
-                  begin: const Alignment(1.00, 0.07),
-                  end: const Alignment(-1, -0.07),
-                  colors: isExpanded[index]
-                      ? [
-                          // ignore: prefer_const_constructors
-                          Color.fromARGB(255, 129, 30, 138),
-                          const Color.fromARGB(255, 132, 126, 197),
-                        ]
-                      : [
-                          const Color(0xFF008805),
-                          const Color(0xFF00BD07),
-                        ]),
-              shape: RoundedRectangleBorder(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: const Alignment(1.00, 0.07),
+                    end: const Alignment(-1, -0.07),
+                    colors: isExpanded[index]
+                        ? [
+                            // ignore: prefer_const_constructors
+                            Color.fromARGB(255, 129, 30, 138),
+                            const Color.fromARGB(255, 132, 126, 197),
+                          ]
+                        : [
+                            const Color(0xFF008805),
+                            const Color(0xFF00BD07),
+                          ]),
                 borderRadius: BorderRadius.circular(23),
-              ),
-            ),
-            height: isExpanded[index] ? 200 : 50,
+                border: Border.all(color: Colors.black, width: 2.0)),
+            height: isExpanded[index] ? 170 : 50,
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -731,46 +935,48 @@ class _DoneState extends State<Done> {
                           textDirection: TextDirection.rtl,
                           style: styleOfdescription,
                           textAlign: TextAlign.justify,
+                          maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         SizedBox(
                           height: heightOfScreen * 0.03,
                         ),
-                        Row(
-                          textDirection: TextDirection.rtl,
-                          children: [
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                '${listOfList[index][2]} روز و ${listOfList[index][3]} ساعت و ${listOfList[index][4]} دقیقه',
-                                textDirection: TextDirection.rtl,
-                                style: styleOfdescription,
-                                textAlign: TextAlign.justify,
-                              ),
-                            ),
-                            SizedBox(
-                              width: widthOfScreen * 0.1,
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.done_outline_rounded,
-                                size: widthOfScreen * 0.08,
-                                color: const Color.fromARGB(255, 0, 255, 8),
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.delete,
-                                size: widthOfScreen * 0.08,
-                                // ignore: prefer_const_constructors
-                                color:
-                                    // ignore: prefer_const_constructors
-                                    Color.fromARGB(255, 255, 0, 0),
-                              ),
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   textDirection: TextDirection.rtl,
+                        //   children: [
+                        //     Align(
+                        //       alignment: Alignment.centerRight,
+                        //       child: Text(
+                        //         '${listOfList[index][2]} روز و ${listOfList[index][3]} ساعت و ${listOfList[index][4]} دقیقه',
+                        //         textDirection: TextDirection.rtl,
+                        //         style: styleOfdescription,
+                        //         textAlign: TextAlign.justify,
+                        //       ),
+                        //     ),
+                        //     SizedBox(
+                        //       width: widthOfScreen * 0.1,
+                        //     ),
+                        //     IconButton(
+                        //       onPressed: () {},
+                        //       icon: Icon(
+                        //         Icons.done_outline_rounded,
+                        //         size: widthOfScreen * 0.08,
+                        //         color: const Color.fromARGB(255, 0, 255, 8),
+                        //       ),
+                        //     ),
+                        //     IconButton(
+                        //       onPressed: () {},
+                        //       icon: Icon(
+                        //         Icons.delete,
+                        //         size: widthOfScreen * 0.08,
+                        //         // ignore: prefer_const_constructors
+                        //         color:
+                        //             // ignore: prefer_const_constructors
+                        //             Color.fromARGB(255, 255, 0, 0),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                 ],
@@ -780,5 +986,38 @@ class _DoneState extends State<Done> {
         );
       },
     );
+  }
+
+  Future<String> fetchDoneAssignment() async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseDoneAssignment = utf8.decode(socketResponse);
+            });
+            completer.complete(responseDoneAssignment);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
   }
 }

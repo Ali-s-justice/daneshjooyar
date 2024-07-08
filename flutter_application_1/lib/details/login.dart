@@ -1,9 +1,12 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application_1/details/classes/student.dart';
+
 import 'package:flutter_application_1/details/sara/sara.dart';
+import 'package:flutter_application_1/details/user_data.dart';
 import 'my_app_bar.dart';
 import 'my_bottom.dart';
 
@@ -41,8 +44,7 @@ class _LoginState extends State<Login> {
   final _keyform = GlobalKey<FormState>();
 
   bool visable = true;
-
-  String response = '';
+  String? response;
   @override
   Widget build(BuildContext context) {
     final double widthOfScreen = MediaQuery.of(context).size.width;
@@ -178,22 +180,25 @@ class _LoginState extends State<Login> {
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                         ),
-                        onPressed: () {
-                          if (!_keyform.currentState!.validate()) {
-                            String input = usernameOrStudentCodeController.text;
-                            Student student = Student();
-                            if (RegExp(r'^\d+$').hasMatch(input)) {
-                              student.studenCode = input;
-                            } else {
-                              student.username = input;
+                        onPressed: () async {
+                          if (_keyform.currentState!.validate()) {
+                            UserData.studentCode =
+                                usernameOrStudentCodeController.text;
+                            String message = '500';
+
+                            //message = await login();
+                            if (message.length > 5) {
+                              UserData.studentCode =
+                                  message.split("//").elementAt(1);
                             }
-                            //send information to backend
-                            // Future<String> message = login();
-                            String message = 'notSignedUp';
-                            if (message == 'successful') {
-                              Navigator.pushNamed(context, Sara.routeName,
-                                  arguments: student);
-                            } else if (message == 'notSignedUp') {
+                            print(
+                                '-+++++++++++++++++++++++++++++++++++++++++++++++++++++++ $message');
+
+                            if (message.split("//").elementAt(0) == '500') {
+                              // ignore: use_build_context_synchronously
+                              Navigator.pushNamed(context, Sara.routeName);
+                            } else if (message == '401') {
+                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   elevation: 20,
@@ -205,18 +210,19 @@ class _LoginState extends State<Login> {
                                   ),
                                   content: Center(
                                     child: Text(
-                                      '.دانشجو با این مشخصات ثبت نشده است',
+                                      'شما هنوز ثبت نام نکرده اید. لطفا در سامانه ثبت نام کنید',
                                       textDirection: TextDirection.ltr,
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: heightOfScreen * 0.018,
+                                          fontSize: heightOfScreen * 0.014,
                                           fontFamily: 'vazir',
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                 ),
                               );
-                            } else if (message == 'passwordIsWrong') {
+                            } else if (message == '402') {
+                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   elevation: 40,
@@ -233,6 +239,30 @@ class _LoginState extends State<Login> {
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: heightOfScreen * 0.018,
+                                          fontFamily: 'vazir',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else if (message == '400') {
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  elevation: 40,
+                                  width: widthOfScreen * 0.8,
+                                  backgroundColor: Colors.red,
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  content: Center(
+                                    child: Text(
+                                      '.دانشجویی با این مشخصات در سامانه ثبت نیست',
+                                      textDirection: TextDirection.ltr,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: heightOfScreen * 0.015,
                                           fontFamily: 'vazir',
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -267,25 +297,38 @@ class _LoginState extends State<Login> {
   }
 
   //connect to server
+
   Future<String> login() async {
-    await Socket.connect("172.20.123.207", 8080).then(
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
       (serverSocket) {
         serverSocket.write(
             'login//${usernameOrStudentCodeController.text}//${passwordController.text}\u0000');
         serverSocket.flush();
         serverSocket.listen(
           (socketResponse) {
-            setState(
-              () {
-                response = String.fromCharCodes(socketResponse);
-              },
-            );
+            setState(() {
+              response = utf8.decode(socketResponse);
+            });
+            completer.complete(response);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
           },
         );
-        serverSocket.destroy();
       },
-    );
-    print('--------------------->   server response is : ${response}');
-    return response;
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
   }
 }

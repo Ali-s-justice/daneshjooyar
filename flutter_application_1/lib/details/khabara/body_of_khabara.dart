@@ -1,8 +1,14 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/details/functions.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../services/notification.dart';
 import '../classes/student.dart';
+import '../user_data.dart';
 
 class BodyOfKhabara extends StatefulWidget {
   const BodyOfKhabara({super.key});
@@ -166,15 +172,34 @@ class _BodyOfKhabaraState extends State<BodyOfKhabara> {
   }
 }
 
-class Birthdays extends StatelessWidget {
-  Birthdays({super.key});
+class Birthdays extends StatefulWidget {
+  const Birthdays({super.key});
 
-  final List<String> birthdayNames = <String>[
-    'سید امیرحسین اشرفیان',
-    'سید حمیدرضا میرزاپور',
-    'محمد تقی زاده',
-    'علی نصرالله پور'
-  ];
+  @override
+  State<Birthdays> createState() => _BirthdaysState();
+}
+
+class _BirthdaysState extends State<Birthdays> {
+  List<String> birthdayNames = [];
+  String responseOfForYou = '-';
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  void loadData() async {
+    String message;
+    message = await fetchBirthdayInfo();
+    birthdayNames = HelperFunctions.stringToList(message.trim());
+  }
+
+  // final List<String> birthdayNames = <String>[
+  //   'سید امیرحسین اشرفیان',
+  //   'سید حمیدرضا میرزاپور',
+  //   'محمد تقی زاده',
+  //   'علی نصرالله پور'
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -224,6 +249,39 @@ class Birthdays extends StatelessWidget {
       ),
     );
   }
+
+  Future<String> fetchBirthdayInfo() async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseOfForYou = utf8.decode(socketResponse);
+            });
+            completer.complete(responseOfForYou);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
 }
 
 class ForYou extends StatefulWidget {
@@ -234,6 +292,27 @@ class ForYou extends StatefulWidget {
 }
 
 class _ForYouState extends State<ForYou> {
+  List<String> warnAssignment = [];
+  List<String> changedDeadline = [];
+  List<bool> isExpanded = [];
+  List<bool> isExpanded2 = [];
+  String responseOfForYou = '-';
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  void loadData() async {
+    String message;
+    message = await fetchForYouInfo();
+    List<String> arrData = message.split("//");
+    warnAssignment = HelperFunctions.stringToList(arrData.elementAt(0));
+    changedDeadline = HelperFunctions.stringToList(arrData.elementAt(1));
+    isExpanded = List<bool>.generate(warnAssignment.length, (_) => false);
+    isExpanded2 = List<bool>.generate(changedDeadline.length, (_) => false);
+  }
+
   static const styleOfdescription = TextStyle(
     fontFamily: 'vazir',
     fontSize: 15,
@@ -247,21 +326,19 @@ class _ForYouState extends State<ForYou> {
     fontWeight: FontWeight.w900,
   );
 
-  final List<String> warnAssignment = <String>[
-    'تمرین شماره یک مدار',
-    'تمرین شماره دو آز',
-    'پروژه برنامه نویسی پیشرفته',
-    'تمرین شماره پنج دیفرانسیل'
-  ];
-  final List<String> changedDeadline = <String>[
-    'تمرین شماره یک مدار',
-    'تمرین شماره دو آز',
-    'پروژه برنامه نویسی پیشرفته',
-    'تمرین شماره پنج دیفرانسیل'
-  ];
+  // final List<String> warnAssignment = <String>[
+  //   'تمرین شماره یک مدار',
+  //   'تمرین شماره دو آز',
+  //   'پروژه برنامه نویسی پیشرفته',
+  //   'تمرین شماره پنج دیفرانسیل'
+  // ];
+  // final List<String> changedDeadline = <String>[
+  //   'تمرین شماره یک مدار',
+  //   'تمرین شماره دو آز',
+  //   'پروژه برنامه نویسی پیشرفته',
+  //   'تمرین شماره پنج دیفرانسیل'
+  // ];
 
-  List<bool> isExpanded = List<bool>.generate(4, (_) => false);
-  List<bool> isExpanded2 = List<bool>.generate(4, (_) => false);
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
@@ -322,8 +399,9 @@ class _ForYouState extends State<ForYou> {
                     const Column(
                       children: [
                         Text(
-                          '.به اطلاع میرساند برای تحویل تمرین شماره یک درس برنامه نویسی پیشرفته ( AP ) استاد وحیدی، تنها چند ساعت دیگر فرصت باقی است',
+                          'به اطلاع میرساند موعد تحویل این تمرین به زودی در 24 ساعت آینده به پایان میرسد. هرچه سریعتر برای تحویل این تمرین اقدام نمایید',
                           style: styleOfdescription,
+                          textDirection: TextDirection.rtl,
                         )
                       ],
                     ),
@@ -377,8 +455,9 @@ class _ForYouState extends State<ForYou> {
                     const Column(
                       children: [
                         Text(
-                          "this is description of this tile for testing for each tile I hope that it will be great to test that out to see what would happen at the end of this test",
+                          'به اطلاع میرساند که موعد تحویل این تمرین تغییر پیدا کرده است. برای اطلاع از تاریخ جدید و جزئیات بیشتر به صفحه تمرینا مراجعه کنید',
                           style: styleOfdescription,
+                          textDirection: TextDirection.rtl,
                         )
                       ],
                     ),
@@ -390,6 +469,39 @@ class _ForYouState extends State<ForYou> {
       ],
     );
   }
+
+  Future<String> fetchForYouInfo() async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseOfForYou = utf8.decode(socketResponse);
+            });
+            completer.complete(responseOfForYou);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
 }
 
 class Event extends StatefulWidget {
@@ -400,19 +512,34 @@ class Event extends StatefulWidget {
 }
 
 class _EventState extends State<Event> {
-  Map<String, String> events = {
-    'دانشجویدانشجوییی  انتخابات انتخابات انتخابات انتخابات انتخابات انتخابات انتخاباتانتخابات انجمن های دانشجویی':
-        'https://www.sbu.ac.ir/fa/web/news/w/international-4?redirect=%2F',
-    'ایران قدرتمندانه مسیر هسته‌ای را دنبال می‌کند':
-        'https://www.sbu.ac.ir/fa/web/news/w/international-4?redirect=%2F',
-    'انتخابات انجمن های هیئت علمی':
-        'https://www.sbu.ac.ir/fa/web/news/w/international-4?redirect=%2F',
-    'انتخابات انجمن های هیئت غیر علمی':
-        'https://www.sbu.ac.ir/fa/web/news/w/international-4?redirect=%2F',
-  };
+  Map<String, String> events = {};
+  
+  List<bool> expanded = [];
+  String responseOfEvents = '-';
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
 
-  List<bool> expanded = List<bool>.generate(
-      4, (_) => false); // for storing the expansion state of each item
+  void loadData() async {
+    String message;
+    message = await fetchEventInfo();
+    events = HelperFunctions.stringToMap(message.trim());
+    expanded = List<bool>.generate(events.length, (_) => false);
+  }
+
+  // Map<String, String> events = {
+  //   'دانشجویدانشجوییی  انتخابات انتخابات انتخابات انتخابات انتخابات انتخابات انتخاباتانتخابات انجمن های دانشجویی':
+  //       'https://www.sbu.ac.ir/fa/web/news/w/international-4?redirect=%2F',
+  //   'ایران قدرتمندانه مسیر هسته‌ای را دنبال می‌کند':
+  //       'https://www.sbu.ac.ir/fa/web/news/w/international-4?redirect=%2F',
+  //   'انتخابات انجمن های هیئت علمی':
+  //       'https://www.sbu.ac.ir/fa/web/news/w/international-4?redirect=%2F',
+  //   'انتخابات انجمن های هیئت غیر علمی':
+  //       'https://www.sbu.ac.ir/fa/web/news/w/international-4?redirect=%2F',
+  // };
+ // for storing the expansion state of each item
 
   @override
   Widget build(BuildContext context) {
@@ -507,5 +634,38 @@ class _EventState extends State<Event> {
         },
       ),
     );
+  }
+
+  Future<String> fetchEventInfo() async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseOfEvents = utf8.decode(socketResponse);
+            });
+            completer.complete(responseOfEvents);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
   }
 }

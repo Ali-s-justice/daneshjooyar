@@ -1,9 +1,13 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/details/information.dart';
+import 'package:flutter_application_1/details/user_data.dart';
 import 'my_app_bar.dart';
 import 'my_bottom.dart';
-
 
 class Signup extends StatefulWidget {
   static const routeName = 'signup';
@@ -39,10 +43,11 @@ class _SignupState extends State<Signup> {
     fontSize: 22.0,
   );
 
-
-
+  String? response;
   @override
   Widget build(BuildContext context) {
+    final double widthOfScreen = MediaQuery.of(context).size.width;
+    final double heightOfScreen = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: const SignUpLoginAppBar(),
       bottomNavigationBar: const SignUpLoginBottomBar(),
@@ -153,7 +158,8 @@ class _SignupState extends State<Signup> {
                                     "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}\$")
                                 .hasMatch(value!)) {
                               return "!حداقل 8 حرف شامل حروف کوچک و بزرگ و اعداد";
-                            } else if (value.contains(usernameController.text)) {
+                            } else if (value
+                                .contains(usernameController.text)) {
                               return ".رمز عبور نباید شامل نام کاربری باشد";
                             } else {
                               return null;
@@ -258,17 +264,86 @@ class _SignupState extends State<Signup> {
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                         ),
-                        onPressed: () {
-                          // newStudent.username = usernameController.text;
-                          // newStudent.studenCode = studentCodeController.text;
-                          // newStudent.password = passwordController.text;
+                        onPressed: () async {
                           if (_keyform.currentState!.validate()) {
-                            // Navigator.pushNamed(context, Information.routeName,
-                            //     arguments: newStudent);
-                            Navigator.pushReplacementNamed(
-                              context,
-                              Information.routeName,
-                            );
+                            String message = 'null';
+
+                            message = await signUp();
+                            print('++++++++++++++++++++++++++++$message');
+                            if (message == "400") {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  elevation: 40,
+                                  width: widthOfScreen * 0.8,
+                                  backgroundColor: Colors.red,
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  content: Center(
+                                    child: Text(
+                                      '.دانشجویی با این مشخصات در سامانه ثبت نیست',
+                                      textDirection: TextDirection.ltr,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: heightOfScreen * 0.015,
+                                          fontFamily: 'vazir',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else if (message == "403") {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                elevation: 40,
+                                width: widthOfScreen * 0.8,
+                                backgroundColor: Colors.red,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                content: Center(
+                                  child: Text(
+                                    '.حساب کاربری با مشخصات فوق قبلا ثبت شده است',
+                                    textDirection: TextDirection.ltr,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: heightOfScreen * 0.015,
+                                        fontFamily: 'vazir',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ));
+                            } else if (message == "404") {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                elevation: 40,
+                                width: widthOfScreen * 0.8,
+                                backgroundColor: Colors.red,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                content: Center(
+                                  child: Text(
+                                    '.نام کاربری قبلا ثبت شده است',
+                                    textDirection: TextDirection.ltr,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: heightOfScreen * 0.015,
+                                        fontFamily: 'vazir',
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ));
+                            } else if (message == "500") {
+                              UserData.studentCode = studentCodeController.text;
+                              Navigator.pushReplacementNamed(
+                                context,
+                                Information.routeName,
+                              );
+                            }
                           }
                         },
                         child: const Padding(
@@ -293,5 +368,39 @@ class _SignupState extends State<Signup> {
         ),
       ),
     );
+  }
+
+  Future<String> signUp() async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write(
+            'signup//${studentCodeController.text}//${usernameController.text}//${passwordController.text}\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              response = utf8.decode(socketResponse);
+            });
+            completer.complete(response);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
   }
 }

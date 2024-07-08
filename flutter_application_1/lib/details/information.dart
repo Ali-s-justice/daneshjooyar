@@ -1,9 +1,14 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter_application_1/details/classes/student.dart';
 import 'package:flutter_application_1/details/edit_informations.dart';
 import 'package:flutter_application_1/details/sara/sara.dart';
 import 'package:flutter_application_1/details/support.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/details/signup.dart';
+import 'package:flutter_application_1/details/user_data.dart';
 
 class Information extends StatefulWidget {
   static const String routeName = 'information';
@@ -42,15 +47,38 @@ class _InformationState extends State<Information> {
   );
   static const color = Color.fromRGBO(230, 230, 250, 1.0);
 
-  String userName = 'amirhossein';
-  String name = 'سید امیرحسین اشرفیان';
-  String id = 'amirhossein';
-  String termInfo = 'بهار 1403_1402';
-  String creditNum = '16';
-  String allAverage = '19.99';
+  String userName = '-';
+  String name = '-';
+  String id = '-';
+  String termInfo = '-';
+  String creditNum = '-';
+  String allAverage = '-';
+  String responseInfoData = '-';
+  String responseDeleteAccount = '-';
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  void loadData() async {
+    String message;
+    message = await fetchInfoData();
+
+    List<String> arrData = message.split("//");
+    userName = arrData.elementAt(0);
+    name = arrData.elementAt(1);
+    id = arrData.elementAt(2);
+    termInfo = arrData.elementAt(3);
+    creditNum = arrData.elementAt(4);
+    allAverage = arrData.elementAt(5);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final double widthOfScreen = MediaQuery.of(context).size.width;
+    final double heightOfScreen = MediaQuery.of(context).size.height;
     return Container(
       decoration: gradientBackground,
       child: Scaffold(
@@ -91,7 +119,8 @@ class _InformationState extends State<Information> {
                       ),
                       child: const CircleAvatar(
                         radius: 95.0,
-                        backgroundImage: AssetImage('assets/images/mypic.jpg'),
+                        backgroundImage:
+                            AssetImage('assets/images/userinfo.jpg'),
                       ),
                     ),
                   ],
@@ -163,16 +192,16 @@ class _InformationState extends State<Information> {
                           color: Colors.black.withOpacity(0.1),
                         ),
                         const Fasel(),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           textDirection: TextDirection.rtl,
                           children: [
-                            Text(
+                            const Text(
                               'ترم جاری',
                               style: Information.infoStyle,
                             ),
                             Text(
-                              'بهار 1402-1403',
+                              termInfo,
                               style: Information.infoStyle,
                             ),
                           ],
@@ -244,6 +273,7 @@ class _InformationState extends State<Information> {
                                 int.tryParse(creditNum);
                             currentStudent.totalAverage =
                                 double.tryParse(allAverage);
+
                             Navigator.pushNamed(
                               context,
                               EditInformation.routeName,
@@ -368,38 +398,196 @@ class _InformationState extends State<Information> {
     );
   }
 
+  Future<String> fetchInfoData() async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseInfoData = utf8.decode(socketResponse);
+            });
+            completer.complete(responseInfoData);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
+
+  Future<String> deleteAccount() async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write('deleteAccount//${UserData.studentCode}\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseDeleteAccount = utf8.decode(socketResponse);
+            });
+            completer.complete(responseDeleteAccount);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
+
   Future<dynamic> alertDialog(BuildContext context) {
+    final double widthOfScreen = MediaQuery.of(context).size.width;
+    final double heightOfScreen = MediaQuery.of(context).size.height;
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          content: const Text(
-            'آیا از حذف حساب کاربری خود اطمینان دارید ؟',
-            textDirection: TextDirection.rtl,
-            style: Information.alertDilogTextStyle,
-            textAlign: TextAlign.justify,
-          ),
-          actions: <Widget>[
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('خیر'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, Signup.routeName);
-                    //ساز و کار حذف اطلاعات دانشجو در بک اند در این قسمت پیاده سازی شود
-                  },
-                  child: const Text('بله'),
-                ),
+        return Dialog(
+          child: Container(
+            height: heightOfScreen * 0.2,
+            decoration: ShapeDecoration(
+              gradient: const RadialGradient(
+                center: Alignment(1, 0.20),
+                radius: 0,
+                colors: [
+                  Color(0xFF0078D9),
+                  Color(0xFF0050C1),
+                  Color(0xFF311B92)
+                ],
+              ),
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(width: 1),
+                borderRadius: BorderRadius.circular(29),
+              ),
+              shadows: const [
+                BoxShadow(
+                  color: Color(0x3F000000),
+                  blurRadius: 4,
+                  offset: Offset(0, 4),
+                  spreadRadius: 0,
+                )
               ],
             ),
-          ],
+            child: Column(
+              children: [
+                SizedBox(
+                  height: heightOfScreen * 0.05,
+                ),
+                Text(
+                  'آیا از حذف حساب کاربری خود اطمینان دارید',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: heightOfScreen * 0.018),
+                ),
+                SizedBox(
+                  height: heightOfScreen * 0.02,
+                ),
+                Row(
+                  textDirection: TextDirection.rtl,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        String message = 'null';
+                        message = await deleteAccount();
+
+                        print('++++++++++++++++++++++++++++$message');
+
+                        if (message == "500") {
+                          // ignore: use_build_context_synchronously
+                          Navigator.pushNamed(context, Sara.routeName);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              elevation: 40,
+                              width: widthOfScreen * 0.8,
+                              backgroundColor: Colors.red,
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              content: Center(
+                                child: Text(
+                                  'عدم ارتباط با سرور',
+                                  textDirection: TextDirection.ltr,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: heightOfScreen * 0.015,
+                                      fontFamily: 'vazir',
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: const Color(0xFFE4014E),
+                      ),
+                      child: Text(
+                        'حذف',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'vazir',
+                          fontWeight: FontWeight.bold,
+                          fontSize: heightOfScreen * 0.018,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: widthOfScreen * 0.1,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: const Color(0xFF2DD634),
+                      ),
+                      child: Text(
+                        'بازگشت',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'vazir',
+                          fontWeight: FontWeight.bold,
+                          fontSize: heightOfScreen * 0.018,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
         );
       },
     );

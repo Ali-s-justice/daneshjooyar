@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +15,19 @@ class EditInformation extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<EditInformation> {
-  late TextEditingController usernameController;
+  TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController passwordController2 = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
+
   bool visable = true;
   bool visable2 = true;
   File? image;
+
+  String responseOfChangeUsername = '-';
+  String responseOfChangePasswor = '-';
 
   static const textFormFieldColor = Color.fromARGB(188, 255, 255, 255);
   static const textFormStyle = TextStyle(
@@ -38,13 +47,13 @@ class _MyWidgetState extends State<EditInformation> {
           end: Alignment.bottomRight,
         ),
       );
-
+  Student currentStudent = Student();
   @override
   Widget build(BuildContext context) {
-    final Student currentStudent =
-        ModalRoute.of(context)!.settings.arguments as Student;
-    usernameController = TextEditingController(text: currentStudent.username);
+    currentStudent = ModalRoute.of(context)!.settings.arguments as Student;
 
+    final double widthOfScreen = MediaQuery.of(context).size.width;
+    final double heightOfScreen = MediaQuery.of(context).size.height;
     return Container(
       decoration: gradientBackground,
       child: Scaffold(
@@ -158,10 +167,10 @@ class _MyWidgetState extends State<EditInformation> {
                                                   label: const Align(
                                                     alignment:
                                                         Alignment(0.9, 0),
-                                                    // child: Text(
-                                                    //   'نام کاربری جدید',
-                                                    //   style: textFormStyle,
-                                                    // ),
+                                                    child: Text(
+                                                      'نام کاربری جدید',
+                                                      style: textFormStyle,
+                                                    ),
                                                   ),
                                                   border: OutlineInputBorder(
                                                     borderRadius:
@@ -178,13 +187,17 @@ class _MyWidgetState extends State<EditInformation> {
                                             ),
 
                                             TextFormField(
+                                              controller: passwordController,
                                               validator: (value) {
                                                 if (value!.isEmpty) {
                                                   return ".رمز عبور فعلی را وارد کنید";
-                                                } else if (value !=
-                                                    currentStudent.password) {
-                                                  return ".رمز عبور فعلی نادرست است";
-                                                } else {
+                                                }
+                                                //  else if (value !=
+                                                //     currentStudent.password) {
+                                                //   return ".رمز عبور فعلی نادرست است";
+                                                // }
+
+                                                else {
                                                   return null;
                                                 }
                                               },
@@ -220,25 +233,175 @@ class _MyWidgetState extends State<EditInformation> {
                                                       BorderRadius.circular(50),
                                                 ),
                                               ),
-                                              onPressed: () {
-                                                setState(
-                                                  () {
-                                                    if (_keyform1.currentState!
-                                                        .validate()) {
-                                                      currentStudent.username =
-                                                          usernameController
-                                                              .text;
-                                                      currentStudent.password =
-                                                          passwordController
-                                                              .text;
-                                                      Navigator.pushNamed(
-                                                          context,
-                                                          Information.routeName,
-                                                          arguments:
-                                                              currentStudent);
-                                                    }
-                                                  },
-                                                );
+                                              onPressed: () async {
+                                                String message = 'null';
+
+                                                if (_keyform1.currentState!
+                                                    .validate()) {
+                                                  message =
+                                                      await changeUsername();
+
+                                                  print(
+                                                      '++++++++++++++++++++++++++++$message');
+                                                  if (message == "400") {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      SnackBar(
+                                                        elevation: 40,
+                                                        width:
+                                                            widthOfScreen * 0.8,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        behavior:
+                                                            SnackBarBehavior
+                                                                .floating,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        content: Center(
+                                                          child: Text(
+                                                            '.دانشجویی با این مشخصات در سامانه ثبت نیست',
+                                                            textDirection:
+                                                                TextDirection
+                                                                    .ltr,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize:
+                                                                    heightOfScreen *
+                                                                        0.015,
+                                                                fontFamily:
+                                                                    'vazir',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  } else if (message == '402') {
+                                                    // ignore: use_build_context_synchronously
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      SnackBar(
+                                                        elevation: 40,
+                                                        width:
+                                                            widthOfScreen * 0.8,
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        behavior:
+                                                            SnackBarBehavior
+                                                                .floating,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        content: Center(
+                                                          child: Text(
+                                                            '.رمزعبور وارد شده اشتباه است',
+                                                            textDirection:
+                                                                TextDirection
+                                                                    .ltr,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize:
+                                                                    heightOfScreen *
+                                                                        0.018,
+                                                                fontFamily:
+                                                                    'vazir',
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  } else if (message == "404") {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      elevation: 40,
+                                                      width:
+                                                          widthOfScreen * 0.8,
+                                                      backgroundColor:
+                                                          Colors.red,
+                                                      behavior: SnackBarBehavior
+                                                          .floating,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                      content: Center(
+                                                        child: Text(
+                                                          '.نام کاربری قبلا ثبت شده است',
+                                                          textDirection:
+                                                              TextDirection.ltr,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize:
+                                                                  heightOfScreen *
+                                                                      0.015,
+                                                              fontFamily:
+                                                                  'vazir',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ),
+                                                    ));
+                                                  }
+                                                  if (message == "500") {
+                                                    currentStudent.username =
+                                                        usernameController.text;
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      elevation: 40,
+                                                      width:
+                                                          widthOfScreen * 0.8,
+                                                      backgroundColor:
+                                                          const Color.fromARGB(
+                                                              255, 21, 160, 25),
+                                                      behavior: SnackBarBehavior
+                                                          .floating,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                      content: Center(
+                                                        child: Text(
+                                                          '.نام کاربری با موفقیت تغییر پیدا کرد',
+                                                          textDirection:
+                                                              TextDirection.ltr,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize:
+                                                                  heightOfScreen *
+                                                                      0.015,
+                                                              fontFamily:
+                                                                  'vazir',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ),
+                                                    ));
+                                                  }
+                                                }
                                               },
                                               child: const Padding(
                                                 padding: EdgeInsets.symmetric(
@@ -293,7 +456,7 @@ class _MyWidgetState extends State<EditInformation> {
                                                     children: [
                                                       TextFormField(
                                                         controller:
-                                                            passwordController,
+                                                            newPasswordController,
                                                         validator:
                                                             (String? value) {
                                                           if (!RegExp(
@@ -373,7 +536,7 @@ class _MyWidgetState extends State<EditInformation> {
                                                         validator:
                                                             (String? value) {
                                                           if (value !=
-                                                              passwordController
+                                                              newPasswordController
                                                                   .text) {
                                                             return '.تکرار رمز عبور با رمز عبور باید یکسان باشد';
                                                           } else if (value!
@@ -383,6 +546,8 @@ class _MyWidgetState extends State<EditInformation> {
                                                             return null;
                                                           }
                                                         },
+                                                        controller:
+                                                            rePasswordController,
                                                         obscureText: visable2,
                                                         textDirection:
                                                             TextDirection.ltr,
@@ -452,14 +617,19 @@ class _MyWidgetState extends State<EditInformation> {
                                                     validator: (value) {
                                                       if (value!.isEmpty) {
                                                         return ".رمز عبور فعلی را وارد کنید";
-                                                      } else if (value !=
-                                                          currentStudent
-                                                              .password) {
-                                                        return ".رمز عبور فعلی نادرست است";
-                                                      } else {
+                                                      }
+                                                      // else if (value !=
+                                                      //     currentStudent
+                                                      //         .password) {
+                                                      //   return ".رمز عبور فعلی نادرست است";
+                                                      // }
+
+                                                      else {
                                                         return null;
                                                       }
                                                     },
+                                                    controller:
+                                                        passwordController2,
                                                     decoration: InputDecoration(
                                                       label: const Align(
                                                         alignment:
@@ -504,36 +674,151 @@ class _MyWidgetState extends State<EditInformation> {
                                                                 .circular(50),
                                                       ),
                                                     ),
-                                                    onPressed: () {
-                                                      setState(
-                                                        () {
-                                                          if (_keyform2
-                                                              .currentState!
-                                                              .validate()) {
-                                                            Navigator.pushNamed(
-                                                                context,
-                                                                Information
-                                                                    .routeName,
-                                                                arguments:
-                                                                    currentStudent);
+                                                    onPressed: () async {
+                                                      String message = 'null';
 
-                                                            currentStudent
-                                                                    .username =
-                                                                usernameController
-                                                                    .text;
-                                                            currentStudent
-                                                                    .password =
-                                                                passwordController
-                                                                    .text;
-                                                            Navigator.pushNamed(
-                                                                context,
-                                                                Information
-                                                                    .routeName,
-                                                                arguments:
-                                                                    currentStudent);
-                                                          }
-                                                        },
-                                                      );
+                                                      if (_keyform2
+                                                          .currentState!
+                                                          .validate()) {
+                                                        message =
+                                                            await changePassword();
+                                                        print(
+                                                            '++++++++++++++++++++++++++++$message');
+                                                        if (message == "400") {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              elevation: 40,
+                                                              width:
+                                                                  widthOfScreen *
+                                                                      0.8,
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              behavior:
+                                                                  SnackBarBehavior
+                                                                      .floating,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5),
+                                                              ),
+                                                              content: Center(
+                                                                child: Text(
+                                                                  '.دانشجویی با این مشخصات در سامانه ثبت نیست',
+                                                                  textDirection:
+                                                                      TextDirection
+                                                                          .ltr,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          heightOfScreen *
+                                                                              0.015,
+                                                                      fontFamily:
+                                                                          'vazir',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        } else if (message ==
+                                                            '402') {
+                                                          // ignore: use_build_context_synchronously
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              elevation: 40,
+                                                              width:
+                                                                  widthOfScreen *
+                                                                      0.8,
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              behavior:
+                                                                  SnackBarBehavior
+                                                                      .floating,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            5),
+                                                              ),
+                                                              content: Center(
+                                                                child: Text(
+                                                                  '.رمزعبور وارد شده اشتباه است',
+                                                                  textDirection:
+                                                                      TextDirection
+                                                                          .ltr,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          heightOfScreen *
+                                                                              0.018,
+                                                                      fontFamily:
+                                                                          'vazir',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        } else if (message ==
+                                                            "500") {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  SnackBar(
+                                                            elevation: 40,
+                                                            width:
+                                                                widthOfScreen *
+                                                                    0.8,
+                                                            backgroundColor:
+                                                                const Color
+                                                                    .fromARGB(
+                                                                    255,
+                                                                    21,
+                                                                    160,
+                                                                    25),
+                                                            behavior:
+                                                                SnackBarBehavior
+                                                                    .floating,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
+                                                            ),
+                                                            content: Center(
+                                                              child: Text(
+                                                                '.رمز عبور با موفقیت تغییر پیدا کرد',
+                                                                textDirection:
+                                                                    TextDirection
+                                                                        .ltr,
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        heightOfScreen *
+                                                                            0.015,
+                                                                    fontFamily:
+                                                                        'vazir',
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
+                                                              ),
+                                                            ),
+                                                          ));
+                                                        }
+                                                      }
                                                     },
                                                     child: const Padding(
                                                       padding:
@@ -586,7 +871,8 @@ class _MyWidgetState extends State<EditInformation> {
                               backgroundColor: Colors.white,
                               radius: 85,
                               backgroundImage: (image == null)
-                                  ? const AssetImage('assets/images/mypic.jpg')
+                                  ? const AssetImage(
+                                          'assets/images/userinfo.jpg')
                                       as ImageProvider
                                   : FileImage(image!)),
                         ),
@@ -641,5 +927,73 @@ class _MyWidgetState extends State<EditInformation> {
         ),
       ),
     );
+  }
+
+  Future<String> changeUsername() async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write(
+            'changeUsername//${currentStudent.username}//${usernameController.text}//${passwordController.text}\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseOfChangeUsername = utf8.decode(socketResponse);
+            });
+            completer.complete(responseOfChangeUsername);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
+
+  Future<String> changePassword() async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write(
+            'changePassword//${currentStudent.studenCode}//${newPasswordController.text}//${passwordController2.text}\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseOfChangePasswor = utf8.decode(socketResponse);
+            });
+            completer.complete(responseOfChangePasswor);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
   }
 }

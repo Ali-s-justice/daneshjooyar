@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,7 +7,7 @@ import 'package:flutter_application_1/details/kara/kara.dart';
 import 'package:flutter_application_1/details/khabara/khabara.dart';
 import 'package:flutter_application_1/details/tamrina/tamrina.dart';
 import 'package:flutter_application_1/details/user_data.dart';
-
+import '../functions.dart';
 import '../klasa/klasa.dart';
 
 class BodyOfSara extends StatefulWidget {
@@ -16,6 +18,20 @@ class BodyOfSara extends StatefulWidget {
 }
 
 class _BodyOfSaraState extends State<BodyOfSara> {
+  String dar = '-';
+  String bestScore = '-';
+  String bestCourse = '-';
+  String worthScore = '-';
+  String worthCourse = '-';
+  String examNum = "-";
+  String assignNum = "-";
+  String doneAssignmentNum = "-";
+  String dayOfEnd = "-";
+  String houreOfEnd = "-";
+  String minOfEnd = "-";
+  Map<String, String> topics = {};
+  List<String> doneAssignmentNames = [];
+  String responseSaraData = '-';
   @override
   void initState() {
     super.initState();
@@ -23,8 +39,8 @@ class _BodyOfSaraState extends State<BodyOfSara> {
   }
 
   void fetchData() async {
-    String response = await fetchDataOfSara(UserData.studentCode!);
-    List<String> fetchedData = response.split('//');
+    String message = await fetchDataOfSara();
+    List<String> fetchedData = message.split('//');
     bestScore = fetchedData[0];
     bestCourse = fetchedData[1];
     worthScore = fetchedData[2];
@@ -35,8 +51,8 @@ class _BodyOfSaraState extends State<BodyOfSara> {
     dayOfEnd = fetchedData[7];
     houreOfEnd = fetchedData[8];
     minOfEnd = fetchedData[9];
-
-    //مپ و اری لیست باقی ماند
+    topics = HelperFunctions.stringToMap(fetchedData[10]);
+    doneAssignmentNames = HelperFunctions.stringToList(fetchedData[11]);
   }
 
   static const styleOfContainerText = TextStyle(
@@ -52,32 +68,20 @@ class _BodyOfSaraState extends State<BodyOfSara> {
     fontWeight: FontWeight.w900,
   );
 
-  String dar = 'در';
-  String bestScore = '20.00';
-  String bestCourse = 'فارسی';
-  String worthScore = '15.25';
-  String worthCourse = 'ریاضی';
-  String examNum = "3";
-  String assignNum = "12";
-  String doneAssignmentNum = "9";
-  String dayOfEnd = "23";
-  String houreOfEnd = "12";
-  String minOfEnd = "20";
+  // final Map<String, String> topics = {
+  //   'حل تمرین فیزیک':
+  //       ' اگر می‌خواهید خواننده متن فارسی‌تان را کنار نگذارد و آن را تا انتها بخواهند، از ویرایش و بازخوانی متن غافل نشوید. سرویس ویرایش و بازخوانی متون فارسی شبکه مترجمین ایران این‌جا است تا متون فارسی‌تان را خوانش‌پذیر کند.',
+  //   'حل تمرین ریاضی':
+  //       ' اگر می‌خواهید خواننده متن فارسی‌تان را کنار نگذارد و آن را تا انتها بخواهند، از ویرایش و بازخوانی متن غافل نشوید. سرویس ویرایش و بازخوانی متون فارسی شبکه مترجمین ایران این‌جا است تا متون فارسی‌تان را خوانش‌پذیر کند.',
+  //   'حل تمرین گسسته':
+  //       ' اگر می‌خواهید خواننده متن فارسی‌تان را کنار نگذارد و آن را تا انتها بخواهند، از ویرایش و بازخوانی متن غافل نشوید. سرویس ویرایش و بازخوانی متون فارسی شبکه مترجمین ایران این‌جا است تا متون فارسی‌تان را خوانش‌پذیر کند.',
+  // };
 
-  final Map<String, String> topics = {
-    'حل تمرین فیزیک':
-        ' اگر می‌خواهید خواننده متن فارسی‌تان را کنار نگذارد و آن را تا انتها بخواهند، از ویرایش و بازخوانی متن غافل نشوید. سرویس ویرایش و بازخوانی متون فارسی شبکه مترجمین ایران این‌جا است تا متون فارسی‌تان را خوانش‌پذیر کند.',
-    'حل تمرین ریاضی':
-        ' اگر می‌خواهید خواننده متن فارسی‌تان را کنار نگذارد و آن را تا انتها بخواهند، از ویرایش و بازخوانی متن غافل نشوید. سرویس ویرایش و بازخوانی متون فارسی شبکه مترجمین ایران این‌جا است تا متون فارسی‌تان را خوانش‌پذیر کند.',
-    'حل تمرین گسسته':
-        ' اگر می‌خواهید خواننده متن فارسی‌تان را کنار نگذارد و آن را تا انتها بخواهند، از ویرایش و بازخوانی متن غافل نشوید. سرویس ویرایش و بازخوانی متون فارسی شبکه مترجمین ایران این‌جا است تا متون فارسی‌تان را خوانش‌پذیر کند.',
-  };
-
-  final List<String> doneAssignmentNames = <String>[
-    'تمرین اول مدار',
-    'تمرین دوم فیزیک',
-    'تمرین چهارم برنامه نویسی پیشرفته',
-  ];
+  // final List<String> doneAssignmentNames = <String>[
+  //   'تمرین اول مدار',
+  //   'تمرین دوم فیزیک',
+  //   'تمرین چهارم برنامه نویسی پیشرفته',
+  // ];
   String doneAssignmentMessage =
       'شما با موفقیت تمرین اول مدار را آپلود کرده اید.\nاین تمرین همچنان در دسترس است و امکان ویرایش آن موجود است.';
 
@@ -485,10 +489,8 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                                     textAlign: TextAlign.justify,
                                     textDirection: TextDirection.rtl,
                                     value,
-                                    maxLines:
-                                        3, // تعداد خطوطی که می‌خواهید نمایش داده شود
-                                    overflow: TextOverflow
-                                        .ellipsis, // اضافه کردن سه نقطه در انتهای متن
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -502,22 +504,15 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                                   child: Row(
                                     children: [
                                       IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            Icons.done_outline_rounded,
-                                            size: widthOfContainer * 0.1,
-                                            color: const Color.fromARGB(
-                                                255, 0, 255, 8),
-                                          )),
-                                      IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                              context, Tamrina.routeName);
+                                        },
                                         icon: Icon(
-                                          Icons.delete,
+                                          Icons.edit_document,
                                           size: widthOfContainer * 0.1,
-                                          // ignore: prefer_const_constructors
-                                          color:
-                                              // ignore: prefer_const_constructors
-                                              Color.fromARGB(255, 255, 0, 0),
+                                          color: const Color.fromARGB(
+                                              255, 211, 211, 197),
                                         ),
                                       ),
                                     ],
@@ -690,6 +685,39 @@ class _BodyOfSaraState extends State<BodyOfSara> {
     );
   }
 
+  Future<String> fetchDataOfSara() async {
+    final completer = Completer<String>();
+
+    await Socket.connect("192.168.69.234", 3559).then(
+      (serverSocket) {
+        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseSaraData = utf8.decode(socketResponse);
+            });
+            completer.complete(responseSaraData);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
+
   SizedBox distanceEacRowFromRight(double widthOfScreen) =>
       SizedBox(width: widthOfScreen * 0.075);
 
@@ -842,28 +870,6 @@ class _BodyOfSaraState extends State<BodyOfSara> {
     return SizedBox(
       width: widthOfScreen * 0.02,
     );
-  }
-
-  Future<String> fetchDataOfSara(String studentCode) async {
-    String response = '';
-    await Socket.connect("172.20.123.207", 8080).then(
-      (serverSocket) {
-        serverSocket.write('sara//$studentCode\u0000');
-        serverSocket.flush();
-        serverSocket.listen(
-          (socketResponse) {
-            setState(
-              () {
-                response = String.fromCharCodes(socketResponse);
-              },
-            );
-          },
-        );
-        serverSocket.destroy();
-      },
-    );
-    print('--------------------->   server response is : ${response}');
-    return response;
   }
 }
 
