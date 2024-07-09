@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/details/information.dart';
+import 'package:flutter_application_1/services/server_connection_info.dart';
 import 'classes/student.dart';
 
 class EditInformation extends StatefulWidget {
@@ -932,7 +933,9 @@ class _MyWidgetState extends State<EditInformation> {
   Future<String> changeUsername() async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
         serverSocket.write(
             'changeUsername//${currentStudent.username}//${usernameController.text}//${passwordController.text}\u0000');
@@ -966,7 +969,9 @@ class _MyWidgetState extends State<EditInformation> {
   Future<String> changePassword() async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
         serverSocket.write(
             'changePassword//${currentStudent.studenCode}//${newPasswordController.text}//${passwordController2.text}\u0000');

@@ -4,7 +4,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application_1/details/klasa/klasa.dart';
 
+import '../../services/server_connection_info.dart';
 import '../classes/student.dart';
 import '../functions.dart';
 import '../user_data.dart';
@@ -232,7 +234,10 @@ class _BodyOfKlasaState extends State<BodyOfKlasa> {
                 if (courseIdController.text.isNotEmpty) {
                   addNewClass(courseIdController.text);
                   // Handle save action
-                  Navigator.of(context).pop();
+                  setState(() {
+                    print('seted');
+                  });
+                  Navigator.pushReplacementNamed(context, Klasa.routeName);
                 }
               },
               child: const Text(
@@ -253,10 +258,12 @@ class _BodyOfKlasaState extends State<BodyOfKlasa> {
   Future<String> addNewClass(String courseId) async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
         serverSocket
-            .write('addNewJob//${UserData.studentCode}//$courseId\u0000');
+            .write('addCourse//${UserData.studentCode}//$courseId\u0000');
         serverSocket.flush();
         serverSocket.listen(
           (socketResponse) {
@@ -289,13 +296,13 @@ class TableWidget extends StatefulWidget {
   const TableWidget({super.key});
   static const tableTextStyle = TextStyle(
     color: Colors.black,
-    fontSize: 12,
+    fontSize: 10,
     fontFamily: 'vazir',
     fontWeight: FontWeight.w500,
   );
   static const titleTableTextStyle = TextStyle(
     color: Colors.black,
-    fontSize: 12,
+    fontSize: 10,
     fontFamily: 'vazir',
     fontWeight: FontWeight.bold,
   );
@@ -306,6 +313,7 @@ class TableWidget extends StatefulWidget {
 
 class _TableWidgetState extends State<TableWidget> {
   String responseTable = '-';
+  bool empty = false;
   List<List<String>> table = [];
   @override
   void initState() {
@@ -316,6 +324,11 @@ class _TableWidgetState extends State<TableWidget> {
   void fetchData() async {
     String message = await fetchTable();
     table = HelperFunctions.stringToListOfList(message.trim());
+    if (table[0][0] == '404') {
+      empty = true;
+    } else {
+      empty = false;
+    }
   }
 
   @override
@@ -365,45 +378,47 @@ class _TableWidgetState extends State<TableWidget> {
             height: heightOfScreen * 0.4,
             child: Center(
               child: SingleChildScrollView(
-                child: DataTable(
-                  border: TableBorder(
-                    horizontalInside: BorderSide(
-                      color: const Color.fromARGB(255, 0, 0, 0),
-                      width: heightOfScreen * 0.001,
-                    ),
-                  ),
-                  headingRowHeight: heightOfScreen * 0.08,
-                  columns: const [
-                    DataColumn(
-                      label: Text(
-                        'روز هفته',
-                        style: TableWidget.titleTableTextStyle,
+                child: (empty)
+                    ? const Text('درسی یافت نشد')
+                    : DataTable(
+                        border: TableBorder(
+                          horizontalInside: BorderSide(
+                            color: const Color.fromARGB(255, 0, 0, 0),
+                            width: heightOfScreen * 0.001,
+                          ),
+                        ),
+                        headingRowHeight: heightOfScreen * 0.08,
+                        columns: const [
+                          DataColumn(
+                            label: Text(
+                              'روز هفته',
+                              style: TableWidget.titleTableTextStyle,
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'درس',
+                              style: TableWidget.titleTableTextStyle,
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'زمان',
+                              style: TableWidget.titleTableTextStyle,
+                            ),
+                          ),
+                        ],
+                        rows: table
+                            .map((row) => DataRow(
+                                  cells: row
+                                      .map((cell) => DataCell(Text(
+                                            cell,
+                                            style: TableWidget.tableTextStyle,
+                                          )))
+                                      .toList(),
+                                ))
+                            .toList(),
                       ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'درس',
-                        style: TableWidget.titleTableTextStyle,
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'زمان',
-                        style: TableWidget.titleTableTextStyle,
-                      ),
-                    ),
-                  ],
-                  rows: table
-                      .map((row) => DataRow(
-                            cells: row
-                                .map((cell) => DataCell(Text(
-                                      cell,
-                                      style: TableWidget.tableTextStyle,
-                                    )))
-                                .toList(),
-                          ))
-                      .toList(),
-                ),
               ),
             ),
           ),
@@ -415,9 +430,11 @@ class _TableWidgetState extends State<TableWidget> {
   Future<String> fetchTable() async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
-        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.write('weekPlanner//${UserData.studentCode}\u0000');
         serverSocket.flush();
         serverSocket.listen(
           (socketResponse) {
@@ -457,7 +474,7 @@ class _ClassesState extends State<Classes> {
   List<List<String>> classes = [];
   List<bool> isExpanded = [];
   String responseClasses = '-';
-
+  bool empty = false;
   @override
   void initState() {
     super.initState();
@@ -465,9 +482,14 @@ class _ClassesState extends State<Classes> {
   }
 
   void fetchData() async {
-    String message = await fetchDontAssignment();
+    String message = await fetchClasses();
     classes = HelperFunctions.stringToListOfList(message.trim());
-     isExpanded = List<bool>.generate(classes.length, (_) => false);
+    isExpanded = List<bool>.generate(classes.length, (_) => false);
+    if (classes[0][0] == '404') {
+      empty = true;
+    } else {
+      empty = false;
+    }
   }
 
   // List<List<String>> classes = [
@@ -497,8 +519,6 @@ class _ClassesState extends State<Classes> {
   //   ],
   //   ['ورزش', 'زیبایی', '3', '1403/04/14', '19', '16', 'شنبه', 'courseId'],
   // ];
-
-
 
   static const descriptionStyle = TextStyle(
       fontSize: 16,
@@ -562,7 +582,7 @@ class _ClassesState extends State<Classes> {
                         ? Alignment.center
                         : Alignment.centerRight,
                     child: Text(
-                      classes[index][0],
+                      (empty) ? 'هیچ کلاسی یافت نشد' : classes[index][0],
                       textDirection: TextDirection.rtl,
                       textAlign: TextAlign.justify,
                       style: titleStyle,
@@ -572,7 +592,7 @@ class _ClassesState extends State<Classes> {
                     alignment:
                         Alignment(widthOfScreen * 0.0024, heightOfScreen * 0.2),
                     child: Text(
-                      'نام استاد : ${classes[index][1]}',
+                      (empty) ? ' ' : 'نام استاد : ${classes[index][1]}',
                       style: descriptionStyle,
                     ),
                   ),
@@ -583,7 +603,7 @@ class _ClassesState extends State<Classes> {
                         alignment: Alignment(
                             widthOfScreen * 0.0024, heightOfScreen * 0.2),
                         child: Text(
-                          'واحد درسی : ${classes[index][2]}',
+                          (empty) ? ' ' : 'واحد درسی : ${classes[index][2]}',
                           style: descriptionStyle,
                         ),
                       ),
@@ -594,7 +614,7 @@ class _ClassesState extends State<Classes> {
                         alignment: Alignment(
                             widthOfScreen * 0.0024, heightOfScreen * 0.2),
                         child: Text(
-                          'تاریخ امتحان : ${classes[index][3]}',
+                          (empty) ? ' ' : 'تاریخ امتحان : ${classes[index][3]}',
                           style: descriptionStyle,
                         ),
                       ),
@@ -607,7 +627,7 @@ class _ClassesState extends State<Classes> {
                         alignment: Alignment(
                             widthOfScreen * 0.0024, heightOfScreen * 0.2),
                         child: Text(
-                          'نمره اخذ شده : ${classes[index][4]}',
+                          (empty) ? ' ' : 'نمره اخذ شده : ${classes[index][4]}',
                           style: descriptionStyle,
                         ),
                       ),
@@ -618,7 +638,7 @@ class _ClassesState extends State<Classes> {
                         alignment: Alignment(
                             widthOfScreen * 0.0024, heightOfScreen * 0.2),
                         child: Text(
-                          'تکالیف فعال  : ${classes[index][5]}',
+                          (empty) ? ' ' : 'تکالیف فعال  : ${classes[index][5]}',
                           style: descriptionStyle,
                         ),
                       ),
@@ -628,7 +648,7 @@ class _ClassesState extends State<Classes> {
                     alignment:
                         Alignment(widthOfScreen * 0.0024, heightOfScreen * 0.2),
                     child: Text(
-                      classes[index][6],
+                      (empty) ? ' ' : classes[index][6],
                       style: descriptionStyle,
                     ),
                   ),
@@ -642,11 +662,13 @@ class _ClassesState extends State<Classes> {
                                   courseId: classes[index][7]);
                             });
                       },
-                      icon: Icon(
-                        Icons.delete,
-                        size: widthOfScreen * 0.08,
-                        color: const Color.fromARGB(255, 255, 0, 0),
-                      ),
+                      icon: (empty)
+                          ? const Text(' ')
+                          : Icon(
+                              Icons.delete,
+                              size: widthOfScreen * 0.08,
+                              color: const Color.fromARGB(255, 255, 0, 0),
+                            ),
                     ),
                 ],
               ),
@@ -657,12 +679,14 @@ class _ClassesState extends State<Classes> {
     );
   }
 
-  Future<String> fetchDontAssignment() async {
+  Future<String> fetchClasses() async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
-        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.write('classes//${UserData.studentCode}\u0000');
         serverSocket.flush();
         serverSocket.listen(
           (socketResponse) {
@@ -750,7 +774,8 @@ class _DeleteClassDialogState extends State<DeleteClassDialog> {
                 ElevatedButton(
                   onPressed: () {
                     deleteClass(widget.courseId);
-                    Navigator.of(context).pop();
+
+                    Navigator.pushReplacementNamed(context, Klasa.routeName);
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: const Color(0xFFE4014E),
@@ -796,10 +821,12 @@ class _DeleteClassDialogState extends State<DeleteClassDialog> {
   Future<String> deleteClass(String courseId) async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
         serverSocket
-            .write('addNewJob//${UserData.studentCode}//$courseId\u0000');
+            .write('deleteCourse//${UserData.studentCode}//$courseId\u0000');
         serverSocket.flush();
         serverSocket.listen(
           (socketResponse) {

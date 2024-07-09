@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/details/functions.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../services/notification.dart';
+import '../../services/server_connection_info.dart';
 import '../classes/student.dart';
 import '../user_data.dart';
 
@@ -54,7 +55,10 @@ class _BodyOfKhabaraState extends State<BodyOfKhabara> {
                   border: Border.all(),
                 ),
                 padding: EdgeInsets.only(top: heightOfScreen * 0.05),
-                child: selectedItem,
+                constraints: BoxConstraints(minHeight: heightOfScreen * 1.5),
+                child: Container(
+                  child: selectedItem,
+                ),
               ),
             ),
             Positioned(
@@ -182,6 +186,7 @@ class Birthdays extends StatefulWidget {
 class _BirthdaysState extends State<Birthdays> {
   List<String> birthdayNames = [];
   String responseOfForYou = '-';
+  bool empty = false;
   @override
   void initState() {
     super.initState();
@@ -192,6 +197,11 @@ class _BirthdaysState extends State<Birthdays> {
     String message;
     message = await fetchBirthdayInfo();
     birthdayNames = HelperFunctions.stringToList(message.trim());
+    if (birthdayNames[0] == '404') {
+      empty = true;
+    } else {
+      empty = false;
+    }
   }
 
   // final List<String> birthdayNames = <String>[
@@ -231,7 +241,7 @@ class _BirthdaysState extends State<Birthdays> {
                 ),
                 child: Center(
                   child: Text(
-                    birthdayNames[index],
+                    (empty) ? 'امروز تولد نداریم' : birthdayNames[index],
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white,
@@ -253,9 +263,11 @@ class _BirthdaysState extends State<Birthdays> {
   Future<String> fetchBirthdayInfo() async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
-        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.write('newsBirthday//${UserData.studentCode}\u0000');
         serverSocket.flush();
         serverSocket.listen(
           (socketResponse) {
@@ -297,6 +309,8 @@ class _ForYouState extends State<ForYou> {
   List<bool> isExpanded = [];
   List<bool> isExpanded2 = [];
   String responseOfForYou = '-';
+  bool empty = false;
+  bool empty2 = false;
   @override
   void initState() {
     super.initState();
@@ -311,6 +325,16 @@ class _ForYouState extends State<ForYou> {
     changedDeadline = HelperFunctions.stringToList(arrData.elementAt(1));
     isExpanded = List<bool>.generate(warnAssignment.length, (_) => false);
     isExpanded2 = List<bool>.generate(changedDeadline.length, (_) => false);
+    if (warnAssignment[0] == '404') {
+      empty = true;
+    } else {
+      empty = false;
+    }
+    if (changedDeadline[0] == '404') {
+      empty2 = true;
+    } else {
+      empty2 = false;
+    }
   }
 
   static const styleOfdescription = TextStyle(
@@ -389,13 +413,13 @@ class _ForYouState extends State<ForYou> {
                       Container(
                         alignment: Alignment.center,
                         child: Text(
-                          assignment,
+                          (empty) ? 'محتوایی جهت نمایش وجود ندارد' : assignment,
                           style: styleOfTiltle,
                         ),
                       ),
                     ],
                   ),
-                  if (isExpanded[index])
+                  if (isExpanded[index] && !empty)
                     const Column(
                       children: [
                         Text(
@@ -445,13 +469,15 @@ class _ForYouState extends State<ForYou> {
                       Container(
                         alignment: Alignment.center,
                         child: Text(
-                          assignment,
+                          (empty2)
+                              ? 'محتوایی جهت نمایش وجود ندارد'
+                              : assignment,
                           style: styleOfTiltle,
                         ),
                       ),
                     ],
                   ),
-                  if (isExpanded2[index])
+                  if (isExpanded2[index] && !empty2)
                     const Column(
                       children: [
                         Text(
@@ -473,9 +499,11 @@ class _ForYouState extends State<ForYou> {
   Future<String> fetchForYouInfo() async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
-        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.write('newsForYou//${UserData.studentCode}\u0000');
         serverSocket.flush();
         serverSocket.listen(
           (socketResponse) {
@@ -513,7 +541,7 @@ class Event extends StatefulWidget {
 
 class _EventState extends State<Event> {
   Map<String, String> events = {};
-  
+
   List<bool> expanded = [];
   String responseOfEvents = '-';
   @override
@@ -525,8 +553,10 @@ class _EventState extends State<Event> {
   void loadData() async {
     String message;
     message = await fetchEventInfo();
-    events = HelperFunctions.stringToMap(message.trim());
+    events = HelperFunctions.linkStringToMap(message.trim());
     expanded = List<bool>.generate(events.length, (_) => false);
+    print(
+        '******************************************************${events.toString()}');
   }
 
   // Map<String, String> events = {
@@ -539,7 +569,7 @@ class _EventState extends State<Event> {
   //   'انتخابات انجمن های هیئت غیر علمی':
   //       'https://www.sbu.ac.ir/fa/web/news/w/international-4?redirect=%2F',
   // };
- // for storing the expansion state of each item
+  // for storing the expansion state of each item
 
   @override
   Widget build(BuildContext context) {
@@ -639,10 +669,13 @@ class _EventState extends State<Event> {
   Future<String> fetchEventInfo() async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
-        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.write('newsHappen//${UserData.studentCode}\u0000');
         serverSocket.flush();
+
         serverSocket.listen(
           (socketResponse) {
             setState(() {

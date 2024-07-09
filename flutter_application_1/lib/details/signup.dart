@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/details/information.dart';
 import 'package:flutter_application_1/details/user_data.dart';
+import 'package:flutter_application_1/services/server_connection_info.dart';
 import 'my_app_bar.dart';
 import 'my_bottom.dart';
 
@@ -373,7 +374,7 @@ class _SignupState extends State<Signup> {
   Future<String> signUp() async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(ServerConnectionInfo.ipAddress, 3559).then(
       (serverSocket) {
         serverSocket.write(
             'signup//${studentCodeController.text}//${usernameController.text}//${passwordController.text}\u0000');

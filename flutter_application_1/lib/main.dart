@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/details/splash_screen.dart';
 import 'package:flutter_application_1/routes/routes.dart';
 import 'details/login.dart';
 
@@ -26,7 +27,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      initialRoute: Login.routeName,
+      initialRoute: SplashScreen.routeName,
       routes: routes,
     );
   }

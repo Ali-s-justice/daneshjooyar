@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application_1/details/functions.dart';
+import 'package:flutter_application_1/details/kara/kara.dart';
 
-import '../classes/student.dart';
+import '../../services/server_connection_info.dart';
 import '../user_data.dart';
 
 class BodyOfKara extends StatefulWidget {
@@ -17,8 +19,14 @@ class BodyOfKara extends StatefulWidget {
 }
 
 class _BodyOfKaraState extends State<BodyOfKara> {
+  final GlobalKey<_DontState> _childKey = GlobalKey();
+
+  void _callChildMethod() {
+    _childKey.currentState?.initState();
+  }
+
   int selected = 1;
-  Widget selectedWidget = const Done();
+  Widget selectedWidget = const Dont();
   String responseAddNewJob = '-';
   @override
   Widget build(BuildContext context) {
@@ -290,6 +298,7 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                         height: heightOfScreen * 0.05,
                         width: widthOfScreen * 0.15,
                         child: TextField(
+                          keyboardType: TextInputType.number,
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(2),
                             FilteringTextInputFormatter.digitsOnly,
@@ -322,6 +331,7 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                         height: heightOfScreen * 0.05,
                         width: widthOfScreen * 0.15,
                         child: TextField(
+                          keyboardType: TextInputType.number,
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(2),
                             FilteringTextInputFormatter.digitsOnly,
@@ -365,6 +375,7 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                         height: heightOfScreen * 0.05,
                         width: widthOfScreen * 0.15,
                         child: TextField(
+                          keyboardType: TextInputType.number,
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(2),
                             FilteringTextInputFormatter.digitsOnly,
@@ -397,6 +408,7 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                         height: heightOfScreen * 0.05,
                         width: widthOfScreen * 0.15,
                         child: TextField(
+                          keyboardType: TextInputType.number,
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(2),
                             FilteringTextInputFormatter.digitsOnly,
@@ -423,6 +435,7 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                         height: heightOfScreen * 0.05,
                         width: widthOfScreen * 0.15,
                         child: TextField(
+                          keyboardType: TextInputType.number,
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(2),
                             FilteringTextInputFormatter.digitsOnly,
@@ -482,9 +495,13 @@ class _BodyOfKaraState extends State<BodyOfKara> {
                 String minute =
                     HelperFunctions.padLeftWithZero(minController.text);
                 addNewJob(title, description, day, month, year, hour, minute);
+                _callChildMethod();
+                Navigator.pushReplacementNamed(context, Kara.routeName);
+                // selectedWidget = const Dont();
+                // Navigator.pushReplacementNamed(context, Kara.routeName);
+                //Navigator.pushReplacementNamed(context, Kara.routeName);
                 // Add your save logic here
                 //print('Title: $title, Description: $description');
-                Navigator.of(context).pop();
               },
               child: const Text(
                 'افزودن',
@@ -504,11 +521,13 @@ class _BodyOfKaraState extends State<BodyOfKara> {
   Future<String> addNewJob(String title, String description, String day,
       String month, String year, String hour, String minute) async {
     final completer = Completer<String>();
-
-    await Socket.connect("192.168.69.234", 3559).then(
+    print('*****************************************$title');
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
         serverSocket.write(
-            'addNewJob//14$year/$month/$day,$hour:$minute//${UserData.studentCode}//$title//$description\u0000');
+            'addJob//20$year/$month/$day,$hour:$minute//${UserData.studentCode}//$title//$description\u0000');
         serverSocket.flush();
         serverSocket.listen(
           (socketResponse) {
@@ -548,7 +567,8 @@ class _DontState extends State<Dont> {
   List<List<String>> listOfList = [];
   List<bool> isExpanded = [];
   String responseDontAssignment = '-';
-
+  String responseSetDone = '-';
+  bool empty = false;
   @override
   void initState() {
     super.initState();
@@ -559,6 +579,12 @@ class _DontState extends State<Dont> {
     String message = await fetchDontAssignment();
     listOfList = HelperFunctions.stringToListOfList(message.trim());
     isExpanded = List<bool>.generate(listOfList.length, (_) => false);
+    print(listOfList.toString());
+    if (listOfList[0][0] == '404') {
+      empty = true;
+    } else {
+      empty = false;
+    }
   }
 
   // final List<List<String>> listOfList = [
@@ -638,7 +664,7 @@ class _DontState extends State<Dont> {
     final double heightOfScreen = MediaQuery.of(context).size.height;
 
     return ListView.builder(
-      itemCount: isExpanded.length,
+      itemCount: listOfList.length,
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
@@ -677,14 +703,16 @@ class _DontState extends State<Dont> {
                         ? Alignment.center
                         : Alignment.centerRight,
                     child: Text(
-                      listOfList[index][0],
+                      (empty)
+                          ? 'محتوایی جهت نمایش وجود ندار!'
+                          : listOfList[index][0],
                       textDirection: TextDirection.rtl,
                       textAlign: TextAlign.justify,
                       style: styleOfTiltle,
                     ),
                   ),
                   const SizedBox(height: 10),
-                  if (isExpanded[index])
+                  if (isExpanded[index] && !empty)
                     Column(
                       children: [
                         Text(
@@ -711,10 +739,13 @@ class _DontState extends State<Dont> {
                               ),
                             ),
                             SizedBox(
-                              width: widthOfScreen * 0.1,
+                              width: widthOfScreen * 0.03,
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                setDone(listOfList[index][5]);
+                                fetchData();
+                              },
                               icon: Icon(
                                 Icons.done_outline_rounded,
                                 size: widthOfScreen * 0.08,
@@ -722,7 +753,10 @@ class _DontState extends State<Dont> {
                               ),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                deleteJob(listOfList[index][5]);
+                                fetchData();
+                              },
                               icon: Icon(
                                 Icons.delete,
                                 size: widthOfScreen * 0.08,
@@ -748,9 +782,11 @@ class _DontState extends State<Dont> {
   Future<String> fetchDontAssignment() async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
-        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.write('jobNotDone//${UserData.studentCode}\u0000');
         serverSocket.flush();
         serverSocket.listen(
           (socketResponse) {
@@ -758,6 +794,76 @@ class _DontState extends State<Dont> {
               responseDontAssignment = utf8.decode(socketResponse);
             });
             completer.complete(responseDontAssignment);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
+
+  Future<String> setDone(String jobId) async {
+    final completer = Completer<String>();
+
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
+      (serverSocket) {
+        serverSocket.write('setJobDone//$jobId\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseSetDone = utf8.decode(socketResponse);
+            });
+            completer.complete(responseSetDone);
+            serverSocket.destroy();
+          },
+          onError: (error) {
+            completer.completeError(error);
+            serverSocket.destroy();
+          },
+          onDone: () {
+            if (!completer.isCompleted) {
+              completer.complete('null');
+            }
+          },
+        );
+      },
+    ).catchError((error) {
+      completer.completeError(error);
+    });
+
+    return completer.future;
+  }
+
+  Future<String> deleteJob(String jobId) async {
+    final completer = Completer<String>();
+
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
+      (serverSocket) {
+        serverSocket.write('deleteJob//${UserData.studentCode}//$jobId\u0000');
+        serverSocket.flush();
+        serverSocket.listen(
+          (socketResponse) {
+            setState(() {
+              responseSetDone = utf8.decode(socketResponse);
+            });
+            completer.complete(responseSetDone);
             serverSocket.destroy();
           },
           onError: (error) {
@@ -791,7 +897,7 @@ class _DoneState extends State<Done> {
   List<bool> isExpanded = [];
 
   String responseDoneAssignment = '-';
-
+  bool empty = false;
   @override
   void initState() {
     super.initState();
@@ -802,6 +908,11 @@ class _DoneState extends State<Done> {
     String message = await fetchDoneAssignment();
     listOfList = HelperFunctions.stringToListOfList(message.trim());
     isExpanded = List<bool>.generate(listOfList.length, (_) => false);
+    if (listOfList[0][0] == '404') {
+      empty = true;
+    } else {
+      empty = false;
+    }
   }
 
   // final List<List<String>> listOfList = [
@@ -920,23 +1031,28 @@ class _DoneState extends State<Done> {
                         ? Alignment.center
                         : Alignment.centerRight,
                     child: Text(
-                      listOfList[index][0],
+                      (empty)
+                          ? 'محتوایی جهت نمایش وجود ندارد!'
+                          : listOfList[index][0],
                       textDirection: TextDirection.rtl,
                       textAlign: TextAlign.justify,
                       style: styleOfTiltle,
                     ),
                   ),
                   const SizedBox(height: 10),
-                  if (isExpanded[index])
+                  if (isExpanded[index] && !empty)
                     Column(
                       children: [
-                        Text(
-                          listOfList[index][1],
-                          textDirection: TextDirection.rtl,
-                          style: styleOfdescription,
-                          textAlign: TextAlign.justify,
-                          maxLines: 4,
-                          overflow: TextOverflow.ellipsis,
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            listOfList[index][1],
+                            textDirection: TextDirection.rtl,
+                            style: styleOfdescription,
+                            textAlign: TextAlign.justify,
+                            maxLines: 4,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         SizedBox(
                           height: heightOfScreen * 0.03,
@@ -991,9 +1107,11 @@ class _DoneState extends State<Done> {
   Future<String> fetchDoneAssignment() async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
-        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.write('doneJob//${UserData.studentCode}\u0000');
         serverSocket.flush();
         serverSocket.listen(
           (socketResponse) {

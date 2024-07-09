@@ -9,6 +9,7 @@ import '../details/information.dart';
 import '../details/login.dart';
 import '../details/signup.dart';
 import 'package:flutter/material.dart';
+import '../details/splash_screen.dart';
 
 final Map<String, WidgetBuilder> routes = {
   Login.routeName: (context) => const Login(),
@@ -20,5 +21,6 @@ final Map<String, WidgetBuilder> routes = {
   Kara.routeName: (context) => const Kara(),
   Khabara.routeName: (context) => const Khabara(),
   Klasa.routeName: (context) => const Klasa(),
-  Tamrina.routeName:(context) => const Tamrina(),
+  Tamrina.routeName: (context) => const Tamrina(),
+  SplashScreen.routeName: (context) => const SplashScreen(),
 };

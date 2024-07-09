@@ -2,11 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/details/kara/kara.dart';
 import 'package:flutter_application_1/details/khabara/khabara.dart';
 import 'package:flutter_application_1/details/tamrina/tamrina.dart';
 import 'package:flutter_application_1/details/user_data.dart';
+import '../../services/server_connection_info.dart';
 import '../functions.dart';
 import '../klasa/klasa.dart';
 
@@ -38,6 +40,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
     fetchData();
   }
 
+  bool empty = false;
   void fetchData() async {
     String message = await fetchDataOfSara();
     List<String> fetchedData = message.split('//');
@@ -53,6 +56,12 @@ class _BodyOfSaraState extends State<BodyOfSara> {
     minOfEnd = fetchedData[9];
     topics = HelperFunctions.stringToMap(fetchedData[10]);
     doneAssignmentNames = HelperFunctions.stringToList(fetchedData[11]);
+    if (doneAssignmentNames[0] == '404') {
+      doneAssignmentNames[0] = 'هیچ تمرین ارسال شده ای برای نمایش وجود ندارد!';
+      empty = true;
+    } else {
+      empty = false;
+    }
   }
 
   static const styleOfContainerText = TextStyle(
@@ -63,7 +72,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
   );
   static const styleOfContainergrade = TextStyle(
     fontFamily: 'vazir',
-    fontSize: 15,
+    fontSize: 10,
     color: Colors.white,
     fontWeight: FontWeight.w900,
   );
@@ -82,8 +91,6 @@ class _BodyOfSaraState extends State<BodyOfSara> {
   //   'تمرین دوم فیزیک',
   //   'تمرین چهارم برنامه نویسی پیشرفته',
   // ];
-  String doneAssignmentMessage =
-      'شما با موفقیت تمرین اول مدار را آپلود کرده اید.\nاین تمرین همچنان در دسترس است و امکان ویرایش آن موجود است.';
 
   @override
   Widget build(BuildContext context) {
@@ -438,88 +445,77 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                         textDirection: TextDirection.rtl,
                         children: [
                           betweenItem(widthOfScreen),
-                          Container(
-                            width: widthOfContainer,
-                            height: heightOfassignmentContainer,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: const Alignment(1.00, 0.07),
-                                end: const Alignment(-1, -0.07),
-                                colors: (index % 2 == 0)
-                                    ? [
-                                        const Color(0xFF1523AF),
-                                        const Color(0xFF00A1D3),
-                                      ]
-                                    : [
-                                        const Color(0xFF1523AF),
-                                        const Color(0xFF6C00D8),
-                                      ],
+                          InkWell(
+                            child: Container(
+                              width: widthOfContainer,
+                              height: heightOfassignmentContainer,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: const Alignment(1.00, 0.07),
+                                  end: const Alignment(-1, -0.07),
+                                  colors: (index % 2 == 0)
+                                      ? [
+                                          const Color(0xFF1523AF),
+                                          const Color(0xFF00A1D3),
+                                        ]
+                                      : [
+                                          const Color(0xFF1523AF),
+                                          const Color(0xFF6C00D8),
+                                        ],
+                                ),
+                                border:
+                                    Border.all(color: Colors.black, width: 1.5),
+                                borderRadius: BorderRadius.circular(23),
                               ),
-                              border:
-                                  Border.all(color: Colors.black, width: 1.5),
-                              borderRadius: BorderRadius.circular(23),
-                            ),
-                            padding: EdgeInsets.only(
-                                top: 0,
-                                bottom: heightOfassignmentContainer * 0,
-                                right: widthOfContainer * 0.08,
-                                left: widthOfContainer * 0.08),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: Text(
-                                    textAlign: TextAlign.justify,
-                                    textDirection: TextDirection.rtl,
-                                    key,
-                                    style: TextStyle(
-                                      color: const Color.fromARGB(
-                                          255, 255, 228, 74),
-                                      fontSize: titleContainerFont * 0.55,
-                                      fontFamily: 'vazir',
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 8.0),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    textAlign: TextAlign.justify,
-                                    textDirection: TextDirection.rtl,
-                                    value,
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'vazir',
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Row(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          Navigator.pushNamed(
-                                              context, Tamrina.routeName);
-                                        },
-                                        icon: Icon(
-                                          Icons.edit_document,
-                                          size: widthOfContainer * 0.1,
+                              padding: EdgeInsets.only(
+                                  top: 0,
+                                  bottom: heightOfassignmentContainer * 0,
+                                  right: widthOfContainer * 0.08,
+                                  left: widthOfContainer * 0.08),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top: heightOfScreen * 0.05),
+                                    child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text(
+                                        textAlign: TextAlign.justify,
+                                        textDirection: TextDirection.rtl,
+                                        key,
+                                        style: TextStyle(
                                           color: const Color.fromARGB(
-                                              255, 211, 211, 197),
+                                              255, 255, 228, 74),
+                                          fontSize: titleContainerFont * 0.55,
+                                          fontFamily: 'vazir',
+                                          fontWeight: FontWeight.w900,
                                         ),
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(height: 8.0),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      //textAlign: TextAlign.justify,
+                                      textDirection: TextDirection.rtl,
+                                      value,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontFamily: 'vazir',
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
+                            onTap: () {
+                              Navigator.pushNamed(context, Kara.routeName);
+                            },
                           ),
                           betweenItem(widthOfScreen),
                         ],
@@ -613,7 +609,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                                 right: widthOfContainer * 0.08,
                                 left: widthOfContainer * 0.08),
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Align(
                                   alignment: Alignment.topRight,
@@ -624,48 +620,31 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                                     style: TextStyle(
                                       color: const Color.fromARGB(
                                           255, 255, 228, 74),
-                                      fontSize: titleContainerFont * 0.55,
+                                      fontSize: titleContainerFont * 0.4,
                                       fontFamily: 'vazir',
                                       fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 8.0),
+                                //SizedBox(height: heightOfScreen * 0.008),
                                 Align(
                                   alignment: Alignment.center,
                                   child: Text(
                                     textAlign: TextAlign.justify,
                                     textDirection: TextDirection.rtl,
-                                    doneAssignmentMessage,
+                                    (empty)
+                                        ? 'شما تمرینی ارسال نکرده اید.'
+                                        : 'شما با موفقیت ${doneAssignmentNames[index]} را آپلود کرده اید \n این تمرین همچنان در دسترس است و امکان ویرایش آن وجود دارد.',
                                     maxLines:
-                                        3, // تعداد خطوطی که می‌خواهید نمایش داده شود
+                                        4, // تعداد خطوطی که می‌خواهید نمایش داده شود
                                     overflow: TextOverflow
                                         .ellipsis, // اضافه کردن سه نقطه در انتهای متن
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 14,
+                                      fontSize: titleContainerFont * 0.25,
                                       fontFamily: 'vazir',
                                       fontWeight: FontWeight.w900,
                                     ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Row(
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          Navigator.pushNamed(
-                                              context, Tamrina.routeName);
-                                        },
-                                        icon: Icon(
-                                          Icons.edit_document,
-                                          size: widthOfContainer * 0.1,
-                                          color: const Color.fromARGB(
-                                              255, 211, 211, 197),
-                                        ),
-                                      ),
-                                    ],
                                   ),
                                 ),
                               ],
@@ -688,9 +667,11 @@ class _BodyOfSaraState extends State<BodyOfSara> {
   Future<String> fetchDataOfSara() async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
-        serverSocket.write('userInfo//${UserData.studentCode}\u0000');
+        serverSocket.write('sara//${UserData.studentCode}\u0000');
         serverSocket.flush();
         serverSocket.listen(
           (socketResponse) {

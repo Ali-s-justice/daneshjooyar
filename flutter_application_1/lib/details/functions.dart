@@ -1,5 +1,6 @@
 class HelperFunctions {
   static Map<String, String> stringToMap(String javaMapString) {
+    print('******+++++++++++++++++++++++++++++++++++++++++$javaMapString');
     String cleanedString = javaMapString.substring(1, javaMapString.length - 1);
 
     List<String> keyValuePairs = cleanedString.split(', ');
@@ -14,7 +15,40 @@ class HelperFunctions {
         resultMap[key] = value;
       }
     }
+    print('******+++++++++--------------------------${resultMap.toString()}');
+    return resultMap;
+  }
 
+  static Map<String, String> linkStringToMap(String javaMapString) {
+    print('******+++++++++++++++++++++++++++++++++++++++++$javaMapString');
+
+    // Remove the curly braces at the beginning and the end
+    String cleanedString = javaMapString.substring(1, javaMapString.length - 1);
+
+    Map<String, String> resultMap = {};
+    int start = 0;
+    while (start < cleanedString.length) {
+      // Find the key
+      int indexOfEquals = cleanedString.indexOf('=', start);
+      if (indexOfEquals == -1) break;
+
+      String key = cleanedString.substring(start, indexOfEquals).trim();
+
+      // Find the value
+      int indexOfComma = cleanedString.indexOf(', ', indexOfEquals);
+      String value;
+      if (indexOfComma == -1) {
+        value = cleanedString.substring(indexOfEquals + 1).trim();
+        start = cleanedString.length; // End the loop
+      } else {
+        value = cleanedString.substring(indexOfEquals + 1, indexOfComma).trim();
+        start = indexOfComma + 2;
+      }
+
+      resultMap[key] = value;
+    }
+
+    print('******+++++++++--------------------------${resultMap.toString()}');
     return resultMap;
   }
 
@@ -30,7 +64,8 @@ class HelperFunctions {
   }
 
   static List<List<String>> stringToListOfList(String javaArrayListString) {
-    String cleanedString = javaArrayListString.substring(1, javaArrayListString.length - 1);
+    String cleanedString =
+        javaArrayListString.substring(1, javaArrayListString.length - 1);
 
     List<String> listComponents = cleanedString.split('], [');
 
@@ -44,6 +79,7 @@ class HelperFunctions {
 
     return result;
   }
+
   static String padLeftWithZero(String input) {
     if (input.length == 1) {
       return input.padLeft(2, '0');
@@ -51,4 +87,21 @@ class HelperFunctions {
     return input;
   }
 
+  static String getFormattedDate() {
+    DateTime now = DateTime.now();
+    String year = now.year.toString();
+    String month =
+        now.month.toString().padLeft(2, '0'); // افزودن صفر در صورت نیاز
+    String day = now.day.toString().padLeft(2, '0'); // افزودن صفر در صورت نیاز
+    return '$year/$month/$day';
+  }
+
+  static String formatDate(String day, String month, String year) {
+    return '20$year/$month/$day';
+  }
+
+  static double calculateSizeOfSizedBox(
+      int nuberOfContainer, double sizeOfEachContainer) {
+    return nuberOfContainer * sizeOfEachContainer;
+  }
 }

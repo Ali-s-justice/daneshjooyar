@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/details/signup.dart';
 import 'package:flutter_application_1/details/user_data.dart';
 
+import '../services/server_connection_info.dart';
+
 class Information extends StatefulWidget {
   static const String routeName = 'information';
   const Information({super.key});
@@ -401,7 +403,9 @@ class _InformationState extends State<Information> {
   Future<String> fetchInfoData() async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
         serverSocket.write('userInfo//${UserData.studentCode}\u0000');
         serverSocket.flush();
@@ -434,7 +438,9 @@ class _InformationState extends State<Information> {
   Future<String> deleteAccount() async {
     final completer = Completer<String>();
 
-    await Socket.connect("192.168.69.234", 3559).then(
+    await Socket.connect(
+            ServerConnectionInfo.ipAddress, ServerConnectionInfo.port)
+        .then(
       (serverSocket) {
         serverSocket.write('deleteAccount//${UserData.studentCode}\u0000');
         serverSocket.flush();
@@ -524,7 +530,7 @@ class _InformationState extends State<Information> {
 
                         if (message == "500") {
                           // ignore: use_build_context_synchronously
-                          Navigator.pushNamed(context, Sara.routeName);
+                          Navigator.pushNamed(context, Signup.routeName);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
