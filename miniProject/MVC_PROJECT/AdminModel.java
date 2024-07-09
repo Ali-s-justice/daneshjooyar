@@ -1242,7 +1242,7 @@ public class AdminModel {
     }
 
     public boolean courseDatePatternChecker(String input){
-        String pattern = "^(sh|y|d|se|c|p|j)=(0?[1-9]|1[0-2]):([0-5][0-9])$";
+        String pattern = "(sh|y|d|se|c|p|j)=([0-1][0-9]|2[0-3]):[0-5][0-9]";
         Pattern regex = Pattern.compile(pattern);
         Matcher matcher = regex.matcher(input);
         return matcher.matches();

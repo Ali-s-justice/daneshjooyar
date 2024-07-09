@@ -111,7 +111,6 @@ public class StudentModel {
 
     public String deleteAccount(String studentId) {
         ArrayList<String> allOfFile = new ArrayList<>();
-        boolean successful = false;
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/students.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -123,7 +122,6 @@ public class StudentModel {
                     Info[3] = "$";
                     String last = Info[0] + "//" + Info[1] + "//" + Info[2] + "//" + Info[3];
                     allOfFile.add(last);
-                    successful = true;
                 } else {
                     allOfFile.add(line);
                 }
@@ -133,16 +131,12 @@ public class StudentModel {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        if (successful) {
-            return "successful";
-        } else {
-            return "unSuccessful";
-        }
+        return "500";//successful
     }
 
     public ArrayList<String> worseScoreAndCourse(String studentId) {
-        HashMap<String, Double> studentCourseScore = new HashMap<>();
-        studentCourseScore.put(" ", 0.00);
+        HashMap<String, String> studentCourseScore = new HashMap<>();
+        studentCourseScore.put(" ", "0");
         try {
             FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -157,28 +151,33 @@ public class StudentModel {
                     map.put(entry[0], entry[1]);
                 }
                 if (map.containsKey(studentId) && !map.get(studentId).equals("null")) {
-                    studentCourseScore.put(Info[0], Double.parseDouble(map.get(studentId)));
+                    studentCourseScore.put(Info[0], map.get(studentId));
                 }
             }
             bufferedReader.close();
+            if (studentCourseScore.size() > 1){
+                studentCourseScore.remove(" ");
+                double minValue = Integer.MAX_VALUE;
+                String minKey = null;
 
-            double minValue = Integer.MAX_VALUE;
-            String minKey = null;
-
-            for (Map.Entry<String, Double> entry : studentCourseScore.entrySet()) {
-                if (entry.getValue() < minValue) {
-                    minValue = entry.getValue();
-                    minKey = entry.getKey();
+                for (Map.Entry<String, String > entry : studentCourseScore.entrySet()) {
+                    if (Double.parseDouble(entry.getValue()) < minValue) {
+                        minValue = Double.parseDouble(entry.getValue());
+                        minKey = entry.getKey();
+                    }
                 }
-            }
-            ArrayList<String> returnValue = new ArrayList<>();
-            returnValue.add(String.valueOf(minValue));
-            if (Objects.equals(minKey, " ")) {
-                returnValue.add(minKey);
-            } else {
+                ArrayList<String> returnValue = new ArrayList<>();
+                returnValue.add(String.valueOf(minValue));
                 returnValue.add(courseNameById(minKey));
+                return returnValue;
+            }else {
+                ArrayList<String> returnValue = new ArrayList<>();
+                returnValue.add("-");
+                returnValue.add("-");
+                return returnValue;
             }
-            return returnValue;
+
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -207,23 +206,30 @@ public class StudentModel {
             }
             bufferedReader.close();
 
-            double maxValue = Integer.MIN_VALUE;
-            String maxKey = null;
+            if (studentCourseScore.size() > 1){
+                double maxValue = Integer.MIN_VALUE;
+                String maxKey = null;
 
-            for (Map.Entry<String, Double> entry : studentCourseScore.entrySet()) {
-                if (entry.getValue() > maxValue) {
-                    maxValue = entry.getValue();
-                    maxKey = entry.getKey();
+                for (Map.Entry<String, Double> entry : studentCourseScore.entrySet()) {
+                    if (entry.getValue() > maxValue) {
+                        maxValue = entry.getValue();
+                        maxKey = entry.getKey();
+                    }
                 }
+                ArrayList<String> returnValue = new ArrayList<>();
+                returnValue.add(String.valueOf(maxValue));
+                if (Objects.equals(maxKey, " ")) {
+                    returnValue.add(maxKey);
+                } else {
+                    returnValue.add(courseNameById(maxKey));
+                }
+                return returnValue;
+            }else {
+                ArrayList<String> returnValue = new ArrayList<>();
+                returnValue.add("-");
+                returnValue.add("-");
+                return returnValue;
             }
-            ArrayList<String> returnValue = new ArrayList<>();
-            returnValue.add(String.valueOf(maxValue));
-            if (Objects.equals(maxKey, " ")) {
-                returnValue.add(maxKey);
-            } else {
-                returnValue.add(courseNameById(maxKey));
-            }
-            return returnValue;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -317,6 +323,19 @@ public class StudentModel {
         return assignmentNum;
     }
 
+    public boolean datePassed(String dateAndTime) {
+        String dateTimePattern = "yyyy/MM/dd,HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(dateTimePattern);
+        try {
+            Date dateTime = sdf.parse(dateAndTime);
+            Date currentDateTime = new Date();
+            return dateTime.before(currentDateTime);
+        } catch (ParseException e) {
+            System.out.println("Error parsing the date and time: " + e.getMessage());
+        }
+        return true;
+    }
+
     public int dateSituation(String dateAndTime) {//1: date is in future 0: date is now -1: date is before
         String dateTimePattern = "yyyy/MM/dd,HH:mm";
         SimpleDateFormat sdf = new SimpleDateFormat(dateTimePattern);
@@ -371,6 +390,24 @@ public class StudentModel {
             System.out.println(e.getMessage());
         }
         return false;
+    }
+
+    public boolean assignmentIsFalse(String assignmentId) {
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/assignment.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(assignmentId)) {
+                    return !(Boolean.parseBoolean(Info[1]));
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return true;
     }
 
     public Set<String> allCourseAssignmentId(String courseId) {
@@ -482,6 +519,9 @@ public class StudentModel {
         ArrayList<String> retainedNames = new ArrayList<>();
         for (String s : retainedId) {
             retainedNames.add(assignmentNameGetter(s));
+        }
+        if (retainedNames.isEmpty()){
+            retainedNames.add("404");
         }
         return retainedNames;
     }
@@ -659,7 +699,7 @@ public class StudentModel {
         return salt;
     }
 
-    public void writer(ArrayList<String> allOfFile, String address) {
+    public synchronized void writer(ArrayList<String> allOfFile, String address) {
         try {
             FileWriter writer = new FileWriter(address);
             for (String s : allOfFile) {
@@ -830,6 +870,27 @@ public class StudentModel {
         return doneAssignmentNum;
     }
 
+//    public static ArrayList<String> stringToArrayList(String str) {
+//        str = str.substring(1, str.length() - 1);
+//        String[] items = str.split(", ");
+//        return new ArrayList<>(Arrays.asList(items));
+//    }
+
+    public String newsHappenLinkGetterFromFile() {
+        String returnValue = " ";
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/linkes.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            line = bufferedReader.readLine();
+            bufferedReader.close();
+            return line;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return returnValue;
+    }
+
     public LinkedHashMap<String, String> newsHappenLinkGetter() {
         String url = "https://www.sbu.ac.ir/";
         LinkedHashMap<String, String> announcementMap = new LinkedHashMap<>();
@@ -881,7 +942,11 @@ public class StudentModel {
                 System.out.println(e.getMessage());
             }
         }
-        return under24HourAssignmentName;
+        if (under24HourAssignmentName.isEmpty()){
+            under24HourAssignmentName.add("404");
+        }
+        Set<String> stringSet = new HashSet<>(under24HourAssignmentName);
+        return new ArrayList<>(stringSet);
     }
 
     public boolean under24HourRemain(String inputDateTime) {
@@ -900,7 +965,6 @@ public class StudentModel {
         ArrayList<String> allDate = new ArrayList<>();
         allDate.addAll(allAssignmentDeadline);
         allDate.addAll(allExamDate);
-
         LocalDateTime maxDateTime = null;
 
         for (String dateString : allDate) {
@@ -1114,7 +1178,7 @@ public class StudentModel {
                             StringBuilder total = new StringBuilder();
                             for (int k = 1; k < caption.size(); k++) {
                                 total.append(caption.get(k));
-                                total.append("$");
+                                total.append("\n");
                             }
                             String description = total.substring(0, total.length() - 1);
                             returnValue.put(title, description);
@@ -1247,6 +1311,9 @@ public class StudentModel {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        if (names.isEmpty()){
+            names.add("404");
+        }
         return names;
     }
 
@@ -1291,6 +1358,11 @@ public class StudentModel {
                             ArrayList<String> temp = getStrings(caption);
                             temp.add(jobDeadlineGetter(s));
                             temp.add(s);
+                            String time = temp.get(2);
+                            String[] times = time.split("//");
+                            temp.set(2, times[0]);
+                            temp.add(3, times[1]);
+                            temp.add(4, times[2]);
                             returnValue.add(temp);
                         }
                     }
@@ -1298,6 +1370,14 @@ public class StudentModel {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+        }
+        if (returnValue.isEmpty()){
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add("404");
+            for (int i = 0; i < 4; i++) {
+                temp.add(" ");
+            }
+            returnValue.add(temp);
         }
         return returnValue;
     }
@@ -1559,7 +1639,7 @@ public class StudentModel {
     public String deleteJob(String studentId, String jobId) {
         deleteJobFromJobTxt(jobId);
         deleteJobFromStudentJobTxt(studentId, jobId);
-        deleteJobFromJobCaptionTxt(jobId);
+//        deleteJobFromJobCaptionTxt(jobId);
         return "successful";
     }
 
@@ -1596,7 +1676,14 @@ public class StudentModel {
         Set<String> allJobId = studentJobSetMaker(studentId);
         Set<String> doneJob = doneJobFinder(allJobId);
         ArrayList<String> doneJobList = new ArrayList<>(doneJob);
-        return jobTitleAndCaptionArrayGetter(doneJobList);
+        ArrayList<ArrayList<String>> returnValue = jobTitleAndCaptionArrayGetter(doneJobList);
+        if (returnValue.isEmpty()){
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add("404");
+            temp.add(" ");
+            returnValue.add(temp);
+        }
+        return returnValue;
     }
 
     public Set<String> doneJobFinder(Set<String> allJobId) {
@@ -1662,7 +1749,7 @@ public class StudentModel {
         StringBuilder total = new StringBuilder();
         for (int k = 1; k < caption.size(); k++) {
             total.append(caption.get(k));
-            total.append("$");
+            total.append("\n");
         }
         String description = total.substring(0, total.length() - 1);
         ArrayList<String> temp = new ArrayList<>();
@@ -1813,11 +1900,6 @@ public class StudentModel {
         return assignmentNum;
     }
 
-    private ArrayList<String> stringToArrayList(String string){
-        String[] elements = string.substring(1, string.length() - 1).split(", ");
-        return new ArrayList<>(Arrays.asList(elements));
-    }
-
     private String dayOfWeekGetter(String symbol){
         return switch (symbol) {
             case "sh" -> "شنبه";
@@ -1888,6 +1970,14 @@ public class StudentModel {
             allCourseInfo.add(courseDateHappen);
             allCourseInfo.add(string);//course ID
             returnValue.add(allCourseInfo);
+        }
+        if (returnValue.isEmpty()){
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add("404");
+            for (int i = 0; i < 7; i++) {
+                temp.add(" ");
+            }
+            returnValue.add(temp);
         }
         return returnValue;
     }
@@ -2021,6 +2111,13 @@ public class StudentModel {
             temp = weekPlannerHappenGetter(string);
             returnValue.addAll(temp);
         }
+        if (returnValue.isEmpty()){
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add("404");
+            temp.add(" ");
+            temp.add(" ");
+            returnValue.add(temp);
+        }
         return returnValue;
     }
 
@@ -2048,7 +2145,7 @@ public class StudentModel {
         return allDays;
     }
 
-    public ArrayList<ArrayList<String>> notDoneAssignmentPage(String studentId, String date){
+    public ArrayList<ArrayList<String>> notDoneAssignmentPage(String studentId, String date, String sortWay){
         Set<String> trueAndHasTime = studentTrueAndDateDeadlineAssignmentId(studentId, date);
         ArrayList<String> allAssignmentId = new ArrayList<>(trueAndHasTime);
         ArrayList<ArrayList<String>> returnValue = new ArrayList<>();
@@ -2060,12 +2157,97 @@ public class StudentModel {
             String studentCaption = studentCaptionGetter(s, studentId);
             String assignmentDeadline = assignmentDeadlineGetter(s);
             String leftTime = leftTime(assignmentDeadline);
+            String[] leftTimes = leftTime.split("//");
             temp.add(assignmentName);
             temp.add(String.valueOf(avrEstimateTime));
             temp.add(teacherCaption);
             temp.add(studentCaption);
-            temp.add(leftTime);
+            temp.add(leftTimes[0]);
+            temp.add(leftTimes[1]);
+            temp.add(leftTimes[2]);
             temp.add(s);//assignment id
+            if (Integer.parseInt(leftTimes[0]) == 0 && Integer.parseInt(leftTimes[1]) == 0 && Integer.parseInt(leftTimes[2]) == 0){
+                continue;
+            }
+            returnValue.add(temp);
+        }
+        if (sortWay.equals("1")){//estimate
+            returnValue = sortArrayByEstimate(returnValue);
+        }else if (sortWay.equals("0")){//deadline
+            returnValue = sortArrayByDeadline(returnValue);
+        }
+        if (returnValue.isEmpty()){
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add("404");
+            for (int i = 0; i < 7; i++) {
+                temp.add(" ");
+            }
+            returnValue.add(temp);
+        }
+        return returnValue;
+    }
+
+    public ArrayList<ArrayList<String>> sortArrayByDeadline(ArrayList<ArrayList<String>> arrayList){
+        for (int i = arrayList.size()-1; i > 0 ; i--) {
+            for (int j = 0; j < i; j++) {
+                if (Integer.parseInt(arrayList.get(j).get(4)) > Integer.parseInt(arrayList.get(j + 1).get(4))){
+                    ArrayList<String> temp = arrayList.get(j);
+                    arrayList.set(j, arrayList.get(j + 1));
+                    arrayList.set((j+1), temp);
+                } else if (Integer.parseInt(arrayList.get(j).get(4)) == Integer.parseInt(arrayList.get(j + 1).get(4))) {
+                    if (Integer.parseInt(arrayList.get(j).get(5)) > Integer.parseInt(arrayList.get(j + 1).get(5))){
+                        ArrayList<String> temp = arrayList.get(j);
+                        arrayList.set(j, arrayList.get(j + 1));
+                        arrayList.set((j+1), temp);
+                    } else if (Integer.parseInt(arrayList.get(j).get(5)) == Integer.parseInt(arrayList.get(j + 1).get(5))) {
+                        if (Integer.parseInt(arrayList.get(j).get(6)) > Integer.parseInt(arrayList.get(j + 1).get(6))){
+                            ArrayList<String> temp = arrayList.get(j);
+                            arrayList.set(j, arrayList.get(j + 1));
+                            arrayList.set((j+1), temp);
+                        }
+                    }
+                }
+            }
+        }
+        return arrayList;
+    }
+
+    public ArrayList<ArrayList<String>> sortArrayByEstimate(ArrayList<ArrayList<String>> arrayList){
+        for (int i = arrayList.size()-1; i > 0 ; i--) {
+            for (int j = 0; j < i; j++) {
+                if (Double.parseDouble(arrayList.get(j).get(1)) > Double.parseDouble(arrayList.get(j + 1).get(1))){
+                    ArrayList<String> temp = arrayList.get(j);
+                    arrayList.set(j, arrayList.get(j + 1));
+                    arrayList.set((j+1), temp);
+                }
+            }
+        }
+        return arrayList;
+    }
+
+    public ArrayList<ArrayList<String>> doneAssignmentPage(String studentId){
+        Set<String> falseAndNoTime = studentFalseAndPassedDeadlineAssignmentId(studentId);
+        ArrayList<String> allAssignmentId = new ArrayList<>(falseAndNoTime);
+        ArrayList<ArrayList<String>> returnValue = new ArrayList<>();
+        for (String s : allAssignmentId) {
+            ArrayList<String> temp = new ArrayList<>();
+            String assignmentName = assignmentNameGetter(s);
+            double avrEstimateTime = avrEstimateTimeFinder(s);
+            String teacherCaption = assignmentCaptionGetter(s);
+            String studentCaption = studentCaptionGetter(s, studentId);
+            temp.add(assignmentName);
+            temp.add(String.valueOf(avrEstimateTime));
+            temp.add(teacherCaption);
+            temp.add(studentCaption);
+            temp.add(s);//assignment id
+            returnValue.add(temp);
+        }
+        if (returnValue.isEmpty()){
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add("404");
+            for (int i = 0; i < 4; i++) {
+                temp.add(" ");
+            }
             returnValue.add(temp);
         }
         return returnValue;
@@ -2086,10 +2268,10 @@ public class StudentModel {
                 for (int i = 0; i < allOfFile.size(); i++) {
                     if (allOfFile.get(i).equals("//" + assignmentId + "-" + studentId + "//")) {
                         i++;
-                        while (i < allOfFile.size() - 1 && captionAssignmentIdPatternChecker(allOfFile.get(i + 1))) {
+                        do {
                             returnValue.add(allOfFile.get(i));
                             i++;
-                        }
+                        }while (i < allOfFile.size() - 1 && captionAssignmentIdPatternChecker(allOfFile.get(i + 1)));
                     }
                 }
             }
@@ -2171,7 +2353,7 @@ public class StudentModel {
             StringBuilder value = new StringBuilder();
             for (String s: returnValue){
                 value.append(s);
-                value.append("$");
+                value.append("\n");
             }
             return value.substring(0, value.length()-1);
         }else {
@@ -2227,11 +2409,8 @@ public class StudentModel {
         return map;
     }
 
-    public boolean dateIsToday(String date) {//1: date is in future 0: date is now -1: date is before
-        LocalDate localDate = LocalDate.now();
-        String now = localDate.toString();
-        now = now.replace("-", "/");
-        return now.equals(date);
+    public boolean dateIsOtherDate(String date1, String date2) {//1: date is in future 0: date is now -1: date is before
+        return date1.equals(date2);
     }
 
     public Set<String> studentTrueAndDateDeadlineAssignmentId(String studentId, String date) {
@@ -2261,7 +2440,7 @@ public class StudentModel {
                     for (String s : trueAssignment) {
                         String assignmentDeadline = assignmentDeadlineGetter(s);
                         assignmentDeadline = assignmentDeadline.substring(0, assignmentDeadline.length()-6);
-                        if (dateIsToday(assignmentDeadline)) {
+                        if (dateIsOtherDate(assignmentDeadline, date)) {
                             allAssignmentId.add(s);
                         }
                     }
@@ -2273,6 +2452,113 @@ public class StudentModel {
         }
         return allAssignmentId;
     }
+
+    public double estimateTimeGetter(String studentId, String assignmentId){
+        double estimateTime = 0;
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/estimate_time.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(assignmentId)) {
+                    HashMap<String, String> map = mapMaker(Info);
+                    if (map.containsKey(studentId)){
+                        estimateTime = Double.parseDouble(map.get(studentId));
+                    }
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return estimateTime;
+    }
+
+    public ArrayList<String> beforeSetAssignment(String studentId, String assignmentId){
+        String caption = studentCaptionGetter(assignmentId, studentId);
+        double estimateTime = estimateTimeGetter(studentId, assignmentId);
+        ArrayList<String> returnValue = new ArrayList<>();
+        returnValue.add(caption);
+        returnValue.add(String.valueOf(estimateTime));
+        return returnValue;
+    }
+
+    public void setEstimateTimeByStudent(String studentId, String assignmentId, String estimateTime){
+        ArrayList<String> allOfFile = new ArrayList<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/estimate_time.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                if (Info[0].equals(assignmentId)) {
+                    HashMap<String, String> map = mapMaker(Info);
+                    if (map.containsKey(studentId)){
+                        map.replace(studentId, estimateTime);
+                    }else {
+                        map.put(studentId, estimateTime);
+                    }
+                    String last = Info[0] + "//" + map;
+                    allOfFile.add(last);
+                }else {
+                    allOfFile.add(line);
+                }
+            }
+            bufferedReader.close();
+            writer(allOfFile, "daneshjooyar/informations/estimate_time.txt");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public String setAssignment(String studentId, String assignmentId, String caption, String estimateTime){
+        setCaptionForAssignmentByStudent(assignmentId, studentId, caption);
+        setEstimateTimeByStudent(studentId, assignmentId, estimateTime);
+        return "500";
+    }
+
+    public Set<String> studentFalseAndPassedDeadlineAssignmentId(String studentId) {
+        Set<String> allAssignmentId = new HashSet<>();
+        try {
+            FileReader fileReader = new FileReader("daneshjooyar/informations/student_course_score.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] Info = line.split("//");
+                String mapAsString = Info[1].replaceAll("[{}\\s]", "");
+                HashMap<String, String> map = new HashMap<>();
+                String[] keyValuePairs = mapAsString.split(",");
+                for (String pair : keyValuePairs) {
+                    String[] entry = pair.split("=");
+                    map.put(entry[0], entry[1]);
+                }
+                if (map.containsKey(studentId)) {
+                    Set<String> allCourseAssignmentId = allCourseAssignmentId(Info[0]);
+                    ArrayList<String> assignmentId = new ArrayList<>(allCourseAssignmentId);
+                    ArrayList<String> falseAssignment = new ArrayList<>();
+                    for (String s : assignmentId) {
+                        if (assignmentIsFalse(s)) {
+                            falseAssignment.add(s);
+                        }
+                    }
+                    for (String s : falseAssignment) {
+                        String assignmentDeadline = assignmentDeadlineGetter(s);
+                        if (datePassed(assignmentDeadline)) {
+                            allAssignmentId.add(s);
+                        }
+                    }
+                }
+            }
+            bufferedReader.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return allAssignmentId;
+    }
+
+
 
 
 

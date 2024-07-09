@@ -232,7 +232,9 @@ public class StudentController {
 
 
     public void necessaryThing(StudentView studentView) {
-        this.studentModel.jobIdSetter();
+        if (studentView.equals(this.studentView)){
+            this.studentModel.jobIdSetter();
+        }
     }
 
     public ArrayList<String> getNewsForYouAssignmentNameGetter(StudentView studentView, String studentId) {
@@ -360,9 +362,33 @@ public class StudentController {
         }
     }
 
-    public ArrayList<ArrayList<String>> getNotDoneAssignmentPage(StudentView studentView, String studentId, String date){
+    public ArrayList<ArrayList<String>> getNotDoneAssignmentPage(StudentView studentView, String studentId, String date, String sortWay){
         if (studentView.equals(this.studentView)) {
-            return this.studentModel.notDoneAssignmentPage(studentId, date);
+            return this.studentModel.notDoneAssignmentPage(studentId, date, sortWay);
+        } else {
+            return null;
+        }
+    }
+
+    public ArrayList<String> beforeSetAssignment(StudentView studentView, String studentId, String assignmentId){
+        if (studentView.equals(this.studentView)) {
+            return this.studentModel.beforeSetAssignment(studentId, assignmentId);
+        } else {
+            return null;
+        }
+    }
+
+    public String getSetAssignment(StudentView studentView, String studentId, String assignmentId, String caption, String estimateTime){
+        if (studentView.equals(this.studentView)) {
+            return this.studentModel.setAssignment(studentId, assignmentId, caption, estimateTime);
+        } else {
+            return null;
+        }
+    }
+
+    public ArrayList<ArrayList<String>> getDoneAssignmentPage(StudentView studentView, String studentId){
+        if (studentView.equals(this.studentView)) {
+            return this.studentModel.doneAssignmentPage(studentId);
         } else {
             return null;
         }

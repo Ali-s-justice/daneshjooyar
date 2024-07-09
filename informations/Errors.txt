@@ -1,0 +1,6 @@
+400 --> noStudentFoundInServer
+401 --> notSignedUp
+402 --> passwordIsWrong
+403 --> alreadySignedUp
+404 --> usernameExist
+500 --> successful
