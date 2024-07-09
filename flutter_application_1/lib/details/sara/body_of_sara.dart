@@ -101,19 +101,19 @@ class _BodyOfSaraState extends State<BodyOfSara> {
     final double titleContainerFont = widthOfScreen * 0.12;
     final double titleFromeTop3 = heightOfContainer * 0.15;
     final double titleFromeLeft3 = widthOfContainer * 0.69;
-    final double contentFromeTop3 = heightOfContainer * 0.45;
+    final double contentFromeTop3 = heightOfContainer * 0.4;
     final double contentFromeLeft3 = widthOfContainer * 0.07;
     final double titleFromeTop2 = heightOfContainer * 0.15;
     final double titleFromeLeft2 = widthOfContainer * 0.6;
-    final double contentFromeTop2 = heightOfContainer * 0.45;
+    final double contentFromeTop2 = heightOfContainer * 0.4;
     final double contentFromeLeft2 = widthOfContainer * 0.12;
     final double titleFromeTop1 = heightOfContainer * 0.15;
     final double titleFromeLeft1 = widthOfContainer * 0.6;
-    final double contentFromeTop1 = heightOfContainer * 0.45;
+    final double contentFromeTop1 = heightOfContainer * 0.4;
     final double contentFromeLeft1 = widthOfContainer * 0.12;
     final double titleFromeTop4 = heightOfContainer * 0.15;
     final double titleFromeLeft4 = widthOfContainer * 0.69;
-    final double contentFromeTop4 = heightOfContainer * 0.45;
+    final double contentFromeTop4 = heightOfContainer * 0.4;
     final double contentFromeLeft4 = widthOfContainer * 0.1;
     final double heightOfassignmentContainer = heightOfContainer * 1.8;
 
@@ -327,7 +327,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                   child: const Text(
                     ': پیشِرو',
                     style: TextStyle(
-                      fontFamily: 'vazir',
+                      fontFamily: 'vazirb',
                       fontSize: 20,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -419,7 +419,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                       child: const Text(
                         ': امروز',
                         style: TextStyle(
-                          fontFamily: 'vazir',
+                          fontFamily: 'vazirb',
                           fontSize: 20,
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -486,8 +486,8 @@ class _BodyOfSaraState extends State<BodyOfSara> {
                                         style: TextStyle(
                                           color: const Color.fromARGB(
                                               255, 255, 228, 74),
-                                          fontSize: titleContainerFont * 0.55,
-                                          fontFamily: 'vazir',
+                                          fontSize: titleContainerFont * 0.35,
+                                          fontFamily: 'vazirb',
                                           fontWeight: FontWeight.w900,
                                         ),
                                       ),
@@ -730,7 +730,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 35,
-                fontFamily: 'vazir',
+                fontFamily: 'vazirb',
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -823,7 +823,7 @@ class _BodyOfSaraState extends State<BodyOfSara> {
               style: TextStyle(
                 color: const Color.fromARGB(255, 255, 228, 74),
                 fontSize: titleContainerFont,
-                fontFamily: 'vazir',
+                fontFamily: 'vazirb',
                 fontWeight: FontWeight.w900,
               ),
             ),

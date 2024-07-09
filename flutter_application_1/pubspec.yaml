@@ -106,6 +106,9 @@ flutter:
     - family: vapetla
       fonts:
         - asset: assets/fonts/Vapetla.ttf
+    - family: vazirb
+      fonts:
+        - asset: assets/fonts/Vazir-Bold.ttf
     
 
   #       - asset: fonts/TrajanPro_Bold.ttf

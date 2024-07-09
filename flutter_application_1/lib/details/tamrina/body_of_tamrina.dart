@@ -473,10 +473,9 @@ class _ActivesPrState extends State<ActivesPr> {
                                     alignment: Alignment.centerLeft,
                                     child: IconButton(
                                       icon: Icon(
-                                        Icons.edit_document,
+                                        Icons.edit,
                                         size: heightOfScreen * 0.035,
-                                        color: const Color.fromARGB(
-                                            255, 188, 188, 188),
+                                        color: Color.fromARGB(255, 255, 255, 0),
                                       ),
                                       onPressed: () {
                                         _showDialog(
@@ -616,7 +615,7 @@ class _ActivesPrState extends State<ActivesPr> {
                             //     fontSize: heightOfScreen * 0.013,
                             //   ),
                             // ),
-                            hintText: 'mm',
+                            hintText: 'MM',
                           ),
                           controller: minController,
                           textDirection: TextDirection.rtl,
@@ -643,7 +642,7 @@ class _ActivesPrState extends State<ActivesPr> {
                             ),
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: 'hh',
+                            hintText: 'HH',
                           ),
                           controller: hourController,
                           textDirection: TextDirection.rtl,

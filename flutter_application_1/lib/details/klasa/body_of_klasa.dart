@@ -175,8 +175,10 @@ class _BodyOfKlasaState extends State<BodyOfKlasa> {
                     Text(
                       'کد کلاس مورد نظر خودرا وارد کنید',
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: heightOfScreen * 0.020),
+                        color: Colors.white,
+                        fontSize: heightOfScreen * 0.020,
+                        fontFamily: 'vazirb',
+                      ),
                     ),
                   ],
                 ),
@@ -204,7 +206,7 @@ class _BodyOfKlasaState extends State<BodyOfKlasa> {
                   ),
                 ),
                 SizedBox(
-                  height: heightOfScreen * 0.02,
+                  height: heightOfScreen * 0.00,
                 ),
               ],
             ),
@@ -364,7 +366,9 @@ class _TableWidgetState extends State<TableWidget> {
           child: Text(
             'برنامه هفتگی شما',
             style: TextStyle(
-                fontSize: heightOfScreen * 0.035, color: Colors.white),
+                fontSize: heightOfScreen * 0.035,
+                color: Colors.white,
+                fontFamily: 'vazirb'),
           ),
         ),
         Positioned(
@@ -558,8 +562,8 @@ class _ClassesState extends State<Classes> {
                   end: const Alignment(-1, -0.07),
                   colors: isExpanded[index]
                       ? [
-                          const Color.fromARGB(255, 129, 30, 138),
-                          const Color.fromARGB(255, 132, 126, 197),
+                          const Color(0xFF00A1D3),
+                          const Color(0xFF1523AF),
                         ]
                       : [
                           const Color(0xFF1523AF),

@@ -512,7 +512,9 @@ class _InformationState extends State<Information> {
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: heightOfScreen * 0.018),
+                      fontSize: heightOfScreen * 0.018,
+                      fontFamily: 'vazirb',
+                      ),
                 ),
                 SizedBox(
                   height: heightOfScreen * 0.02,
@@ -563,7 +565,7 @@ class _InformationState extends State<Information> {
                         'حذف',
                         style: TextStyle(
                           color: Colors.white,
-                          fontFamily: 'vazir',
+                          fontFamily: 'vazirb',
                           fontWeight: FontWeight.bold,
                           fontSize: heightOfScreen * 0.018,
                         ),
@@ -583,7 +585,7 @@ class _InformationState extends State<Information> {
                         'بازگشت',
                         style: TextStyle(
                           color: Colors.white,
-                          fontFamily: 'vazir',
+                          fontFamily: 'vazirb',
                           fontWeight: FontWeight.bold,
                           fontSize: heightOfScreen * 0.018,
                         ),

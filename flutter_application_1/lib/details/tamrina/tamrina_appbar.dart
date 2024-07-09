@@ -65,7 +65,7 @@ class TamrinaAppBar extends StatelessWidget implements PreferredSizeWidget {
         leading: Container(
           padding: EdgeInsets.only(left: widthOfScreen * 0.085),
           child: IconButton(
-            icon: const Icon(Icons.home_outlined),
+            icon: const Icon(Icons.home),
             onPressed: () {
               Navigator.pushNamed(context, Sara.routeName);
             },

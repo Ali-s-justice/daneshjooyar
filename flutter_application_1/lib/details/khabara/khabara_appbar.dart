@@ -65,9 +65,9 @@ class KhabaraAppBar extends StatelessWidget implements PreferredSizeWidget {
         leading: Container(
           padding: EdgeInsets.only(left: widthOfScreen * 0.085),
           child: IconButton(
-            icon: const Icon(Icons.home_outlined),
+            icon: const Icon(Icons.home),
             onPressed: () {
-               Navigator.pushNamed(context, Sara.routeName);
+              Navigator.pushNamed(context, Sara.routeName);
             },
             style: ButtonStyle(
               iconSize: MaterialStateProperty.all<double>(widthOfScreen * 0.11),

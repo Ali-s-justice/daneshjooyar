@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Support extends StatefulWidget {
   const Support({super.key});
@@ -37,7 +38,7 @@ class _SupportState extends State<Support> {
             style: TextStyle(
               color: Color.fromARGB(255, 255, 255, 255),
               fontSize: 30,
-              fontFamily: 'vazir',
+              fontFamily: 'vazirb',
             ),
           ),
           backgroundColor: Colors.transparent,
@@ -305,11 +306,15 @@ class _SupportState extends State<Support> {
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        final linkToOpen = Uri.parse(
+                            'https://news.sbu.ac.ir/%D8%A7%D8%B1%D8%AA%D8%A8%D8%A7%D8%B7-%D8%A8%D8%A7-%D9%85%D8%A7');
+                        await launchUrl(linkToOpen);
+                      },
                       child: const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10.0),
                         child: Text(
-                          'ارسال پیام',
+                          'ارتباط مشتقیم با دانشگاه',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontFamily: 'pinar',
