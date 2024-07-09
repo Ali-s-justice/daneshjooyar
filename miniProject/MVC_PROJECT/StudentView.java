@@ -1,9 +1,8 @@
 package MVC_PROJECT;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Scanner;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.util.*;
 
 public class StudentView {
     StudentController studentController;
@@ -11,40 +10,6 @@ public class StudentView {
     public void setStudentController(StudentController studentController) {
         this.studentController = studentController;
     }
-
-    // @Override
-    // public void run() {
-    // synchronized (lock) {
-    // System.out.println("Handling client: " + clientSocket);
-    //
-    // try (BufferedReader in = new BufferedReader(new
-    // InputStreamReader(clientSocket.getInputStream()));
-    // PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
-    //
-    // // Read the String message from the client
-    // String clientMessage = in.readLine();
-    // String[] splitInputString = studentController.getObligationSplitter(this,
-    // clientMessage);
-    // String[] restString = studentController.getObligationRemover(this,
-    // splitInputString);
-    //
-    // Thread.sleep(1000);
-    //
-    // //responding to front --> splitInputString[0] = obligation & restString =
-    // rest of input
-    // String response = allObligation(splitInputString[0], restString);
-    // out.println("Server received: " + clientMessage);
-    //
-    // clientSocket.close();
-    // System.out.println("Connection closed: " + clientSocket);
-    // } catch (IOException | InterruptedException e) {
-    // System.out.println("Exception!");
-    // } finally {
-    // lock.notify();
-    // }
-    // }
-    // }
-
 
     public void RUN() {
         while (true) {
@@ -124,6 +89,12 @@ public class StudentView {
                 return assignmentToday(restString);
             case "assignmentDate":
                 return assignmentDate(restString);
+            case "beforeSetAssignment":
+                return beforeSetAssignment(restString);
+            case "setAssignment":
+                return setAssignment(restString);
+            case "doneAssignment":
+                return doneAssignment(restString);
             case null:
                 return "error";
             default:
@@ -131,14 +102,35 @@ public class StudentView {
         }
     }
 
+    private String doneAssignment(String[] restString){
+        //restString = studentId
+        return studentController.getDoneAssignmentPage(this, restString[0]).toString();
+    }
+
+    private String setAssignment(String[] restString){
+        String estimateTime = restString[3];
+        String[] split = estimateTime.split(":");
+        int min = Integer.parseInt(split[0]) * 60 + Integer.parseInt(split[1]);
+        double temp = (double) min / 60;
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String formattedNumber = decimalFormat.format(temp);
+        //restString = studentId - assignmentId - caption - estimateTime
+        return studentController.getSetAssignment(this, restString[0], restString[1], restString[2], formattedNumber);
+    }
+
+    private String beforeSetAssignment(String[] restString){
+        //restString = studentId - assignmentId
+        return studentController.beforeSetAssignment(this, restString[0], restString[1]).toString();
+    }
+
     private String assignmentDate(String[] restString){
-        //restString = studentId - todayDate(2025/12/04)
-        return studentController.getNotDoneAssignmentPage(this, restString[0], restString[1]).toString();
+        //restString = studentId - todayDate(2025/12/04) - estimateTime or deadline or default
+        return studentController.getNotDoneAssignmentPage(this, restString[0], restString[1], restString[2]).toString();
     }
 
     private String assignmentToday(String[] restString){
-        //restString = studentId - todayDate(2025/12/04)
-        return studentController.getNotDoneAssignmentPage(this, restString[0], restString[1]).toString();
+        //restString = studentId - todayDate(2025/12/04) - estimateTime or deadline or default
+        return studentController.getNotDoneAssignmentPage(this, restString[0], restString[1], restString[2]).toString();
     }
 
     private String weekPlanner(String[] restString){
@@ -203,7 +195,7 @@ public class StudentView {
     }
 
     private String newsHappen() {
-        return studentController.newsHappenLinkGetter(this).toString();
+        return studentController.studentModel.newsHappenLinkGetterFromFile();
     }
 
     private String newsForYou(String[] restString) {
@@ -227,18 +219,24 @@ public class StudentView {
         long minute = dateOfEnd.getLast();
         Map<String, String> studentJob = studentController.getStudentSaraJobGetter(this, restString[0]);
         ArrayList<String> doneAssignmentName = studentController.getDoneAssignmentNameGetter(this, restString[0]);
+        if (studentJob.isEmpty()){
+            studentJob.put("هیچ کاری برای نمایش وجود ندارد!", " ");
+        }
+        if (doneAssignmentName.isEmpty()){
+            doneAssignmentName.add("404");
+        }
         return bestScore + "//" + bestCourse + "//" + worseScore + "//" + worseCourse + "//" + examNum + "//" + assignmentNum + "//" + doneAssignmentNum + "//" + day + "//" + hour + "//" + minute + "//" + studentJob.toString() + "//" + doneAssignmentName.toString();
     }
 
     private String deleteAccount(String[] restString) {
         // restString: studentID
-        return studentController.getDeleteAccount(this, restString[0]);
+        return studentController.getDeleteAccount(this, restString[0]);//500
     }
 
     private String userInfo(String[] restString) {
         // rest String : studentId
         if (studentController.getNoStudentFoundById(this, restString[0])) {
-            return "noStudentFoundInServer";
+            return "400";//noStudentFoundInServer
         }
         String username = studentController.getStudentUsernameByID(this, restString[0]);
         String name = studentController.getStudentNameById(this, restString[0]);
@@ -258,50 +256,49 @@ public class StudentView {
     private String changePassword(String[] restString) {
         // restString = studentId//newPassword//oldPassword
         if (studentController.getNoStudentFoundById(this, restString[0])) {
-            return "noStudentFoundInServer";
+            return "400";//noStudentFoundInServer
         }
         if (studentController.getPasswordIsWrongForId(this, restString[0], restString[2])) {
-            return "passwordIsWrong";
+            return "402";//passwordIsWrong
         }
         studentController.getChangePassword(this, restString[0], restString[1]);
-        return "successful";
+        return "500";//successful
     }
 
     private String chaneUsername(String[] restString) {
         // restString = lastUsername//newUsername//password
         if (studentController.getNoStudentFoundByUsername(this, restString[0])) {
-            return "noStudentFoundInServer";
+            return "400";//noStudentFoundInServer
         }
         if (studentController.getStudentUsernameNotValid(this, restString[1])) {
-            return "usernameExist";
+            return "404";//usernameExist
         }
         String studentId = studentController.getStudentIdByUsername(this, restString[0]);
         if (studentController.getPasswordIsWrongForId(this, studentId, restString[2])) {
-            return "passwordIsWrong";
+            return "402";//passwordIsWrong
         }
         studentController.getChangeUsername(this, studentId, restString[1]);
-        return "successful";
+        return "500";//successful
     }
 
     private String loginWithId(String[] restString, boolean needCheck) {
         // restString = studentId//password
         if (needCheck && studentController.getNoStudentFoundById(this, restString[0])) {
-            return "noStudentFoundInServer";
+            return "400";//noStudentFoundInServer
         }
         if (studentController.getStudentNotSignedUp(this, restString[0])) {
-            return "notSignedUp";
+            return "401";//notSignedUp
         }
         if (studentController.getPasswordIsWrongForId(this, restString[0], restString[1])) {
-            return "passwordIsWrong";
+            return "402";//passwordIsWrong
         }
-        String studentName = studentController.getStudentNameById(this, restString[0]);
-        return "successful//" + studentName;
+        return "500" + "//" +restString[0];//successful
     }
 
     private String loginWithUsername(String[] restString) {
         // restString = username//password
         if (studentController.getNoStudentFoundByUsername(this, restString[0])) {
-            return "noStudentFoundInServer";
+            return "400";//noStudentFoundInServer
         }
         restString[0] = studentController.getStudentIdByUsername(this, restString[0]);
         return loginWithId(restString, false);
@@ -310,17 +307,16 @@ public class StudentView {
     private String signup(String[] restString) {
         // restString = studentId//username//password
         if (studentController.getNoStudentFoundById(this, restString[0])) {
-            return "noStudentFoundInServer";
+            return "400"; //noStudentFoundInServer
         }
         if (studentController.getStudentAlreadySignedUp(this, restString[0])) {
-            return "alreadySignedUp";
+            return "403";//alreadySignedUp
         }
         if (studentController.getStudentUsernameNotValid(this, restString[1])) {
-            return "usernameExist";
+            return "404";//usernameExist
         }
         studentController.getSignupStudent(this, restString[0], restString[1], restString[2]);
-        String studentName = studentController.getStudentNameById(this, restString[0]);
-        return "successful//" + studentName;
+        return "500";//successful
     }
 
 

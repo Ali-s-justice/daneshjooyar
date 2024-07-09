@@ -796,7 +796,7 @@ public class AdminView {
         while (true) {
             System.out.println("Enter name of course you want to add:\n[1]:Go back");
             Scanner input = new Scanner(System.in);
-            String courseName = input.next();
+            String courseName = input.nextLine();
             if (courseName.equals("1")) {
                 return false;
             }

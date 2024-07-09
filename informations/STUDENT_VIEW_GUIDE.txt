@@ -16,7 +16,7 @@ SARA: sara//studentId --> OUTPUT: best score // course best name // worse score 
 
 NEWS:	newsForYou//studentId --> OUTPUT: Arraylist of assignment name that has under 24 hour time // ArrayList of changed deadline assignmentname
 	newsHappen//studentId --> OUTPUT: HashMap of <title, link>
-	birthday//studentId --> OUTPUT: ArrayList of names
+	newsBirthday//studentId --> OUTPUT: ArrayList of names
 
 JOBS:	jobNotdone//studentId --> OUTPUT: Arraylist of Arraylist ( title, description, days remain // hour remain // miniute remain, job Id)
 	addJob//Deadline(date, hour)//Student Id// title// description --> OUTPUT: "successful"
@@ -31,6 +31,13 @@ CLASSES:	classes//studentId --> OUTPUT: Arraylist of Arraylist < courseName, tea
 						           ERROR: "alreadySignedUp"
 		deleteCourse//studentId//courseId --> OUTPUT: "successful"
 		weekPlanner//studentId --> OUTPUT: ArrayList of ArrayList < day of week, course name, time >
+
+TAMRINA:	assignmentToday//studentId//#//estimateTime or deadline or default --> ArrayList of ArrayList < AssignmentNAme, EstimateTime, Description, StudentDescription, DaysRemain// HoursRemain//MinuteRemain, AssignmentId >
+		assignmentDate//studentId - todayDate(2025/12/04)//estimateTime or deadline or default --> Same As Above
+		beforeSetAssignment//studentId//assignmentId --> ArrayList < caption, EstimateTime >
+		setAssignment//studentId//assignmentId//caption//estimateTime(hh:mm) --> 500
+		doneAssignment//studentId --> Same as First without RemainValues
+		
 	
 
 
