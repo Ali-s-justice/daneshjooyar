@@ -232,14 +232,85 @@ class _BodyOfKlasaState extends State<BodyOfKlasa> {
               style: TextButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 34, 147, 30),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (courseIdController.text.isNotEmpty) {
-                  addNewClass(courseIdController.text);
+                  responseAddNewCoursre =
+                      await addNewClass(courseIdController.text);
                   // Handle save action
-                  setState(() {
-                    print('seted');
-                  });
-                  Navigator.pushReplacementNamed(context, Klasa.routeName);
+                  if (responseAddNewCoursre == '405') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        elevation: 20,
+                        width: widthOfScreen * 0.8,
+                        backgroundColor: Colors.red,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        content: Center(
+                          child: Text(
+                            'هیچ کلاسی با مشخصات وارد شده وجود ندارد',
+                            textDirection: TextDirection.ltr,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: heightOfScreen * 0.014,
+                                fontFamily: 'vazir',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    );
+                  } else if (responseAddNewCoursre == '406') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        elevation: 20,
+                        width: widthOfScreen * 0.8,
+                        backgroundColor: Colors.red,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        content: Center(
+                          child: Text(
+                            'شما قبلا در این کلاس ثبت نام کرده اید',
+                            textDirection: TextDirection.ltr,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: heightOfScreen * 0.014,
+                                fontFamily: 'vazir',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    );
+                  } else if (responseAddNewCoursre == '500') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        elevation: 20,
+                        width: widthOfScreen * 0.8,
+                        backgroundColor: Color.fromARGB(255, 73, 188, 60),
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        content: Center(
+                          child: Text(
+                            'شما با موفقیت به کلاس اضافه شدید',
+                            textDirection: TextDirection.ltr,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: heightOfScreen * 0.014,
+                                fontFamily: 'vazir',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    );
+
+                    setState(() {});
+                    // ignore: use_build_context_synchronously
+                    Navigator.pushReplacementNamed(context, Klasa.routeName);
+                  }
                 }
               },
               child: const Text(

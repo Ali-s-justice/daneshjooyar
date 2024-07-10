@@ -185,9 +185,9 @@ class _LoginState extends State<Login> {
                           if (_keyform.currentState!.validate()) {
                             UserData.studentCode =
                                 usernameOrStudentCodeController.text;
-                            String message = '500';
+                            String message = '-';
 
-                            //message = await login();
+                            message = await login();
                             if (message.length > 5) {
                               UserData.studentCode =
                                   message.split("//").elementAt(1);
